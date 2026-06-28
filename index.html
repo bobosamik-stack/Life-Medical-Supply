@@ -2,180 +2,120 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Life Medical Supply — Office Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0B63CE">
+  <title>Life Medical Supply — Professional Office System</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     :root{
-      --blue:#0B63CE; --cyan:#16A9E0; --green:#18B878;
-      --ink:#102033; --muted:#617086; --bg:#F4F8FF; --card:#FFFFFF;
-      --line:#DCE8F7; --red:#E64B4B; --yellow:#F6B84A;
-      --shadow:0 22px 60px rgba(8,50,110,.13);
-      --radius:24px;
+      --blue:#0B63CE; --blue2:#16A9E0; --green:#18B878; --red:#E44949; --yellow:#F6B84A;
+      --ink:#102033; --muted:#647389; --bg:#F4F8FF; --card:#FFFFFF; --line:#DCE8F7;
+      --shadow:0 24px 70px rgba(5,45,105,.14); --radius:24px;
     }
     *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
       color:var(--ink);
       background:
-        radial-gradient(circle at 10% 0%,rgba(22,169,224,.20),transparent 34%),
-        radial-gradient(circle at 95% 2%,rgba(24,184,120,.18),transparent 32%),
-        linear-gradient(180deg,#fff 0%,var(--bg) 46%,#fff 100%);
+        radial-gradient(circle at 10% -8%,rgba(22,169,224,.22),transparent 35%),
+        radial-gradient(circle at 90% 0%,rgba(24,184,120,.18),transparent 30%),
+        var(--bg);
     }
-    a{text-decoration:none;color:inherit}
     button,input,select,textarea{font:inherit}
     button{cursor:pointer}
-    .container{width:min(1180px,calc(100% - 34px));margin:auto}
-    .nav{
-      position:sticky;top:0;z-index:10;
-      background:rgba(255,255,255,.86);
-      backdrop-filter:blur(16px);
-      border-bottom:1px solid rgba(220,232,247,.9);
-    }
-    .nav-inner{height:72px;display:flex;align-items:center;justify-content:space-between;gap:14px}
-    .brand{display:flex;align-items:center;gap:12px;font-weight:950;letter-spacing:-.03em}
-    .logo{
-      width:46px;height:46px;border-radius:16px;
-      background:linear-gradient(135deg,var(--blue),var(--cyan));
-      color:white;display:grid;place-items:center;font-weight:950;font-size:22px;
-      position:relative;box-shadow:0 14px 30px rgba(11,99,206,.25);
-      flex:none;
-    }
-    .logo:after{
-      content:"+";
-      position:absolute;right:-7px;bottom:-8px;width:24px;height:24px;border-radius:50%;
-      background:var(--green);border:3px solid white;display:grid;place-items:center;font-size:16px
-    }
-    .links{display:flex;gap:18px;color:var(--muted);font-size:14px;font-weight:800}
-    .links a:hover{color:var(--blue)}
+    a{text-decoration:none;color:inherit}
+    .hidden{display:none!important}
+    .container{width:min(1280px,calc(100% - 28px));margin:auto}
     .btn{
-      border:0;border-radius:999px;padding:13px 18px;
-      background:linear-gradient(135deg,var(--blue),var(--cyan));
-      color:white;font-weight:950;box-shadow:0 15px 32px rgba(11,99,206,.22);
-      display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      border:0;border-radius:14px;padding:12px 16px;background:linear-gradient(135deg,var(--blue),var(--blue2));
+      color:white;font-weight:900;display:inline-flex;align-items:center;justify-content:center;gap:8px;
+      box-shadow:0 14px 30px rgba(11,99,206,.22)
     }
     .btn.secondary{background:white;color:var(--blue);border:1px solid var(--line);box-shadow:none}
     .btn.green{background:linear-gradient(135deg,#129A65,var(--green))}
-    .btn.red{background:white;color:var(--red);border:1px solid rgba(230,75,75,.25);box-shadow:none}
-    .btn.small{padding:9px 12px;border-radius:13px;font-size:13px}
-    .hero{padding:72px 0 42px}
-    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
-    .eyebrow{
-      display:inline-flex;gap:8px;align-items:center;
-      padding:9px 13px;border-radius:999px;background:rgba(11,99,206,.08);
-      color:#073F86;font-weight:900;font-size:14px;border:1px solid rgba(11,99,206,.12);
+    .btn.red{background:white;color:var(--red);border:1px solid rgba(228,73,73,.24);box-shadow:none}
+    .btn.small{padding:9px 11px;border-radius:12px;font-size:13px}
+    .topbar{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(220,232,247,.9)}
+    .top-inner{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:950;letter-spacing:-.035em}
+    .logo{
+      width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--blue),var(--blue2));
+      color:white;display:grid;place-items:center;font-size:23px;font-weight:950;position:relative;box-shadow:0 13px 30px rgba(11,99,206,.25)
     }
-    h1{font-size:clamp(42px,7vw,76px);line-height:.94;letter-spacing:-.07em;margin:18px 0}
-    .gradient{
-      background:linear-gradient(135deg,var(--blue),var(--cyan),var(--green));
-      -webkit-background-clip:text;background-clip:text;color:transparent;
+    .logo:after{content:"+";position:absolute;right:-7px;bottom:-8px;width:25px;height:25px;border-radius:50%;background:var(--green);border:3px solid white;display:grid;place-items:center;font-size:16px}
+    .top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .screen{min-height:calc(100vh - 76px);padding:26px 0 60px}
+    .hero{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+    .panel{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+    .panel-head{padding:20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .panel-head h2{margin:0;font-size:22px;letter-spacing:-.035em}
+    .panel-body{padding:20px}
+    .setup-title{font-size:clamp(32px,5vw,58px);line-height:1.02;letter-spacing:-.06em;margin:0 0 15px}
+    .lead{font-size:18px;line-height:1.62;color:var(--muted);margin:0 0 18px}
+    .notice{background:#FFF9EB;border:1px solid rgba(246,184,74,.35);border-radius:18px;color:#654B16;padding:14px;line-height:1.55;font-size:13px}
+    .okbox{background:#EBFFF6;border:1px solid rgba(24,184,120,.28);border-radius:18px;color:#0B6C47;padding:14px;line-height:1.55;font-size:13px}
+    .field{display:grid;gap:7px;margin:12px 0}
+    label{font-size:12px;font-weight:950;color:#34455D;text-transform:uppercase;letter-spacing:.04em}
+    input,select,textarea{
+      width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 13px;outline:none;background:white;color:var(--ink)
     }
-    .lead{font-size:20px;line-height:1.62;color:var(--muted);max-width:660px;margin:0 0 26px}
-    .actions-row{display:flex;gap:12px;flex-wrap:wrap}
-    .stats-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px;max-width:660px}
-    .mini{
-      background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:20px;padding:16px;
-      box-shadow:0 10px 24px rgba(16,32,51,.05)
-    }
-    .mini b{font-size:24px;color:#073F86;display:block}
-    .mini span{color:var(--muted);font-weight:800;font-size:13px}
-    .mock{
-      background:white;border:1px solid var(--line);border-radius:32px;padding:20px;box-shadow:var(--shadow);
-      transform:rotate(1.2deg)
-    }
-    .mock-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-    .pill{font-size:12px;font-weight:950;color:#0D754D;background:rgba(24,184,120,.12);padding:7px 10px;border-radius:999px}
-    .mock-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
-    .mock-stat{border:1px solid var(--line);border-radius:18px;padding:13px;background:#F8FBFF}
-    .mock-stat b{font-size:25px;display:block}
-    .mock-stat span{font-size:11px;text-transform:uppercase;font-weight:900;color:var(--muted)}
-    .mock-list{display:grid;gap:10px}
-    .mock-item{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);border-radius:18px;padding:13px}
-    .avatar{width:40px;height:40px;border-radius:13px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:white;display:grid;place-items:center;font-weight:950}
-    section{padding:68px 0}
-    .section-title{text-align:center;max-width:780px;margin:0 auto 36px}
-    .section-title h2{font-size:clamp(32px,4vw,50px);line-height:1.05;letter-spacing:-.055em;margin:0 0 12px}
-    .section-title p{color:var(--muted);font-size:18px;line-height:1.6;margin:0}
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-    .card{
-      background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:var(--radius);
-      padding:25px;box-shadow:0 16px 36px rgba(16,32,51,.06)
-    }
-    .icon{width:58px;height:58px;border-radius:19px;background:rgba(11,99,206,.08);display:grid;place-items:center;font-size:30px}
-    .card h3{font-size:22px;letter-spacing:-.03em;margin:19px 0 10px}
-    .card p{color:var(--muted);line-height:1.6;margin:0}
-    .dashboard{
-      background:#071C36;color:white;border-radius:34px;padding:20px;box-shadow:var(--shadow)
-    }
-    .dash-top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:8px 6px 18px}
-    .dash-top h2{margin:0;font-size:30px;letter-spacing:-.04em}
-    .dash-top p{margin:5px 0 0;color:rgba(255,255,255,.68)}
-    .dash-grid{display:grid;grid-template-columns:380px 1fr;gap:16px}
-    .dash-card{background:white;color:var(--ink);border-radius:26px;padding:20px}
-    .dash-card h3{margin:0 0 14px;font-size:20px;letter-spacing:-.03em}
-    .notice{background:#FFF9EB;border:1px solid rgba(246,184,74,.35);border-radius:17px;color:#654B16;padding:13px;font-size:13px;line-height:1.55;margin-bottom:12px}
-    .field{display:grid;gap:7px;margin:10px 0}
-    label{font-size:12px;font-weight:950;text-transform:uppercase;color:#34455D;letter-spacing:.04em}
-    input,select,textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:12px 13px;outline:none;background:white;color:var(--ink)}
-    textarea{min-height:86px;resize:vertical}
-    input:focus,select:focus,textarea:focus{border-color:rgba(11,99,206,.55);box-shadow:0 0 0 4px rgba(11,99,206,.09)}
+    textarea{min-height:88px;resize:vertical}
+    input:focus,select:focus,textarea:focus{border-color:rgba(11,99,206,.58);box-shadow:0 0 0 4px rgba(11,99,206,.09)}
+    .login-card{width:min(520px,100%);margin:38px auto}
+    .auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+    .auth-tab{padding:12px;border-radius:14px;border:1px solid var(--line);background:white;font-weight:900;color:var(--muted)}
+    .auth-tab.active{background:rgba(11,99,206,.09);color:var(--blue);border-color:rgba(11,99,206,.22)}
+    .dashboard-grid{display:grid;grid-template-columns:390px 1fr;gap:18px;align-items:start}
+    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}
+    .stat{background:#F8FBFF;border:1px solid var(--line);border-radius:17px;padding:13px}
+    .stat b{font-size:25px;display:block}
+    .stat span{font-size:11px;color:var(--muted);font-weight:950;text-transform:uppercase}
     .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .full{grid-column:1/-1}
-    .dash-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}
-    .dash-stat{background:#F8FBFF;border:1px solid var(--line);border-radius:17px;padding:13px}
-    .dash-stat b{font-size:24px;display:block}
-    .dash-stat span{font-size:11px;color:var(--muted);font-weight:950;text-transform:uppercase}
-    .tools{display:grid;grid-template-columns:1fr 170px 160px;gap:10px;margin:12px 0}
-    .patient-list{display:grid;gap:10px;max-height:560px;overflow:auto;padding-right:4px}
-    .patient-card{border:1px solid var(--line);border-radius:19px;padding:14px;background:white;display:grid;gap:10px}
+    .tools{display:grid;grid-template-columns:1fr 180px 160px;gap:10px;margin-bottom:12px}
+    .patient-list{display:grid;gap:10px;max-height:67vh;overflow:auto;padding-right:4px}
+    .patient-card{border:1px solid var(--line);border-radius:20px;background:white;padding:14px;display:grid;gap:11px}
     .patient-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
-    .patient-top b{font-size:17px;letter-spacing:-.025em}
-    .meta{font-size:13px;color:var(--muted);margin-top:3px}
+    .patient-top b{font-size:18px;letter-spacing:-.025em}
+    .meta{color:var(--muted);font-size:13px;margin-top:3px}
     .tags{display:flex;gap:7px;flex-wrap:wrap}
     .tag{font-size:12px;font-weight:950;padding:6px 9px;border-radius:999px;background:#EDF5FF;color:#0A4E9D}
     .tag.green{background:rgba(24,184,120,.13);color:#0D754D}
-    .tag.red{background:rgba(230,75,75,.11);color:#B82929}
     .tag.yellow{background:rgba(246,184,74,.18);color:#9B6500}
-    .pat-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .tag.red{background:rgba(228,73,73,.11);color:#B82929}
+    .actions{display:flex;gap:8px;flex-wrap:wrap}
     .empty{text-align:center;border:1px dashed var(--line);border-radius:18px;padding:28px;color:var(--muted)}
-    .footer{border-top:1px solid var(--line);background:white;padding:42px 0;color:var(--muted)}
-    .footer-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
-    .footer h4{margin:0 0 10px;color:var(--ink)}
-    .modal{position:fixed;inset:0;background:rgba(8,18,30,.54);z-index:100;display:grid;place-items:center;padding:20px}
-    .modal.hidden,.toast.hidden{display:none}
-    .modal-card{width:min(760px,100%);max-height:88vh;overflow:auto;background:white;border-radius:28px;box-shadow:0 30px 90px rgba(0,0,0,.28)}
-    .modal-head{padding:22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .modal{position:fixed;inset:0;background:rgba(8,18,30,.54);z-index:100;display:grid;place-items:center;padding:18px}
+    .modal-card{width:min(980px,100%);max-height:90vh;overflow:auto;background:white;border-radius:28px;box-shadow:0 30px 90px rgba(0,0,0,.28)}
+    .modal-head{padding:20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
     .modal-head h2{margin:0;font-size:24px;letter-spacing:-.04em}
-    .modal-body{padding:22px}
-    .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .modal-body{padding:20px}
+    .detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
     .detail{border:1px solid var(--line);background:#F8FBFF;border-radius:16px;padding:13px}
     .detail small{display:block;color:var(--muted);font-size:11px;font-weight:950;text-transform:uppercase}
     .detail b{display:block;margin-top:5px}
-    .toast{position:fixed;right:18px;bottom:18px;background:#102033;color:white;border-radius:16px;padding:14px 16px;box-shadow:0 18px 44px rgba(0,0,0,.25);z-index:200;font-weight:850;max-width:360px}
+    .docs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+    .doc-upload{border:1px solid var(--line);background:#F8FBFF;border-radius:18px;padding:14px}
+    .doc-list{display:grid;gap:9px}
+    .doc-row{display:flex;justify-content:space-between;gap:10px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:10px;background:white}
+    .doc-row b{font-size:14px}
+    .doc-row small{display:block;color:var(--muted);margin-top:2px}
+    .toast{position:fixed;right:18px;bottom:18px;z-index:220;background:#102033;color:white;padding:14px 16px;border-radius:16px;box-shadow:0 18px 44px rgba(0,0,0,.25);font-weight:850;max-width:390px}
+    .loading{opacity:.55;pointer-events:none}
     .print-area{display:none}
-    @media(max-width:980px){
-      .hero-grid,.dash-grid,.footer-grid{grid-template-columns:1fr}
-      .cards{grid-template-columns:1fr 1fr}
-      .links{display:none}
-      .dash-stats{grid-template-columns:repeat(3,1fr)}
-      .mock{transform:none}
-    }
-    @media(max-width:640px){
-      .container{width:min(100% - 26px,1180px)}
-      .cards,.stats-mini,.dash-stats,.form-grid,.detail-grid{grid-template-columns:1fr}
+    @media(max-width:1000px){.hero,.dashboard-grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}.docs-grid{grid-template-columns:1fr}}
+    @media(max-width:680px){
+      .container{width:min(100% - 24px,1280px)}
+      .top-inner{align-items:flex-start;flex-direction:column}
+      .top-actions{width:100%}.top-actions .btn{flex:1}
+      .stats,.form-grid,.detail-grid,.tools{grid-template-columns:1fr}
       .full{grid-column:auto}
-      h1{font-size:44px}
-      .actions-row .btn{width:100%}
-      .tools{grid-template-columns:1fr}
-      .dashboard{padding:13px;border-radius:24px}
-      .dash-card{padding:16px}
-      .nav-inner{height:auto;min-height:68px;padding:10px 0}
+      .panel-body{padding:16px}.panel-head{padding:16px}
     }
     @media print{
       body{background:white}
-      .nav,.hero,section,.footer,.modal,.toast{display:none!important}
+      .topbar,.screen,.modal,.toast{display:none!important}
       .print-area{display:block}
       table{width:100%;border-collapse:collapse;font-size:12px}
       th,td{border:1px solid #bbb;padding:6px;text-align:left;vertical-align:top}
@@ -183,117 +123,81 @@
   </style>
 </head>
 <body>
-  <nav class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="#top"><span class="logo">L</span><span>Life Medical Supply</span></a>
-      <div class="links">
-        <a href="#services">Services</a>
-        <a href="#documents">Documents</a>
-        <a href="#dashboard">Office Dashboard</a>
-        <a href="#contact">Contact</a>
-      </div>
-      <a class="btn small" href="#dashboard">Open Demo</a>
-    </div>
-  </nav>
-
-  <header id="top" class="hero">
-    <div class="container hero-grid">
-      <div>
-        <div class="eyebrow">⚕️ Medical Supply • Patient Follow-up • Office System</div>
-        <h1>Life Medical Supply <span class="gradient">professional dashboard.</span></h1>
-        <p class="lead">
-          Красивый проект для medical supply: сайт для клиентов и внутренняя демо-панель офиса,
-          где можно вести пациентов, статусы, prescription, progress note и reminders.
-        </p>
-        <div class="actions-row">
-          <a class="btn" href="#services">View Services</a>
-          <a class="btn secondary" href="#dashboard">Test Dashboard</a>
-        </div>
-        <div class="stats-mini">
-          <div class="mini"><b>Rx</b><span>Prescription workflow</span></div>
-          <div class="mini"><b>PN</b><span>Progress note tracking</span></div>
-          <div class="mini"><b>CSV</b><span>Export & print</span></div>
-        </div>
-      </div>
-      <div class="mock">
-        <div class="mock-head"><b>Office Dashboard</b><span class="pill">Live Demo</span></div>
-        <div class="mock-stats">
-          <div class="mock-stat"><b>24</b><span>Patients</span></div>
-          <div class="mock-stat"><b>7</b><span>Due</span></div>
-          <div class="mock-stat"><b>5</b><span>Need Note</span></div>
-        </div>
-        <div class="mock-list">
-          <div class="mock-item">
-            <div style="display:flex;gap:10px;align-items:center"><span class="avatar">L</span><div><b>Lola S.</b><div class="meta">Need Progress Note</div></div></div>
-            <span class="tag yellow">Today</span>
-          </div>
-          <div class="mock-item">
-            <div style="display:flex;gap:10px;align-items:center"><span class="avatar">R</span><div><b>Rustam P.</b><div class="meta">Order Ready</div></div></div>
-            <span class="tag green">Ready</span>
-          </div>
-          <div class="mock-item">
-            <div style="display:flex;gap:10px;align-items:center"><span class="avatar">A</span><div><b>Anna M.</b><div class="meta">Need Prescription</div></div></div>
-            <span class="tag yellow">Rx</span>
-          </div>
-        </div>
+  <header class="topbar">
+    <div class="container top-inner">
+      <div class="brand"><span class="logo">L</span><span>Life Medical Supply Pro</span></div>
+      <div class="top-actions">
+        <button class="btn secondary small" id="settingsBtn">⚙️ Setup</button>
+        <button class="btn secondary small hidden" id="exportBtn">⬇️ CSV</button>
+        <button class="btn secondary small hidden" id="printBtn">🖨️ Print</button>
+        <button class="btn red small hidden" id="logoutBtn">Logout</button>
       </div>
     </div>
   </header>
 
-  <section id="services">
-    <div class="container">
-      <div class="section-title">
-        <h2>Medical Supply services</h2>
-        <p>Профессиональный вид для сайта: что вы принимаете, проверяете и оформляете.</p>
-      </div>
-      <div class="cards">
-        <article class="card"><div class="icon">🧾</div><h3>Insurance Verification</h3><p>Проверка insurance plan, eligibility, адреса, телефона и Member ID перед обработкой заказа.</p></article>
-        <article class="card"><div class="icon">📄</div><h3>Prescription Intake</h3><p>Workflow для рецептов от врача: received, missing, expired, needs update.</p></article>
-        <article class="card"><div class="icon">🩺</div><h3>Progress Note Tracking</h3><p>Отметки по medical necessity documentation / progress note, чтобы не терять документы.</p></article>
-        <article class="card"><div class="icon">📦</div><h3>Monthly Supplies</h3><p>Briefs, pull-ups, liners, underpads, gloves, wipes and related medical supplies.</p></article>
-        <article class="card"><div class="icon">🚶</div><h3>Mobility & Safety</h3><p>Canes, walkers, shower chairs, transfer benches, raised toilet seats and bathroom safety.</p></article>
-        <article class="card"><div class="icon">🔔</div><h3>Follow-up Reminders</h3><p>Напоминания: call patient, need Rx, need progress note, insurance update, monthly order due.</p></article>
-      </div>
-    </div>
-  </section>
-
-  <section id="documents">
-    <div class="container">
-      <div class="section-title">
-        <h2>Documents required</h2>
-        <p>Prescription, progress note / medical necessity, insurance card, Member ID, current phone and address.</p>
-      </div>
-    </div>
-  </section>
-
-  <section id="dashboard">
-    <div class="container">
-      <div class="dashboard">
-        <div class="dash-top">
-          <div>
-            <h2>Life Medical Supply — Office Dashboard Demo</h2>
-            <p>Для теста: добавь ненастоящего пациента и проверь статусы.</p>
-          </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            <button class="btn secondary small" onclick="enableNotifications()">🔔 Notifications</button>
-            <button class="btn secondary small" onclick="exportCSV()">⬇️ CSV</button>
-            <button class="btn secondary small" onclick="printPatients()">🖨️ Print</button>
+  <main class="screen">
+    <section id="setupScreen" class="container hidden">
+      <div class="hero">
+        <div class="panel">
+          <div class="panel-body">
+            <h1 class="setup-title">Professional medical supply office system.</h1>
+            <p class="lead">Это версия с настоящей базой данных, логином сотрудников и загрузкой документов: prescription, progress note, insurance card и ID.</p>
+            <div class="notice">
+              Для настоящих медицинских данных нужен HIPAA-ready hosting/storage и Business Associate Agreement с cloud provider. Не загружай реальные PHI/medical records без правильной юридической/технической настройки.
+            </div>
           </div>
         </div>
-        <div class="dash-grid">
-          <div class="dash-card">
-            <h3>Add / Edit Patient</h3>
-            <div class="notice"><b>Demo only:</b> не добавляй настоящих пациентов, пока не будет secure/HIPAA-ready серверной версии.</div>
+        <div class="panel">
+          <div class="panel-head"><h2>Supabase Connection</h2></div>
+          <div class="panel-body">
+            <p class="lead" style="font-size:15px">Вставь данные из Supabase: Project URL и anon public key. Они сохранятся в этом браузере.</p>
+            <div class="field"><label>Supabase Project URL</label><input id="cfgUrl" placeholder="https://xxxx.supabase.co"></div>
+            <div class="field"><label>Supabase anon public key</label><textarea id="cfgKey" placeholder="eyJhbGciOi..."></textarea></div>
+            <button class="btn green" id="saveConfigBtn" style="width:100%">Save Connection</button>
+            <button class="btn secondary" id="clearConfigBtn" style="width:100%;margin-top:8px">Clear Connection</button>
+            <div class="okbox" style="margin-top:12px">
+              После подключения появится Login. Если SQL ещё не установлен — сначала открой файл <b>supabase_setup.sql</b> и выполни его в Supabase SQL Editor.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="authScreen" class="container hidden">
+      <div class="panel login-card">
+        <div class="panel-head"><h2>Staff Login</h2></div>
+        <div class="panel-body">
+          <div class="auth-tabs">
+            <button class="auth-tab active" id="loginTab">Login</button>
+            <button class="auth-tab" id="signupTab">Create Staff</button>
+          </div>
+          <div class="field"><label>Email</label><input id="authEmail" type="email" placeholder="staff@lifemedicalsupply.com"></div>
+          <div class="field"><label>Password</label><input id="authPass" type="password" placeholder="Password"></div>
+          <button class="btn green" id="authBtn" style="width:100%">Login</button>
+          <p class="lead" id="authHint" style="font-size:14px;margin-top:12px">Use staff email and password.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="appScreen" class="container hidden">
+      <div class="dashboard-grid">
+        <div class="panel">
+          <div class="panel-head">
+            <h2 id="formTitle">Add Patient</h2>
+            <button class="btn secondary small" id="clearFormBtn">Clear</button>
+          </div>
+          <div class="panel-body">
             <form id="patientForm">
               <input type="hidden" id="patientId">
               <div class="form-grid">
-                <div class="field"><label>First Name</label><input id="firstName" required placeholder="Test"></div>
-                <div class="field"><label>Last Name</label><input id="lastName" required placeholder="Patient"></div>
+                <div class="field"><label>First Name</label><input id="firstName" required></div>
+                <div class="field"><label>Last Name</label><input id="lastName" required></div>
                 <div class="field"><label>DOB</label><input id="dob" type="date"></div>
                 <div class="field"><label>Phone</label><input id="phone" placeholder="718-000-0000"></div>
                 <div class="field"><label>Insurance</label><input id="insurance" placeholder="Medicaid / Medicare / VillageCare"></div>
-                <div class="field"><label>Member ID</label><input id="memberId" placeholder="ID"></div>
-                <div class="field full"><label>Address</label><input id="address" placeholder="Queens, NY"></div>
+                <div class="field"><label>Member ID</label><input id="memberId"></div>
+                <div class="field full"><label>Address</label><input id="address"></div>
+                <div class="field"><label>Doctor</label><input id="doctor"></div>
                 <div class="field"><label>Status</label>
                   <select id="status">
                     <option>New</option>
@@ -305,27 +209,29 @@
                     <option>Hold</option>
                   </select>
                 </div>
+                <div class="field"><label>Prescription</label><select id="rxStatus"><option>Missing</option><option>Received</option><option>Expired</option><option>Requested</option></select></div>
+                <div class="field"><label>Progress Note</label><select id="pnStatus"><option>Missing</option><option>Received</option><option>Expired</option><option>Requested</option></select></div>
                 <div class="field"><label>Reminder Date</label><input id="reminderDate" type="date"></div>
-                <div class="field"><label>Prescription</label><select id="rx"><option>No</option><option>Yes</option></select></div>
-                <div class="field"><label>Progress Note</label><select id="progressNote"><option>No</option><option>Yes</option></select></div>
-                <div class="field full"><label>Notes</label><textarea id="notes" placeholder="Call doctor, need progress note, monthly order..."></textarea></div>
+                <div class="field full"><label>Notes</label><textarea id="notes"></textarea></div>
               </div>
               <button class="btn green" style="width:100%;margin-top:12px" type="submit">💾 Save Patient</button>
-              <button class="btn secondary" style="width:100%;margin-top:8px" type="button" onclick="clearForm()">Clear Form</button>
             </form>
           </div>
+        </div>
 
-          <div class="dash-card">
-            <div class="dash-stats">
-              <div class="dash-stat"><b id="statTotal">0</b><span>Total</span></div>
-              <div class="dash-stat"><b id="statDue">0</b><span>Due</span></div>
-              <div class="dash-stat"><b id="statRx">0</b><span>Need Rx</span></div>
-              <div class="dash-stat"><b id="statNote">0</b><span>Need Note</span></div>
-              <div class="dash-stat"><b id="statReady">0</b><span>Ready</span></div>
+        <div class="panel">
+          <div class="panel-head"><h2>Patient Dashboard</h2><span id="userEmail" class="tag"></span></div>
+          <div class="panel-body">
+            <div class="stats">
+              <div class="stat"><b id="statTotal">0</b><span>Total</span></div>
+              <div class="stat"><b id="statDue">0</b><span>Due</span></div>
+              <div class="stat"><b id="statRx">0</b><span>Need Rx</span></div>
+              <div class="stat"><b id="statPN">0</b><span>Need PN</span></div>
+              <div class="stat"><b id="statReady">0</b><span>Ready</span></div>
             </div>
             <div class="tools">
-              <input id="search" placeholder="Search patient, phone, insurance..." oninput="render()">
-              <select id="filterStatus" onchange="render()">
+              <input id="searchInput" placeholder="Search by name, phone, insurance..." oninput="renderPatients()">
+              <select id="statusFilter" onchange="renderPatients()">
                 <option value="">All Statuses</option>
                 <option>New</option>
                 <option>Need Prescription</option>
@@ -335,7 +241,7 @@
                 <option>Delivered</option>
                 <option>Hold</option>
               </select>
-              <select id="filterDue" onchange="render()">
+              <select id="dueFilter" onchange="renderPatients()">
                 <option value="">All Reminders</option>
                 <option value="today">Due Today</option>
                 <option value="overdue">Overdue</option>
@@ -346,28 +252,42 @@
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <footer id="contact" class="footer">
-    <div class="container footer-grid">
-      <div><div class="brand"><span class="logo">L</span><span>Life Medical Supply</span></div><p>Medical supply workflow, patient follow-up, documents and office dashboard.</p></div>
-      <div><h4>Contact</h4><p>Phone: (000) 000-0000<br>Email: info@lifemedicalsupply.com<br>Location: Queens, NY</p></div>
-      <div><h4>Disclaimer</h4><p>This demo is not medical advice. Coverage depends on insurance plan rules, eligibility and medical necessity.</p></div>
-    </div>
-  </footer>
-
-  <div id="modal" class="modal hidden">
+  <div id="patientModal" class="modal hidden">
     <div class="modal-card">
       <div class="modal-head">
-        <h2 id="modalTitle">Patient Details</h2>
-        <button class="btn secondary small" onclick="closeModal()">Close</button>
+        <h2 id="modalTitle">Patient</h2>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn secondary small" id="editModalBtn">Edit</button>
+          <button class="btn red small" id="deleteModalBtn">Delete</button>
+          <button class="btn secondary small" id="closeModalBtn">Close</button>
+        </div>
       </div>
       <div class="modal-body">
-        <div id="modalDetails" class="detail-grid"></div>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;flex-wrap:wrap">
-          <button class="btn secondary" onclick="editCurrent()">✏️ Edit</button>
-          <button class="btn red" onclick="deleteCurrent()">🗑️ Delete</button>
+        <div id="patientDetails" class="detail-grid"></div>
+        <div class="docs-grid">
+          <div class="doc-upload">
+            <h3 style="margin:0 0 10px">Upload Document</h3>
+            <div class="field"><label>Document Type</label>
+              <select id="docType">
+                <option value="Prescription">Prescription</option>
+                <option value="Progress Note">Progress Note</option>
+                <option value="Insurance Card">Insurance Card</option>
+                <option value="ID">ID</option>
+                <option value="Doctor Form">Doctor Form</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="field"><label>File PDF / JPG / PNG</label><input id="docFile" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp"></div>
+            <button class="btn green" id="uploadDocBtn" style="width:100%">Upload to Patient</button>
+            <div class="notice" style="margin-top:12px">Files are stored in private Supabase Storage bucket and opened by temporary signed links.</div>
+          </div>
+          <div>
+            <h3 style="margin:0 0 10px">Documents</h3>
+            <div id="documentList" class="doc-list"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -376,56 +296,417 @@
   <div id="toast" class="toast hidden"></div>
   <div id="printArea" class="print-area"></div>
 
-  <script>
-    const KEY="life_medical_supply_patients_v2";
-    let patients=[], currentId=null;
-    const $=id=>document.getElementById(id);
-    const todayISO=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*60000).toISOString().slice(0,10)};
-    const safe=v=>(v||"").toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    const makeId=()=>crypto.randomUUID?crypto.randomUUID():"id_"+Date.now()+Math.random().toString(16).slice(2);
-    const fmt=iso=>{if(!iso)return"";const p=iso.split("-");return p.length===3?`${p[1]}/${p[2]}/${p[0]}`:iso};
-    function toast(msg){$("toast").textContent=msg;$("toast").classList.remove("hidden");clearTimeout(window.__t);window.__t=setTimeout(()=>$("toast").classList.add("hidden"),2800)}
-    function load(){
-      try{patients=JSON.parse(localStorage.getItem(KEY)||"[]")}catch(e){patients=[]}
-      if(!patients.length){
-        patients=[
-          {id:makeId(),firstName:"Test",lastName:"Patient",dob:"1960-01-01",phone:"718-000-0000",insurance:"Medicaid",memberId:"",address:"Queens, NY",status:"Need Progress Note",reminderDate:todayISO(),rx:"Yes",progressNote:"No",notes:"Demo patient only. Replace after secure setup."},
-          {id:makeId(),firstName:"Sample",lastName:"Ready",dob:"1955-05-05",phone:"917-000-0000",insurance:"VillageCare",memberId:"",address:"Rego Park, NY",status:"Ready",reminderDate:"",rx:"Yes",progressNote:"Yes",notes:"Monthly supplies ready."}
-        ]; save();
+<script>
+  const CONFIG_KEY = "lms_supabase_config_v1";
+  let sb = null;
+  let currentUser = null;
+  let patients = [];
+  let docs = [];
+  let selectedPatient = null;
+  let authMode = "login";
+
+  const $ = (id) => document.getElementById(id);
+  const todayISO = () => new Date(new Date() - new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);
+  const safe = (v) => (v || "").toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmt = (iso) => { if(!iso) return ""; const p=iso.split("-"); return p.length===3 ? `${p[1]}/${p[2]}/${p[0]}` : iso; };
+  const toast = (msg) => { $("toast").textContent=msg; $("toast").classList.remove("hidden"); clearTimeout(window.__toast); window.__toast=setTimeout(()=>$("toast").classList.add("hidden"),3400); };
+  const setLoading = (yes) => document.body.classList.toggle("loading", !!yes);
+
+  function getConfig(){
+    try { return JSON.parse(localStorage.getItem(CONFIG_KEY) || "{}"); } catch(e){ return {}; }
+  }
+  function saveConfig(){
+    const url = $("cfgUrl").value.trim();
+    const key = $("cfgKey").value.trim();
+    if(!url || !key){ toast("Enter Supabase URL and anon key"); return; }
+    localStorage.setItem(CONFIG_KEY, JSON.stringify({url,key}));
+    toast("Connection saved");
+    init();
+  }
+  function clearConfig(){
+    localStorage.removeItem(CONFIG_KEY);
+    location.reload();
+  }
+  function makeClient(){
+    const cfg = getConfig();
+    if(!cfg.url || !cfg.key) return null;
+    return window.supabase.createClient(cfg.url, cfg.key);
+  }
+  function showOnly(id){
+    ["setupScreen","authScreen","appScreen"].forEach(x => $(x).classList.add("hidden"));
+    $(id).classList.remove("hidden");
+  }
+  async function init(){
+    sb = makeClient();
+    if(!sb){
+      $("cfgUrl").value = "";
+      $("cfgKey").value = "";
+      showOnly("setupScreen");
+      return;
+    }
+    const cfg = getConfig();
+    $("cfgUrl").value = cfg.url || "";
+    $("cfgKey").value = cfg.key || "";
+    const { data } = await sb.auth.getSession();
+    currentUser = data.session?.user || null;
+    if(!currentUser){ showOnly("authScreen"); return; }
+    $("userEmail").textContent = currentUser.email || "staff";
+    $("logoutBtn").classList.remove("hidden");
+    $("exportBtn").classList.remove("hidden");
+    $("printBtn").classList.remove("hidden");
+    showOnly("appScreen");
+    await loadPatients();
+  }
+
+  function switchAuth(mode){
+    authMode = mode;
+    $("loginTab").classList.toggle("active", mode === "login");
+    $("signupTab").classList.toggle("active", mode === "signup");
+    $("authBtn").textContent = mode === "login" ? "Login" : "Create Staff Account";
+    $("authHint").textContent = mode === "login" ? "Use staff email and password." : "Create the first staff user. Supabase may require email confirmation.";
+  }
+  async function handleAuth(){
+    const email = $("authEmail").value.trim();
+    const password = $("authPass").value;
+    if(!email || !password){ toast("Enter email and password"); return; }
+    setLoading(true);
+    try{
+      let res;
+      if(authMode === "login") res = await sb.auth.signInWithPassword({ email, password });
+      else res = await sb.auth.signUp({ email, password });
+      if(res.error) throw res.error;
+      toast(authMode === "login" ? "Logged in" : "Staff account created. Check email if confirmation is required.");
+      await init();
+    }catch(e){ toast(e.message || "Auth error"); }
+    finally{ setLoading(false); }
+  }
+  async function logout(){
+    await sb.auth.signOut();
+    currentUser = null;
+    location.reload();
+  }
+
+  function collectPatient(){
+    return {
+      first_name: $("firstName").value.trim(),
+      last_name: $("lastName").value.trim(),
+      dob: $("dob").value || null,
+      phone: $("phone").value.trim() || null,
+      insurance: $("insurance").value.trim() || null,
+      member_id: $("memberId").value.trim() || null,
+      address: $("address").value.trim() || null,
+      doctor: $("doctor").value.trim() || null,
+      status: $("status").value,
+      rx_status: $("rxStatus").value,
+      progress_note_status: $("pnStatus").value,
+      reminder_date: $("reminderDate").value || null,
+      notes: $("notes").value.trim() || null,
+      created_by: currentUser.id
+    };
+  }
+  function clearForm(){
+    $("patientForm").reset();
+    $("patientId").value = "";
+    $("status").value = "New";
+    $("rxStatus").value = "Missing";
+    $("pnStatus").value = "Missing";
+    $("formTitle").textContent = "Add Patient";
+  }
+  function fillForm(p){
+    $("patientId").value = p.id;
+    $("firstName").value = p.first_name || "";
+    $("lastName").value = p.last_name || "";
+    $("dob").value = p.dob || "";
+    $("phone").value = p.phone || "";
+    $("insurance").value = p.insurance || "";
+    $("memberId").value = p.member_id || "";
+    $("address").value = p.address || "";
+    $("doctor").value = p.doctor || "";
+    $("status").value = p.status || "New";
+    $("rxStatus").value = p.rx_status || "Missing";
+    $("pnStatus").value = p.progress_note_status || "Missing";
+    $("reminderDate").value = p.reminder_date || "";
+    $("notes").value = p.notes || "";
+    $("formTitle").textContent = "Edit Patient";
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+  async function savePatient(e){
+    e.preventDefault();
+    const record = collectPatient();
+    if(!record.first_name || !record.last_name){ toast("First and last name required"); return; }
+    const id = $("patientId").value;
+    setLoading(true);
+    try{
+      let res;
+      if(id){
+        record.updated_at = new Date().toISOString();
+        res = await sb.from("patients").update(record).eq("id", id).select().single();
+      }else{
+        res = await sb.from("patients").insert(record).select().single();
       }
+      if(res.error) throw res.error;
+      toast("Patient saved");
+      clearForm();
+      await loadPatients();
+    }catch(e){ toast(e.message || "Save error"); }
+    finally{ setLoading(false); }
+  }
+  async function loadPatients(){
+    setLoading(true);
+    try{
+      const { data, error } = await sb.from("patients").select("*").order("created_at", {ascending:false});
+      if(error) throw error;
+      patients = data || [];
+      await loadDocs();
+      renderPatients();
+    }catch(e){
+      toast("Database error: " + (e.message || "Check SQL setup"));
+      console.error(e);
+    }finally{ setLoading(false); }
+  }
+  async function loadDocs(){
+    const { data, error } = await sb.from("documents").select("*").order("created_at", {ascending:false});
+    if(error) throw error;
+    docs = data || [];
+  }
+  function patientDocs(patientId){ return docs.filter(d => d.patient_id === patientId); }
+  function dueText(date){
+    if(!date) return "";
+    const t = todayISO();
+    if(date < t) return "Overdue";
+    if(date === t) return "Due Today";
+    const diff = Math.ceil((new Date(date) - new Date(t))/86400000);
+    return diff <= 7 ? `Due in ${diff} day${diff===1?"":"s"}` : fmt(date);
+  }
+  function dueClass(date){
+    if(!date) return "";
+    if(date < todayISO()) return "red";
+    if(date === todayISO()) return "yellow";
+    return "green";
+  }
+  function statusClass(s){
+    s = (s || "").toLowerCase();
+    if(s.includes("ready") || s.includes("delivered")) return "green";
+    if(s.includes("need") || s.includes("update")) return "yellow";
+    if(s.includes("hold")) return "red";
+    return "";
+  }
+  function matchesDue(p, filter){
+    if(!filter) return true;
+    if(!p.reminder_date) return false;
+    const t = todayISO();
+    if(filter === "today") return p.reminder_date === t;
+    if(filter === "overdue") return p.reminder_date < t;
+    if(filter === "week"){
+      const diff = Math.ceil((new Date(p.reminder_date) - new Date(t))/86400000);
+      return diff >= 0 && diff <= 7;
     }
-    function save(){localStorage.setItem(KEY,JSON.stringify(patients))}
-    function collect(){
-      const pid=$("patientId").value||makeId();
-      return {id:pid,firstName:$("firstName").value.trim(),lastName:$("lastName").value.trim(),dob:$("dob").value,phone:$("phone").value.trim(),insurance:$("insurance").value.trim(),memberId:$("memberId").value.trim(),address:$("address").value.trim(),status:$("status").value,reminderDate:$("reminderDate").value,rx:$("rx").value,progressNote:$("progressNote").value,notes:$("notes").value.trim()};
-    }
-    function fill(p){
-      $("patientId").value=p.id||"";$("firstName").value=p.firstName||"";$("lastName").value=p.lastName||"";$("dob").value=p.dob||"";$("phone").value=p.phone||"";$("insurance").value=p.insurance||"";$("memberId").value=p.memberId||"";$("address").value=p.address||"";$("status").value=p.status||"New";$("reminderDate").value=p.reminderDate||"";$("rx").value=p.rx||"No";$("progressNote").value=p.progressNote||"No";$("notes").value=p.notes||"";location.hash="#dashboard";
-    }
-    function clearForm(){$("patientForm").reset();$("patientId").value="";$("status").value="New";$("rx").value="No";$("progressNote").value="No"}
-    $("patientForm").addEventListener("submit",e=>{e.preventDefault();const p=collect();if(!p.firstName||!p.lastName){toast("First and last name required");return}const i=patients.findIndex(x=>x.id===p.id);if(i>=0)patients[i]=p;else patients.unshift(p);save();clearForm();render();toast("Patient saved")});
-    function statusClass(s){s=(s||"").toLowerCase();if(s.includes("ready")||s.includes("delivered"))return"green";if(s.includes("need")||s.includes("update"))return"yellow";if(s.includes("hold"))return"red";return""}
-    function dueText(date){if(!date)return"";const t=todayISO();if(date<t)return"Overdue";if(date===t)return"Due Today";const diff=Math.ceil((new Date(date)-new Date(t))/86400000);return diff<=7?"Due in "+diff+" day"+(diff===1?"":"s"):fmt(date)}
-    function dueClass(date){if(!date)return"";if(date<todayISO())return"red";if(date===todayISO())return"yellow";return"green"}
-    function matchesDue(p,f){if(!f)return true;if(!p.reminderDate)return false;const t=todayISO();if(f==="today")return p.reminderDate===t;if(f==="overdue")return p.reminderDate<t;if(f==="week"){const diff=Math.ceil((new Date(p.reminderDate)-new Date(t))/86400000);return diff>=0&&diff<=7}return true}
-    function filtered(){const q=($("search").value||"").toLowerCase().trim(),st=$("filterStatus").value,d=$("filterDue").value;return patients.filter(p=>{const text=[p.firstName,p.lastName,p.phone,p.insurance,p.memberId,p.address,p.status,p.notes].join(" ").toLowerCase();return(!q||text.includes(q))&&(!st||p.status===st)&&matchesDue(p,d)})}
-    function renderStats(){$("statTotal").textContent=patients.length;$("statDue").textContent=patients.filter(p=>p.reminderDate&&p.reminderDate<=todayISO()).length;$("statRx").textContent=patients.filter(p=>p.rx==="No"||p.status==="Need Prescription").length;$("statNote").textContent=patients.filter(p=>p.progressNote==="No"||p.status==="Need Progress Note").length;$("statReady").textContent=patients.filter(p=>p.status==="Ready").length}
-    function render(){
-      renderStats(); const rows=filtered();
-      if(!rows.length){$("patientList").innerHTML='<div class="empty">No patients found.</div>';return}
-      $("patientList").innerHTML=rows.map(p=>{const needs=[];if(p.rx==="No")needs.push('<span class="tag yellow">Need Rx</span>');if(p.progressNote==="No")needs.push('<span class="tag yellow">Need Progress Note</span>');if(p.reminderDate)needs.push('<span class="tag '+dueClass(p.reminderDate)+'">'+safe(dueText(p.reminderDate))+'</span>');return `<article class="patient-card"><div class="patient-top"><div><b>${safe(p.firstName)} ${safe(p.lastName)}</b><div class="meta">${safe(p.phone||"No phone")} • ${safe(p.insurance||"No insurance")}</div></div><span class="tag ${statusClass(p.status)}">${safe(p.status)}</span></div><div class="tags">${needs.join("")||'<span class="tag green">Documents OK</span>'}</div><div class="pat-actions"><button class="btn secondary small" onclick="viewPatient('${p.id}')">View</button><button class="btn secondary small" onclick="editPatient('${p.id}')">Edit</button>${p.phone?`<a class="btn secondary small" href="tel:${safe(p.phone)}">Call</a>`:""}<button class="btn secondary small" onclick="quickStatus('${p.id}','Need Progress Note')">Need Note</button><button class="btn secondary small" onclick="quickStatus('${p.id}','Ready')">Ready</button></div></article>`}).join("");
-    }
-    function viewPatient(pid){const p=patients.find(x=>x.id===pid);if(!p)return;currentId=pid;$("modalTitle").textContent=`${p.firstName} ${p.lastName}`;const fields=[["First Name",p.firstName],["Last Name",p.lastName],["DOB",fmt(p.dob)],["Phone",p.phone],["Insurance",p.insurance],["Member ID",p.memberId],["Address",p.address,"full"],["Status",p.status],["Reminder",dueText(p.reminderDate)],["Prescription",p.rx],["Progress Note",p.progressNote],["Notes",p.notes,"full"]];$("modalDetails").innerHTML=fields.map(f=>`<div class="detail ${f[2]||""}"><small>${safe(f[0])}</small><b>${safe(f[1]||"—")}</b></div>`).join("");$("modal").classList.remove("hidden")}
-    function closeModal(){$("modal").classList.add("hidden");currentId=null}
-    function editPatient(pid){const p=patients.find(x=>x.id===pid);if(p)fill(p);closeModal()}
-    function editCurrent(){if(currentId)editPatient(currentId)}
-    function deleteCurrent(){if(!currentId)return;const p=patients.find(x=>x.id===currentId);if(p&&confirm("Delete "+p.firstName+" "+p.lastName+"?")){patients=patients.filter(x=>x.id!==currentId);save();closeModal();render();toast("Deleted")}}
-    function quickStatus(pid,status){const p=patients.find(x=>x.id===pid);if(!p)return;p.status=status;if(status==="Need Progress Note")p.progressNote="No";save();render();toast("Status updated")}
-    function exportCSV(){const headers=["First Name","Last Name","DOB","Phone","Insurance","Member ID","Address","Status","Reminder Date","Prescription","Progress Note","Notes"];const esc=v=>'"'+(v||"").toString().replaceAll('"','""')+'"';const csv=[headers.map(esc).join(","),...filtered().map(p=>[p.firstName,p.lastName,p.dob,p.phone,p.insurance,p.memberId,p.address,p.status,p.reminderDate,p.rx,p.progressNote,p.notes].map(esc).join(","))].join("\n");const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="life-medical-supply-patients-"+todayISO()+".csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
-    function printPatients(){$("printArea").innerHTML=`<h1>Life Medical Supply — Patient List</h1><p>Date: ${fmt(todayISO())}</p><table><thead><tr><th>Name</th><th>DOB</th><th>Phone</th><th>Insurance</th><th>Status</th><th>Reminder</th><th>Rx</th><th>Progress Note</th><th>Notes</th></tr></thead><tbody>${filtered().map(p=>`<tr><td>${safe(p.firstName)} ${safe(p.lastName)}</td><td>${safe(fmt(p.dob))}</td><td>${safe(p.phone)}</td><td>${safe(p.insurance)}</td><td>${safe(p.status)}</td><td>${safe(fmt(p.reminderDate))}</td><td>${safe(p.rx)}</td><td>${safe(p.progressNote)}</td><td>${safe(p.notes)}</td></tr>`).join("")}</tbody></table>`;window.print()}
-    async function enableNotifications(){if(!("Notification"in window)){toast("Notifications are not supported here");return}const perm=await Notification.requestPermission();if(perm!=="granted"){toast("Notifications not allowed");return}const due=patients.filter(p=>p.reminderDate&&p.reminderDate<=todayISO()).length;new Notification("Life Medical Supply",{body:due?`${due} patient follow-up reminder(s).`:"No reminders due today."});toast("Notifications enabled")}
-    $("modal").addEventListener("click",e=>{if(e.target.id==="modal")closeModal()});
-    load();render();
-  </script>
+    return true;
+  }
+  function filteredPatients(){
+    const q = $("searchInput").value.trim().toLowerCase();
+    const st = $("statusFilter").value;
+    const due = $("dueFilter").value;
+    return patients.filter(p => {
+      const text = [p.first_name,p.last_name,p.phone,p.insurance,p.member_id,p.address,p.doctor,p.status,p.notes].join(" ").toLowerCase();
+      return (!q || text.includes(q)) && (!st || p.status === st) && matchesDue(p, due);
+    });
+  }
+  function renderStats(){
+    $("statTotal").textContent = patients.length;
+    $("statDue").textContent = patients.filter(p => p.reminder_date && p.reminder_date <= todayISO()).length;
+    $("statRx").textContent = patients.filter(p => (p.rx_status || "Missing") !== "Received").length;
+    $("statPN").textContent = patients.filter(p => (p.progress_note_status || "Missing") !== "Received").length;
+    $("statReady").textContent = patients.filter(p => p.status === "Ready").length;
+  }
+  function renderPatients(){
+    renderStats();
+    const rows = filteredPatients();
+    const el = $("patientList");
+    if(!rows.length){ el.innerHTML = '<div class="empty">No patients found.</div>'; return; }
+    el.innerHTML = rows.map(p => {
+      const dcount = patientDocs(p.id).length;
+      const tags = [];
+      tags.push(`<span class="tag ${statusClass(p.status)}">${safe(p.status || "New")}</span>`);
+      tags.push(`<span class="tag ${(p.rx_status==="Received")?"green":"yellow"}">Rx: ${safe(p.rx_status || "Missing")}</span>`);
+      tags.push(`<span class="tag ${(p.progress_note_status==="Received")?"green":"yellow"}">PN: ${safe(p.progress_note_status || "Missing")}</span>`);
+      if(p.reminder_date) tags.push(`<span class="tag ${dueClass(p.reminder_date)}">${safe(dueText(p.reminder_date))}</span>`);
+      if(dcount) tags.push(`<span class="tag green">Docs: ${dcount}</span>`);
+      return `
+        <article class="patient-card">
+          <div class="patient-top">
+            <div>
+              <b>${safe(p.first_name)} ${safe(p.last_name)}</b>
+              <div class="meta">${safe(p.phone || "No phone")} • ${safe(p.insurance || "No insurance")}</div>
+            </div>
+          </div>
+          <div class="tags">${tags.join("")}</div>
+          <div class="actions">
+            <button class="btn secondary small" onclick="openPatient('${p.id}')">Open</button>
+            <button class="btn secondary small" onclick="editPatient('${p.id}')">Edit</button>
+            ${p.phone ? `<a class="btn secondary small" href="tel:${safe(p.phone)}">Call</a>` : ""}
+            <button class="btn secondary small" onclick="quickStatus('${p.id}','Ready')">Ready</button>
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
+  function editPatient(id){
+    const p = patients.find(x => x.id === id);
+    if(p){ fillForm(p); closeModal(); }
+  }
+  async function quickStatus(id, status){
+    setLoading(true);
+    try{
+      const { error } = await sb.from("patients").update({status, updated_at:new Date().toISOString()}).eq("id", id);
+      if(error) throw error;
+      toast("Status updated");
+      await loadPatients();
+    }catch(e){ toast(e.message || "Update error"); }
+    finally{ setLoading(false); }
+  }
+  function openPatient(id){
+    selectedPatient = patients.find(x => x.id === id);
+    if(!selectedPatient) return;
+    $("modalTitle").textContent = `${selectedPatient.first_name} ${selectedPatient.last_name}`;
+    const p = selectedPatient;
+    const fields = [
+      ["First Name",p.first_name],["Last Name",p.last_name],["DOB",fmt(p.dob)],["Phone",p.phone],["Insurance",p.insurance],["Member ID",p.member_id],
+      ["Address",p.address,"full"],["Doctor",p.doctor],["Status",p.status],["Prescription",p.rx_status],["Progress Note",p.progress_note_status],["Reminder",dueText(p.reminder_date)],["Notes",p.notes,"full"]
+    ];
+    $("patientDetails").innerHTML = fields.map(f => `<div class="detail ${f[2] || ""}"><small>${safe(f[0])}</small><b>${safe(f[1] || "—")}</b></div>`).join("");
+    renderDocuments();
+    $("patientModal").classList.remove("hidden");
+  }
+  function closeModal(){ $("patientModal").classList.add("hidden"); selectedPatient = null; $("docFile").value = ""; }
+  function renderDocuments(){
+    if(!selectedPatient) return;
+    const list = patientDocs(selectedPatient.id);
+    const el = $("documentList");
+    if(!list.length){ el.innerHTML = '<div class="empty">No documents uploaded yet.</div>'; return; }
+    el.innerHTML = list.map(d => `
+      <div class="doc-row">
+        <div>
+          <b>${safe(d.doc_type)}</b>
+          <small>${safe(d.file_name)} • ${new Date(d.created_at).toLocaleString()}</small>
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end">
+          <button class="btn secondary small" onclick="openDoc('${d.id}')">Open</button>
+          <button class="btn red small" onclick="deleteDoc('${d.id}')">Delete</button>
+        </div>
+      </div>
+    `).join("");
+  }
+  function fileSafeName(name){
+    return name.toLowerCase().replace(/[^a-z0-9.\-_]+/g,"-").replace(/-+/g,"-");
+  }
+  async function uploadDoc(){
+    if(!selectedPatient){ toast("Open patient first"); return; }
+    const file = $("docFile").files[0];
+    const type = $("docType").value;
+    if(!file){ toast("Choose a file"); return; }
+    if(file.size > 10 * 1024 * 1024){ toast("Max file size is 10MB"); return; }
+    const path = `${selectedPatient.id}/${type.replace(/\s+/g,"_")}/${Date.now()}-${fileSafeName(file.name)}`;
+    setLoading(true);
+    try{
+      const up = await sb.storage.from("patient-documents").upload(path, file, { cacheControl:"3600", upsert:false });
+      if(up.error) throw up.error;
+      const ins = await sb.from("documents").insert({
+        patient_id: selectedPatient.id,
+        uploaded_by: currentUser.id,
+        doc_type: type,
+        file_name: file.name,
+        file_path: path,
+        mime_type: file.type,
+        size_bytes: file.size
+      }).select().single();
+      if(ins.error) throw ins.error;
+      const updates = {};
+      if(type === "Prescription") updates.rx_status = "Received";
+      if(type === "Progress Note") updates.progress_note_status = "Received";
+      if(Object.keys(updates).length){
+        updates.updated_at = new Date().toISOString();
+        await sb.from("patients").update(updates).eq("id", selectedPatient.id);
+      }
+      $("docFile").value = "";
+      toast("Document uploaded");
+      await loadPatients();
+      selectedPatient = patients.find(x => x.id === selectedPatient.id);
+      openPatient(selectedPatient.id);
+    }catch(e){ toast(e.message || "Upload error"); console.error(e); }
+    finally{ setLoading(false); }
+  }
+  async function openDoc(id){
+    const d = docs.find(x => x.id === id);
+    if(!d) return;
+    setLoading(true);
+    try{
+      const { data, error } = await sb.storage.from("patient-documents").createSignedUrl(d.file_path, 300);
+      if(error) throw error;
+      window.open(data.signedUrl, "_blank");
+    }catch(e){ toast(e.message || "Open file error"); }
+    finally{ setLoading(false); }
+  }
+  async function deleteDoc(id){
+    const d = docs.find(x => x.id === id);
+    if(!d || !confirm("Delete this document?")) return;
+    setLoading(true);
+    try{
+      await sb.storage.from("patient-documents").remove([d.file_path]);
+      const { error } = await sb.from("documents").delete().eq("id", id);
+      if(error) throw error;
+      toast("Document deleted");
+      await loadPatients();
+      if(selectedPatient) openPatient(selectedPatient.id);
+    }catch(e){ toast(e.message || "Delete error"); }
+    finally{ setLoading(false); }
+  }
+  async function deletePatient(){
+    if(!selectedPatient || !confirm("Delete patient and all document records?")) return;
+    setLoading(true);
+    try{
+      const patientDocPaths = patientDocs(selectedPatient.id).map(d => d.file_path);
+      if(patientDocPaths.length) await sb.storage.from("patient-documents").remove(patientDocPaths);
+      const { error } = await sb.from("patients").delete().eq("id", selectedPatient.id);
+      if(error) throw error;
+      toast("Patient deleted");
+      closeModal();
+      await loadPatients();
+    }catch(e){ toast(e.message || "Delete patient error"); }
+    finally{ setLoading(false); }
+  }
+  function exportCSV(){
+    const headers = ["First Name","Last Name","DOB","Phone","Insurance","Member ID","Address","Doctor","Status","Rx","Progress Note","Reminder","Notes"];
+    const esc = v => '"' + (v || "").toString().replaceAll('"','""') + '"';
+    const rows = filteredPatients().map(p => [p.first_name,p.last_name,p.dob,p.phone,p.insurance,p.member_id,p.address,p.doctor,p.status,p.rx_status,p.progress_note_status,p.reminder_date,p.notes].map(esc).join(","));
+    const csv = [headers.map(esc).join(","), ...rows].join("\n");
+    const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href=url; a.download="life-medical-supply-patients-"+todayISO()+".csv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  }
+  function printPatients(){
+    $("printArea").innerHTML = `<h1>Life Medical Supply — Patient Report</h1><p>Date: ${fmt(todayISO())}</p><table><thead><tr><th>Name</th><th>DOB</th><th>Phone</th><th>Insurance</th><th>Status</th><th>Rx</th><th>PN</th><th>Reminder</th><th>Docs</th></tr></thead><tbody>${filteredPatients().map(p => `<tr><td>${safe(p.first_name)} ${safe(p.last_name)}</td><td>${safe(fmt(p.dob))}</td><td>${safe(p.phone)}</td><td>${safe(p.insurance)}</td><td>${safe(p.status)}</td><td>${safe(p.rx_status)}</td><td>${safe(p.progress_note_status)}</td><td>${safe(fmt(p.reminder_date))}</td><td>${patientDocs(p.id).length}</td></tr>`).join("")}</tbody></table>`;
+    window.print();
+  }
+
+  $("saveConfigBtn").addEventListener("click", saveConfig);
+  $("clearConfigBtn").addEventListener("click", clearConfig);
+  $("settingsBtn").addEventListener("click", () => showOnly("setupScreen"));
+  $("loginTab").addEventListener("click", () => switchAuth("login"));
+  $("signupTab").addEventListener("click", () => switchAuth("signup"));
+  $("authBtn").addEventListener("click", handleAuth);
+  $("logoutBtn").addEventListener("click", logout);
+  $("patientForm").addEventListener("submit", savePatient);
+  $("clearFormBtn").addEventListener("click", clearForm);
+  $("exportBtn").addEventListener("click", exportCSV);
+  $("printBtn").addEventListener("click", printPatients);
+  $("closeModalBtn").addEventListener("click", closeModal);
+  $("editModalBtn").addEventListener("click", () => selectedPatient && editPatient(selectedPatient.id));
+  $("deleteModalBtn").addEventListener("click", deletePatient);
+  $("uploadDocBtn").addEventListener("click", uploadDoc);
+  $("patientModal").addEventListener("click", e => { if(e.target.id === "patientModal") closeModal(); });
+
+  init();
+</script>
 </body>
 </html>
