@@ -3,315 +3,651 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#0d47ff" />
+  <meta name="theme-color" content="#061a33" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Мои часы" />
+  <meta name="apple-mobile-web-app-title" content="Life Hours" />
+  <title>Life Medical Supply — Учет рабочих часов</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="apple-touch-icon" href="icon-192.png" />
-  <title>Мои рабочие часы PRO</title>
   <style>
     :root{
-      --bg:#06111f;--panel:#0b1b31;--panel2:#102848;--card:#0e213b;--text:#eef6ff;--muted:#a9bdd6;
-      --brand:#2d7cff;--brand2:#00d2ff;--ok:#25d695;--warn:#ffd166;--bad:#ff5f7a;--line:rgba(255,255,255,.12);
-      --shadow:0 18px 50px rgba(0,0,0,.35);--radius:24px;
+      --bg0:#020817;
+      --bg1:#061a33;
+      --bg2:#082852;
+      --card:rgba(10,45,85,.74);
+      --card2:rgba(5,24,51,.78);
+      --stroke:rgba(74,209,255,.25);
+      --stroke2:rgba(255,255,255,.09);
+      --text:#f4fbff;
+      --muted:#9fb4cb;
+      --cyan:#27f2ef;
+      --cyan2:#16bcd5;
+      --blue:#51a7ff;
+      --violet:#9b63ff;
+      --red:#ff516b;
+      --orange:#ff9d4f;
+      --green:#25e6a7;
+      --shadow: 0 22px 70px rgba(0,0,0,.38);
+      --radius:24px;
+      --safe-top: env(safe-area-inset-top);
+      --safe-bottom: env(safe-area-inset-bottom);
     }
-    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}html{background:var(--bg)}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:radial-gradient(circle at 20% 0%,rgba(45,124,255,.38),transparent 36%),radial-gradient(circle at 85% 10%,rgba(0,210,255,.24),transparent 32%),linear-gradient(180deg,#071322 0%,#06111f 50%,#08111d 100%);color:var(--text);min-height:100dvh;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
-    .wrap{max-width:1040px;margin:0 auto;padding:18px 14px 110px}.top{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:6px 0 18px}.logo{display:flex;align-items:center;gap:12px}.mark{width:48px;height:48px;border-radius:16px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;box-shadow:0 12px 25px rgba(45,124,255,.35);font-weight:900;font-size:19px}.title h1{margin:0;font-size:22px;letter-spacing:-.5px}.title p{margin:3px 0 0;color:var(--muted);font-size:13px}.pill{border:1px solid var(--line);background:rgba(255,255,255,.07);border-radius:999px;padding:9px 12px;color:var(--muted);font-size:12px;white-space:nowrap}.pill.ok{color:#caffea;border-color:rgba(37,214,149,.35);background:rgba(37,214,149,.1)}
-    .hero{background:linear-gradient(135deg,rgba(45,124,255,.24),rgba(0,210,255,.12)),rgba(255,255,255,.06);border:1px solid var(--line);border-radius:30px;box-shadow:var(--shadow);padding:18px;overflow:hidden;position:relative}.hero:after{content:"";position:absolute;right:-70px;top:-90px;width:220px;height:220px;background:rgba(255,255,255,.12);border-radius:50%;filter:blur(4px)}.heroInner{position:relative;z-index:2}.status{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px}.dot{width:10px;height:10px;border-radius:50%;background:var(--bad);box-shadow:0 0 0 5px rgba(255,95,122,.12)}.dot.live{background:var(--ok);box-shadow:0 0 0 5px rgba(37,214,149,.14)}.clock{font-variant-numeric:tabular-nums;font-size:58px;font-weight:900;letter-spacing:-2.4px;margin:10px 0 6px;line-height:1}.subline{color:var(--muted);font-size:14px;margin-bottom:16px}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{appearance:none;border:0;border-radius:18px;padding:15px 14px;font-weight:800;color:white;background:rgba(255,255,255,.09);border:1px solid var(--line);font-size:15px;box-shadow:0 10px 22px rgba(0,0,0,.18);cursor:pointer}.btn.primary{background:linear-gradient(135deg,var(--brand),var(--brand2));border:0}.btn.good{background:linear-gradient(135deg,#15ba7c,#25d695);border:0;color:#032217}.btn.bad{background:linear-gradient(135deg,#ff4b6a,#ff8a4b);border:0}.btn.small{padding:10px 11px;border-radius:14px;font-size:13px;box-shadow:none}.btn.ghost{background:rgba(255,255,255,.06)}.btn:disabled{opacity:.5;cursor:not-allowed}.quick{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}.quick .btn{flex:1;min-width:92px}
-    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}.card{background:rgba(255,255,255,.07);border:1px solid var(--line);border-radius:22px;padding:14px;box-shadow:0 10px 26px rgba(0,0,0,.18)}.card .label{color:var(--muted);font-size:12px}.card .value{font-size:25px;font-weight:900;margin-top:5px;font-variant-numeric:tabular-nums}.card .money{color:#caffea}.section{margin-top:14px;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:26px;padding:15px;box-shadow:0 12px 30px rgba(0,0,0,.2)}.section h2{font-size:18px;margin:2px 0 12px}.form{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.field{display:flex;flex-direction:column;gap:6px}.field.full{grid-column:1/-1}.field label{color:var(--muted);font-size:12px}input,textarea,select{width:100%;border:1px solid var(--line);background:rgba(4,14,26,.76);color:var(--text);border-radius:15px;padding:13px 12px;font-size:16px;outline:none}textarea{min-height:76px;resize:vertical}input:focus,textarea:focus,select:focus{border-color:rgba(45,124,255,.8);box-shadow:0 0 0 4px rgba(45,124,255,.15)}.formBtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.tabs{display:flex;gap:8px;overflow:auto;padding-bottom:2px}.tab{white-space:nowrap;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--muted);padding:10px 12px;border-radius:999px;font-weight:800}.tab.active{background:linear-gradient(135deg,rgba(45,124,255,.95),rgba(0,210,255,.85));color:white;border:0}.toolbar{display:flex;gap:8px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:10px 0}.toolbar .left{display:flex;gap:8px;flex-wrap:wrap}.list{display:flex;flex-direction:column;gap:9px;margin-top:8px}.shift{display:grid;grid-template-columns:1fr auto;gap:10px;background:rgba(4,14,26,.56);border:1px solid var(--line);border-radius:18px;padding:12px}.shiftTitle{font-weight:900}.shiftMeta{font-size:13px;color:var(--muted);margin-top:5px;line-height:1.35}.shiftHours{text-align:right;font-weight:900;font-size:20px;font-variant-numeric:tabular-nums}.shiftMoney{font-size:12px;color:#caffea;margin-top:3px}.shiftBtns{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}.empty{padding:24px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:20px;background:rgba(255,255,255,.04)}.bottomNav{position:fixed;left:0;right:0;bottom:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:rgba(3,9,18,.72);backdrop-filter:blur(18px);border-top:1px solid var(--line);z-index:10}.bottomNav .bar{max-width:1040px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.navBtn{border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.06);color:var(--muted);padding:10px 6px;font-weight:900;font-size:12px}.navBtn.active{background:rgba(45,124,255,.22);color:white;border-color:rgba(45,124,255,.55)}.page{display:none}.page.active{display:block}.notice{margin-top:10px;padding:11px 12px;border-radius:16px;background:rgba(255,209,102,.12);border:1px solid rgba(255,209,102,.25);color:#ffe7a1;font-size:13px;line-height:1.35}.safe{background:rgba(37,214,149,.10);border-color:rgba(37,214,149,.25);color:#caffea}.dangerText{color:#ffb3c0}.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.settingsRow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}.hidden{display:none!important}@media (max-width:760px){.wrap{padding:14px 12px 110px}.top{align-items:flex-start}.pill{display:none}.clock{font-size:48px}.grid{grid-template-columns:repeat(2,1fr)}.form{grid-template-columns:1fr}.formBtns{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.row2{grid-template-columns:1fr}.settingsRow{grid-template-columns:1fr}.shift{grid-template-columns:1fr}.shiftHours{text-align:left}.shiftBtns{justify-content:flex-start}.quick .btn{min-width:110px}.card .value{font-size:23px}}
-    @media (prefers-color-scheme:light){:root{--bg:#f2f6ff;--panel:#fff;--panel2:#f4f8ff;--card:#fff;--text:#06111f;--muted:#52677e;--line:rgba(8,24,44,.12);--shadow:0 18px 50px rgba(25,65,130,.16)}body{background:radial-gradient(circle at 20% 0%,rgba(45,124,255,.20),transparent 34%),linear-gradient(180deg,#f8fbff,#edf4ff)}input,textarea,select{background:rgba(255,255,255,.86)}.bottomNav{background:rgba(255,255,255,.75)}}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{height:100%;margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);background:var(--bg0);}
+    body{
+      min-height:100svh;
+      background:
+        radial-gradient(900px 600px at 15% -10%, rgba(33,244,238,.22), transparent 62%),
+        radial-gradient(800px 560px at 105% 12%, rgba(85,139,255,.25), transparent 56%),
+        radial-gradient(700px 520px at 55% 115%, rgba(155,99,255,.16), transparent 55%),
+        linear-gradient(145deg,var(--bg0),var(--bg1) 47%,#04132a);
+      overflow-x:hidden;
+    }
+    .app-shell{width:min(100%, 520px);margin:0 auto;min-height:100svh;padding:calc(14px + var(--safe-top)) 14px calc(102px + var(--safe-bottom));position:relative;}
+    .aurora{position:fixed;inset:-30% -30% auto auto;width:420px;height:420px;border-radius:999px;background:linear-gradient(135deg,rgba(39,242,239,.20),rgba(155,99,255,.12));filter:blur(32px);pointer-events:none;animation:float 9s ease-in-out infinite alternate;}
+    @keyframes float{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-35px,40px,0) scale(1.12)}}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 4px 16px;}
+    .brand{display:flex;align-items:center;gap:13px;min-width:0;}
+    .logo{width:64px;height:64px;border-radius:22px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(39,242,239,.18),rgba(82,167,255,.10));border:1px solid rgba(107,229,255,.22);box-shadow:0 12px 36px rgba(16,195,218,.18), inset 0 0 26px rgba(255,255,255,.06);position:relative;overflow:hidden;}
+    .logo:before{content:"";position:absolute;inset:-35%;background:conic-gradient(from 170deg, transparent, rgba(39,242,239,.35), transparent 42%);animation:spin 5s linear infinite;}
+    .logo svg{position:relative;z-index:1;width:49px;height:49px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.22));}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .brand-title{min-width:0;}
+    h1{font-size:26px;line-height:1.05;margin:0 0 4px;letter-spacing:-.75px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .subtitle{font-size:14px;color:var(--muted);font-weight:600;}
+    .status-pill{display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:999px;background:rgba(29,224,186,.10);border:1px solid rgba(39,242,239,.24);color:#90fff4;font-weight:800;font-size:13px;box-shadow:inset 0 0 18px rgba(39,242,239,.08);white-space:nowrap;}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 16px var(--green);}
+    .grid{display:grid;gap:12px;}
+    .card{background:linear-gradient(160deg,rgba(10,44,84,.78),rgba(4,18,40,.77));border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow), inset 0 1px 0 rgba(255,255,255,.06);backdrop-filter: blur(18px);-webkit-backdrop-filter: blur(18px);position:relative;overflow:hidden;}
+    .card:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.08),transparent 32%,transparent 65%,rgba(39,242,239,.06));pointer-events:none;}
+    .shift-card{padding:18px;display:grid;grid-template-columns:1fr;gap:16px;}
+    .shift-main{display:flex;align-items:center;gap:14px;position:relative;z-index:1;}
+    .circle-icon{width:62px;height:62px;flex:0 0 auto;border-radius:22px;display:grid;place-items:center;background:linear-gradient(145deg,rgba(39,242,239,.34),rgba(52,135,255,.18));border:1px solid rgba(110,230,255,.20);box-shadow: inset 0 0 18px rgba(255,255,255,.08);}
+    .circle-icon svg{width:34px;height:34px;}
+    .label{font-size:14px;color:var(--cyan);font-weight:800;letter-spacing:.1px;}
+    .timer{font-variant-numeric:tabular-nums;font-size:42px;line-height:1;margin:6px 0 6px;letter-spacing:-1.4px;font-weight:900;text-shadow:0 10px 25px rgba(0,0,0,.26);}
+    .small{color:var(--muted);font-size:14px;font-weight:650;}
+    .rate-panel{position:relative;z-index:1;padding:14px;border-radius:20px;background:rgba(0,0,0,.16);border:1px solid var(--stroke2);}
+    .rate-row{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;}
+    .money{font-size:34px;line-height:1;font-weight:950;color:var(--cyan);letter-spacing:-1px;}
+    .progress{height:10px;border-radius:999px;background:rgba(129,164,194,.18);overflow:hidden;margin-top:11px;}
+    .progress > span{display:block;height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--blue));box-shadow:0 0 18px rgba(39,242,239,.45);transition:width .35s ease;}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    button{border:0;color:var(--text);font:inherit;cursor:pointer;}
+    .btn{min-height:74px;border-radius:22px;font-size:19px;font-weight:950;letter-spacing:-.2px;display:flex;align-items:center;justify-content:center;gap:11px;box-shadow:0 15px 35px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.20);border:1px solid rgba(255,255,255,.13);position:relative;overflow:hidden;}
+    .btn:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,rgba(255,255,255,.18),transparent 38%);opacity:.9;}
+    .btn span,.btn svg{position:relative;z-index:1}
+    .start{background:linear-gradient(135deg,#12d1cc,#1897ef);}
+    .stop{background:linear-gradient(135deg,#ff4b73,#ff7c4b);}
+    .btn:active{transform:translateY(1px) scale(.992);}
+    .btn[disabled]{filter:grayscale(.35);opacity:.55;cursor:not-allowed;}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+    .stat{padding:14px 11px;min-height:138px;border-radius:21px;background:linear-gradient(160deg,rgba(11,49,92,.82),rgba(4,18,40,.70));border:1px solid rgba(81,167,255,.18);box-shadow:0 12px 32px rgba(0,0,0,.24);position:relative;overflow:hidden;}
+    .stat .ico{width:39px;height:39px;border-radius:15px;display:grid;place-items:center;margin-bottom:10px;background:rgba(39,242,239,.17);color:var(--cyan);}
+    .stat:nth-child(2) .ico{background:rgba(81,167,255,.17);color:var(--blue)}
+    .stat:nth-child(3) .ico{background:rgba(155,99,255,.18);color:#bf93ff}
+    .stat-title{font-size:13px;color:#bdd3e9;font-weight:850;margin-bottom:5px;}
+    .stat-num{font-size:25px;font-weight:950;letter-spacing:-.8px;margin-bottom:7px;white-space:nowrap;}
+    .stat-cash{font-size:16px;color:var(--cyan);font-weight:900;}
+    .stat:nth-child(2) .stat-cash{color:var(--blue)}
+    .stat:nth-child(3) .stat-cash{color:#b67bff}
+    .break-card{padding:15px;display:grid;gap:13px;}
+    .break-head{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
+    .break-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;position:relative;z-index:1;}
+    .mini-btn{height:50px;border-radius:17px;background:rgba(39,242,239,.08);border:1px solid rgba(39,242,239,.45);color:#7efff8;font-weight:950;font-size:15px;box-shadow:inset 0 0 18px rgba(39,242,239,.06);}
+    .mini-btn:active{transform:scale(.985)}
+    .toolbar{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding:8px;}
+    .tool{min-height:78px;display:grid;place-items:center;text-align:center;color:#c5d8eb;background:transparent;border-right:1px solid rgba(255,255,255,.10);position:relative;z-index:1;font-size:12px;font-weight:800;gap:4px;}
+    .tool:last-child{border-right:0}
+    .tool svg{width:26px;height:26px;color:var(--cyan)}
+    .tool:nth-child(2) svg{color:var(--blue)} .tool:nth-child(3) svg{color:#b67bff} .tool:nth-child(4) svg{color:#b5c7dc}
+    .two-col{display:grid;grid-template-columns:1fr 1.08fr;gap:12px;}
+    .week-card{padding:16px;min-height:205px;}
+    .section-title{font-size:17px;font-weight:950;letter-spacing:-.3px;position:relative;z-index:1;margin:0 0 13px;}
+    .ring-wrap{display:grid;place-items:center;gap:10px;position:relative;z-index:1;}
+    .ring{width:128px;height:128px;border-radius:50%;background:conic-gradient(var(--cyan) 0deg, var(--blue) 0deg, rgba(255,255,255,.09) 0deg 360deg);display:grid;place-items:center;box-shadow:inset 0 0 30px rgba(0,0,0,.22), 0 14px 34px rgba(0,0,0,.24);}
+    .ring:before{content:"";width:88px;height:88px;border-radius:50%;background:linear-gradient(160deg,#082348,#041328);box-shadow:inset 0 0 20px rgba(0,0,0,.25);}
+    .ring strong{position:absolute;font-size:28px;font-weight:950;}
+    .recent-card{padding:16px;min-height:205px;}
+    .recent-head{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;}
+    .link{color:var(--cyan);font-weight:900;font-size:13px;background:transparent;}
+    .shift-list{position:relative;z-index:1;display:grid;gap:8px;margin-top:8px;}
+    .shift-row{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+    .shift-row:last-child{border-bottom:0}
+    .cal-ico{width:30px;height:30px;border-radius:11px;display:grid;place-items:center;background:rgba(39,242,239,.12);color:var(--cyan)}
+    .row-title{font-weight:900;font-size:13px;}
+    .row-sub{color:var(--muted);font-size:12px;font-weight:650;margin-top:2px;}
+    .row-hours{font-weight:950;color:var(--cyan);font-size:13px;text-align:right;}
+    .row-money{color:#b6c7d9;font-size:11px;text-align:right;margin-top:2px;}
+    .export-card{padding:15px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;}
+    .export-actions{display:flex;gap:8px;position:relative;z-index:1;}
+    .outline{height:50px;min-width:75px;border-radius:17px;background:rgba(39,242,239,.06);border:1px solid rgba(39,242,239,.45);color:#7efff8;font-weight:950;padding:0 13px;display:flex;align-items:center;gap:8px;justify-content:center;}
+    .blue-outline{border-color:rgba(81,167,255,.50);color:#72bdff;background:rgba(81,167,255,.07)}
+    .form-card{padding:16px;display:none;}
+    .form-card.show{display:block;}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;position:relative;z-index:1;}
+    label{display:grid;gap:6px;color:#bed0e4;font-size:12px;font-weight:850;}
+    input,textarea,select{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.20);color:var(--text);border-radius:15px;min-height:46px;padding:11px 12px;font:inherit;font-weight:750;outline:none;}
+    input:focus,textarea:focus,select:focus{border-color:rgba(39,242,239,.55);box-shadow:0 0 0 3px rgba(39,242,239,.10)}
+    textarea{min-height:78px;resize:vertical;grid-column:1/-1;}
+    .wide{grid-column:1/-1;}
+    .save-row{display:flex;gap:9px;margin-top:12px;position:relative;z-index:1;}
+    .primary-small{height:48px;flex:1;border-radius:16px;background:linear-gradient(135deg,var(--cyan2),var(--blue));font-weight:950;border:1px solid rgba(255,255,255,.16);}
+    .danger-small{height:48px;border-radius:16px;background:rgba(255,81,107,.10);border:1px solid rgba(255,81,107,.38);color:#ffb5c1;font-weight:950;padding:0 14px;}
+    .history{display:none;}
+    .history.show{display:block;}
+    .table-card{padding:15px;}
+    .history-list{display:grid;gap:10px;position:relative;z-index:1;}
+    .history-item{padding:13px;border-radius:18px;background:rgba(0,0,0,.16);border:1px solid rgba(255,255,255,.08);display:grid;gap:10px;}
+    .history-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;}
+    .history-date{font-weight:950;}
+    .history-meta{color:var(--muted);font-size:13px;font-weight:700;line-height:1.45;}
+    .history-total{text-align:right;font-weight:950;color:var(--cyan);white-space:nowrap;}
+    .row-actions{display:flex;gap:8px;}
+    .tiny{height:34px;border-radius:12px;padding:0 10px;background:rgba(255,255,255,.08);color:#dceeff;font-weight:900;border:1px solid rgba(255,255,255,.10);}
+    .tiny.danger{background:rgba(255,81,107,.10);border-color:rgba(255,81,107,.28);color:#ffc2cb;}
+    .bottom-nav{position:fixed;left:50%;bottom:calc(10px + var(--safe-bottom));transform:translateX(-50%);width:min(calc(100% - 22px), 500px);height:76px;border-radius:24px;background:rgba(7,31,63,.84);border:1px solid rgba(81,167,255,.22);box-shadow:0 22px 55px rgba(0,0,0,.40), inset 0 1px 0 rgba(255,255,255,.08);backdrop-filter: blur(22px);-webkit-backdrop-filter: blur(22px);display:grid;grid-template-columns:repeat(4,1fr);padding:7px;z-index:10;}
+    .nav-btn{background:transparent;color:#9fb4cb;border-radius:18px;display:grid;place-items:center;font-size:11px;font-weight:900;gap:2px;}
+    .nav-btn svg{width:24px;height:24px;}
+    .nav-btn.active{color:var(--cyan);background:rgba(39,242,239,.08);}
+    .toast{position:fixed;left:50%;bottom:calc(95px + var(--safe-bottom));transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:rgba(4,18,40,.92);border:1px solid rgba(39,242,239,.30);color:#dffeff;border-radius:999px;padding:12px 16px;font-weight:900;box-shadow:0 18px 50px rgba(0,0,0,.35);transition:.25s ease;z-index:20;max-width:calc(100% - 32px);text-align:center;}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+    .hidden-file{position:absolute;left:-9999px;opacity:0;}
+    .empty{color:var(--muted);font-weight:750;text-align:center;padding:28px 10px;position:relative;z-index:1;}
+    .install-note{font-size:12px;color:#aec0d4;line-height:1.45;margin-top:8px;position:relative;z-index:1;}
+    @media (min-width: 430px){.shift-card{grid-template-columns:1fr .82fr}.timer{font-size:46px}.break-card{grid-template-columns:1fr 1.4fr;align-items:center}.brand h1{font-size:28px}}
+    @media (max-width: 390px){.app-shell{padding-left:10px;padding-right:10px}.logo{width:56px;height:56px;border-radius:19px}.logo svg{width:43px;height:43px}h1{font-size:22px}.status-pill{font-size:12px;padding:9px}.timer{font-size:36px}.money{font-size:29px}.btn{min-height:66px;font-size:17px}.stat{padding:12px 9px}.stat-num{font-size:21px}.two-col{grid-template-columns:1fr}.export-card{grid-template-columns:1fr}.export-actions{display:grid;grid-template-columns:1fr 1fr}.toolbar{grid-template-columns:repeat(2,1fr)}.tool:nth-child(2){border-right:0}.tool:nth-child(1),.tool:nth-child(2){border-bottom:1px solid rgba(255,255,255,.10)}}
   </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <div class="logo"><div class="mark">WH</div><div class="title"><h1>Мои рабочие часы PRO</h1><p>Счётчик смен, часов и зарплаты</p></div></div>
-    <div id="savePill" class="pill ok">Сохранение готово</div>
-  </header>
-
-  <main id="pageHome" class="page active">
-    <section class="hero">
-      <div class="heroInner">
-        <div class="status"><span id="liveDot" class="dot"></span><span id="liveStatus">Смена не начата</span></div>
-        <div id="liveClock" class="clock">00:00:00</div>
-        <div id="liveSub" class="subline">Нажми «Начать работу» — время сохранится сразу и не пропадёт после закрытия.</div>
-        <div class="actions">
-          <button id="startBtn" class="btn good">▶ Начать работу</button>
-          <button id="stopBtn" class="btn bad" disabled>■ Закончить работу</button>
+  <div class="aurora"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo" aria-label="Life Medical Supply logo">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M32 4C18.6 4 7.6 14.1 6.2 27.1" stroke="#27F2EF" stroke-width="5" stroke-linecap="round"/>
+            <path d="M8 38.5C13.2 51.2 27.6 57.7 40.4 52.8" stroke="#51A7FF" stroke-width="5" stroke-linecap="round"/>
+            <path d="M22 15h11v12h12v11H33v12H22V38H10V27h12V15z" fill="white"/>
+            <path d="M18 48c9.7-1.2 17.8-7.9 20.9-16.9C29.4 30.7 19.6 36.6 18 48z" fill="#25E6A7"/>
+            <circle cx="44" cy="42" r="15" fill="#061A33" stroke="white" stroke-width="5"/>
+            <path d="M36.5 42.1l5.1 5.1 10-12" stroke="#27F2EF" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         </div>
-        <div class="quick">
-          <button class="btn small ghost" data-break="15">+15 мин перерыв</button>
-          <button class="btn small ghost" data-break="30">+30 мин перерыв</button>
-          <button id="clearBreakBtn" class="btn small ghost">Сброс перерыва</button>
+        <div class="brand-title">
+          <h1>Life Medical Supply</h1>
+          <div class="subtitle">Учет рабочих часов</div>
         </div>
       </div>
-    </section>
+      <div class="status-pill"><span class="status-dot"></span><span id="statusText">Готово</span></div>
+    </header>
 
-    <section class="grid">
-      <div class="card"><div class="label">Сегодня</div><div id="sumToday" class="value">0ч</div></div>
-      <div class="card"><div class="label">Эта неделя</div><div id="sumWeek" class="value">0ч</div></div>
-      <div class="card"><div class="label">Этот месяц</div><div id="sumMonth" class="value">0ч</div></div>
-      <div class="card"><div class="label">Зарплата месяц</div><div id="sumMoney" class="value money">$0</div></div>
-    </section>
-
-    <section class="section">
-      <h2>Быстро добавить смену вручную</h2>
-      <div class="form">
-        <div class="field"><label>Начало</label><input id="startInput" type="datetime-local"></div>
-        <div class="field"><label>Конец</label><input id="endInput" type="datetime-local"></div>
-        <div class="field"><label>Перерыв, минут</label><input id="breakInput" type="number" min="0" step="1" value="0"></div>
-        <div class="field"><label>Ставка за час</label><input id="rateInput" type="number" min="0" step="0.01" placeholder="например 18"></div>
-        <div class="field full"><label>Заметка</label><textarea id="noteInput" placeholder="например: Life Medical Supply, склад, доставка..."></textarea></div>
-      </div>
-      <div class="formBtns">
-        <button id="saveShiftBtn" class="btn primary">+ Сохранить смену</button>
-        <button id="cancelEditBtn" class="btn ghost hidden">Отменить редактирование</button>
-      </div>
-      <div id="formNotice" class="notice hidden"></div>
-    </section>
-  </main>
-
-  <main id="pageHistory" class="page">
-    <section class="section">
-      <h2>История смен</h2>
-      <div class="tabs">
-        <button class="tab active" data-filter="all">Все</button>
-        <button class="tab" data-filter="today">Сегодня</button>
-        <button class="tab" data-filter="week">Неделя</button>
-        <button class="tab" data-filter="month">Месяц</button>
-      </div>
-      <div class="toolbar">
-        <div class="left">
-          <input id="monthPick" type="month" style="max-width:165px">
-          <button id="exportCsvBtn" class="btn small ghost">CSV</button>
-          <button id="exportJsonBtn" class="btn small ghost">Backup</button>
+    <section id="homeView" class="grid view">
+      <div class="card shift-card">
+        <div class="shift-main">
+          <div class="circle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+          </div>
+          <div>
+            <div class="label" id="shiftLabel">Текущая смена</div>
+            <div class="timer" id="timer">00:00:00</div>
+            <div class="small" id="startTimeText">Нажмите «Начать работу»</div>
+          </div>
         </div>
-        <button id="clearAllBtn" class="btn small ghost dangerText">Очистить всё</button>
+        <div class="rate-panel">
+          <div class="rate-row">
+            <div>
+              <div class="small">Ставка за час</div>
+              <div class="money" id="hourlyRateText">$18.50</div>
+            </div>
+            <div class="small" id="shiftPercentText">0%</div>
+          </div>
+          <div class="small" style="margin-top:8px">План на смену: 8ч 00м</div>
+          <div class="progress"><span id="shiftProgress"></span></div>
+        </div>
       </div>
-      <div id="historySummary" class="notice safe">Итоги появятся здесь.</div>
-      <div id="shiftList" class="list"></div>
-    </section>
-  </main>
 
-  <main id="pageReports" class="page">
-    <section class="section">
-      <h2>Отчёты</h2>
-      <div class="grid" style="margin-top:0">
-        <div class="card"><div class="label">Всего смен</div><div id="repShifts" class="value">0</div></div>
-        <div class="card"><div class="label">Всего часов</div><div id="repHours" class="value">0ч</div></div>
-        <div class="card"><div class="label">Средняя смена</div><div id="repAvg" class="value">0ч</div></div>
-        <div class="card"><div class="label">Всего денег</div><div id="repMoney" class="value money">$0</div></div>
+      <div class="actions">
+        <button class="btn start" id="startBtn" type="button">
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6c0 .8.9 1.3 1.6.9l10.1-6.8a1.1 1.1 0 0 0 0-1.8L9.6 4.3C8.9 3.9 8 4.4 8 5.2z"/></svg>
+          <span>Начать</span>
+        </button>
+        <button class="btn stop" id="stopBtn" type="button">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+          <span>Закончить</span>
+        </button>
       </div>
-      <div id="weekBlocks" class="list"></div>
-    </section>
-  </main>
 
-  <main id="pageSettings" class="page">
-    <section class="section">
-      <h2>Настройки и сохранение</h2>
-      <div class="notice safe"><b>Важно:</b> эта версия сохраняет всё в памяти телефона/браузера. Активная смена сохраняется сразу после старта, поэтому часы продолжают считаться после закрытия.</div>
-      <div class="form" style="margin-top:12px">
-        <div class="field"><label>Валюта</label><select id="currencyInput"><option value="$">$ доллар</option><option value="€">€ евро</option><option value="₽">₽ рубль</option><option value="сум">сум</option></select></div>
-        <div class="field"><label>Ставка по умолчанию</label><input id="defaultRateInput" type="number" min="0" step="0.01"></div>
-        <div class="field"><label>Овертайм после часов/неделю</label><input id="overtimeInput" type="number" min="0" step="0.5" value="40"></div>
-        <div class="field"><label>Овертайм множитель</label><input id="overtimeMultInput" type="number" min="1" step="0.1" value="1.5"></div>
+      <div class="stats">
+        <div class="stat">
+          <div class="ico"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/></svg></div>
+          <div class="stat-title">Сегодня</div>
+          <div class="stat-num" id="todayHours">0ч 00м</div>
+          <div class="stat-cash" id="todayMoney">$0.00</div>
+        </div>
+        <div class="stat">
+          <div class="ico"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 19V9M12 19V5M19 19v-7"/></svg></div>
+          <div class="stat-title">Неделя</div>
+          <div class="stat-num" id="weekHours">0ч 00м</div>
+          <div class="stat-cash" id="weekMoney">$0.00</div>
+        </div>
+        <div class="stat">
+          <div class="ico"><svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 3a9 9 0 1 0 9 9h-9V3z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15V3.5z"/></svg></div>
+          <div class="stat-title">Месяц</div>
+          <div class="stat-num" id="monthHours">0ч 00м</div>
+          <div class="stat-cash" id="monthMoney">$0.00</div>
+        </div>
       </div>
-      <div class="formBtns"><button id="saveSettingsBtn" class="btn primary">Сохранить настройки</button><button id="testSaveBtn" class="btn ghost">Проверить сохранение</button></div>
-      <div class="notice"><b>Чтобы было как настоящее приложение:</b> загрузи папку из ZIP на Netlify / Vercel / GitHub Pages, потом открой ссылку в Safari и нажми «Поделиться → На экран Домой».</div>
-    </section>
-    <section class="section">
-      <h2>Резервная копия</h2>
-      <div class="row2">
-        <button id="downloadBackupBtn" class="btn ghost">Скачать backup JSON</button>
-        <label class="btn ghost" style="text-align:center">Загрузить backup<input id="importFile" type="file" accept="application/json" class="hidden"></label>
-      </div>
-      <div class="notice">Перед чисткой Safari или сменой телефона обязательно нажми Backup.</div>
-    </section>
-  </main>
-</div>
 
-<nav class="bottomNav">
-  <div class="bar">
-    <button class="navBtn active" data-page="Home">⏱<br>Счётчик</button>
-    <button class="navBtn" data-page="History">📋<br>История</button>
-    <button class="navBtn" data-page="Reports">📊<br>Отчёты</button>
-    <button class="navBtn" data-page="Settings">⚙️<br>Настройки</button>
-  </div>
-</nav>
+      <div class="card break-card">
+        <div class="break-head">
+          <div class="circle-icon" style="width:50px;height:50px;border-radius:18px"><svg viewBox="0 0 24 24" width="29" height="29" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 8h10v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8h2z"/><path d="M16 9h2a3 3 0 0 1 0 6h-2M7 4v1M11 4v1M15 4v1"/></svg></div>
+          <div>
+            <div class="section-title" style="margin:0 0 2px">Добавить перерыв</div>
+            <div class="small">Будет вычтено из текущей смены</div>
+          </div>
+        </div>
+        <div class="break-buttons">
+          <button class="mini-btn" data-break="15" type="button">+15 мин</button>
+          <button class="mini-btn" data-break="30" type="button">+30 мин</button>
+          <button class="mini-btn" data-break="45" type="button">+45 мин</button>
+        </div>
+      </div>
+
+      <div class="card toolbar">
+        <button class="tool" data-open="history" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>История</span></button>
+        <button class="tool" data-open="manual" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 3h9l3 3v15H6z"/><path d="M9 14h6M9 18h4M14 3v5h5"/></svg><span>Добавить</span></button>
+        <button class="tool" data-open="rate" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c1.5-1.2 5-1.1 5.2 1 .2 2.3-5 1.4-4.8 3.7.2 2.2 4.4 2.2 5.7.6"/></svg><span>Ставка</span></button>
+        <button class="tool" data-open="settings" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2 3.4-.2-.1a1.7 1.7 0 0 0-2 .3 1.7 1.7 0 0 0-.5 1.3V22H9v-.1a1.7 1.7 0 0 0-.5-1.3 1.7 1.7 0 0 0-2-.3l-.2.1-2-3.4.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.2-1H3v-4h.5a1.7 1.7 0 0 0 1.2-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1 2-3.4.2.1a1.7 1.7 0 0 0 2-.3A1.7 1.7 0 0 0 9 2.1V2h6v.1a1.7 1.7 0 0 0 .5 1.3 1.7 1.7 0 0 0 2 .3l.2-.1 2 3.4-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.2 1h.5v4h-.5a1.7 1.7 0 0 0-1.1 1z"/></svg><span>Настройки</span></button>
+      </div>
+
+      <div class="two-col">
+        <div class="card week-card">
+          <h2 class="section-title">Прогресс недели</h2>
+          <div class="ring-wrap">
+            <div class="ring" id="weekRing"><strong id="weekPercent">0%</strong></div>
+            <div style="text-align:center">
+              <div class="stat-num" id="weekGoalText" style="font-size:24px;margin:0">0ч 00м</div>
+              <div class="small" id="weekRemainText">Осталось: 40ч 00м</div>
+            </div>
+          </div>
+        </div>
+        <div class="card recent-card">
+          <div class="recent-head"><h2 class="section-title" style="margin:0">Последние смены</h2><button class="link" data-open="history" type="button">Все</button></div>
+          <div class="shift-list" id="recentList"></div>
+        </div>
+      </div>
+
+      <div class="card export-card">
+        <div style="position:relative;z-index:1">
+          <div class="section-title" style="margin:0 0 4px">Экспорт и резервная копия</div>
+          <div class="small">Сохраните данные или экспортируйте отчет</div>
+          <div class="install-note">Для загрузки на сайт используйте ZIP. Для iPhone: Safari → Поделиться → На экран «Домой».</div>
+        </div>
+        <div class="export-actions">
+          <button class="outline" id="csvBtn" type="button">CSV</button>
+          <button class="outline blue-outline" id="backupBtn" type="button">Backup</button>
+        </div>
+      </div>
+
+      <section class="card form-card" id="manualPanel">
+        <h2 class="section-title">Добавить смену вручную</h2>
+        <div class="form-grid">
+          <label>Дата<input id="manualDate" type="date"></label>
+          <label>Ставка $<input id="manualRate" type="number" min="0" step="0.01"></label>
+          <label>Начало<input id="manualStart" type="time"></label>
+          <label>Конец<input id="manualEnd" type="time"></label>
+          <label>Перерыв, мин<input id="manualBreak" type="number" min="0" step="1" value="0"></label>
+          <label>Заметка<input id="manualNote" type="text" placeholder="Например: офис / доставка"></label>
+        </div>
+        <div class="save-row"><button class="primary-small" id="saveManualBtn" type="button">Сохранить смену</button><button class="danger-small" data-close-panel="manualPanel" type="button">Закрыть</button></div>
+      </section>
+
+      <section class="card form-card" id="ratePanel">
+        <h2 class="section-title">Ставка и план</h2>
+        <div class="form-grid">
+          <label>Ставка за час $<input id="rateInput" type="number" min="0" step="0.01"></label>
+          <label>План в неделю, часов<input id="goalInput" type="number" min="1" step="1"></label>
+          <label class="wide">Имя сотрудника<input id="nameInput" type="text" placeholder="Например: Ilkhom"></label>
+        </div>
+        <div class="save-row"><button class="primary-small" id="saveSettingsBtn" type="button">Сохранить настройки</button><button class="danger-small" data-close-panel="ratePanel" type="button">Закрыть</button></div>
+      </section>
+
+      <section class="card form-card" id="settingsPanel">
+        <h2 class="section-title">Настройки приложения</h2>
+        <div class="form-grid">
+          <button class="primary-small wide" id="importBackupBtn" type="button">Импорт Backup JSON</button>
+          <button class="danger-small wide" id="clearAllBtn" type="button">Очистить все смены</button>
+          <input class="hidden-file" id="backupFile" type="file" accept="application/json,.json">
+        </div>
+        <div class="save-row"><button class="danger-small" data-close-panel="settingsPanel" type="button">Закрыть</button></div>
+      </section>
+    </section>
+
+    <section id="historyView" class="view history">
+      <div class="card table-card">
+        <div class="recent-head"><h2 class="section-title" style="margin:0">История смен</h2><button class="link" data-open="manual" type="button">+ Добавить</button></div>
+        <div class="history-list" id="historyList" style="margin-top:13px"></div>
+      </div>
+    </section>
+
+    <nav class="bottom-nav" aria-label="Навигация">
+      <button class="nav-btn active" data-nav="home" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 11.5 12 4l9 7.5v8a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H4.5A1.5 1.5 0 0 1 3 19.5v-8z"/></svg><span>Главная</span></button>
+      <button class="nav-btn" data-nav="history" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/></svg><span>История</span></button>
+      <button class="nav-btn" data-nav="stats" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 19V9M12 19V5M19 19v-7"/></svg><span>Статистика</span></button>
+      <button class="nav-btn" data-nav="profile" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Профиль</span></button>
+    </nav>
+    <div class="toast" id="toast">Сохранено</div>
+  </main>
 
 <script>
-(function(){
+(() => {
   'use strict';
-  const KEY = 'work-hours-pro-v3';
-  let db = {shifts:[], active:null, settings:{rate:0,currency:'$',overtimeAfter:40,overtimeMult:1.5}};
-  let editingId = null;
-  let historyFilter = 'all';
-
-  const $ = (id)=>document.getElementById(id);
-  const els = {
-    liveDot:$('liveDot'), liveStatus:$('liveStatus'), liveClock:$('liveClock'), liveSub:$('liveSub'), startBtn:$('startBtn'), stopBtn:$('stopBtn'), clearBreakBtn:$('clearBreakBtn'),
-    sumToday:$('sumToday'), sumWeek:$('sumWeek'), sumMonth:$('sumMonth'), sumMoney:$('sumMoney'),
-    startInput:$('startInput'), endInput:$('endInput'), breakInput:$('breakInput'), rateInput:$('rateInput'), noteInput:$('noteInput'), saveShiftBtn:$('saveShiftBtn'), cancelEditBtn:$('cancelEditBtn'), formNotice:$('formNotice'),
-    savePill:$('savePill'), monthPick:$('monthPick'), historySummary:$('historySummary'), shiftList:$('shiftList'),
-    repShifts:$('repShifts'), repHours:$('repHours'), repAvg:$('repAvg'), repMoney:$('repMoney'), weekBlocks:$('weekBlocks'),
-    currencyInput:$('currencyInput'), defaultRateInput:$('defaultRateInput'), overtimeInput:$('overtimeInput'), overtimeMultInput:$('overtimeMultInput')
+  const STORAGE_KEY = 'life-medical-hours-final-v1';
+  const $ = (id) => document.getElementById(id);
+  const fmt2 = n => String(n).padStart(2,'0');
+  const now = () => Date.now();
+  const uid = () => 's_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+  const defaultState = {
+    settings:{ hourlyRate:18.50, weeklyGoal:40, employeeName:'' },
+    active:null,
+    shifts:[]
   };
+  let state = load();
+  let activeView = 'home';
+  let editId = null;
 
-  function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,8); }
   function load(){
     try{
-      const raw = localStorage.getItem(KEY);
-      if(raw){ db = Object.assign(db, JSON.parse(raw)); }
-      db.shifts = Array.isArray(db.shifts) ? db.shifts : [];
-      db.settings = Object.assign({rate:0,currency:'$',overtimeAfter:40,overtimeMult:1.5}, db.settings || {});
-    }catch(e){ console.error(e); }
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return structuredClone(defaultState);
+      const parsed = JSON.parse(raw);
+      return {
+        ...structuredClone(defaultState),
+        ...parsed,
+        settings:{...defaultState.settings, ...(parsed.settings||{})},
+        shifts:Array.isArray(parsed.shifts)?parsed.shifts:[]
+      };
+    }catch(e){
+      return structuredClone(defaultState);
+    }
   }
   function save(){
-    try{
-      localStorage.setItem(KEY, JSON.stringify(db));
-      localStorage.setItem(KEY+'-last-save', new Date().toISOString());
-      setPill('Сохранено ' + new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}), true);
-      return true;
-    }catch(e){ setPill('Ошибка сохранения', false); alert('Память браузера заполнена или Safari в приватном режиме. Сделай Backup.'); return false; }
+    state.updatedAt = new Date().toISOString();
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }
-  function setPill(txt, ok){ els.savePill.textContent = txt; els.savePill.className = 'pill ' + (ok?'ok':''); }
-  function requestPersist(){ if(navigator.storage && navigator.storage.persist){ navigator.storage.persist().catch(()=>{}); } }
-  function pad(n){ return String(n).padStart(2,'0'); }
-  function dateInputValue(d){ const x=new Date(d); x.setMinutes(x.getMinutes()-x.getTimezoneOffset()); return x.toISOString().slice(0,16); }
-  function parseLocal(v){ if(!v) return null; const d = new Date(v); return isNaN(+d) ? null : d; }
-  function startOfDay(d){ const x=new Date(d); x.setHours(0,0,0,0); return x; }
-  function startOfWeek(d){ const x=startOfDay(d); const day=(x.getDay()+6)%7; x.setDate(x.getDate()-day); return x; }
-  function startOfMonth(d){ const x=new Date(d); x.setDate(1); x.setHours(0,0,0,0); return x; }
-  function endOfMonth(d){ const x=startOfMonth(d); x.setMonth(x.getMonth()+1); return x; }
-  function fmtDate(d){ return new Date(d).toLocaleDateString('ru-RU',{weekday:'short',day:'2-digit',month:'short'}); }
-  function fmtTime(d){ return new Date(d).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}); }
-  function fmtHours(h){ if(!isFinite(h) || h < 0) h=0; const hours=Math.floor(h); const mins=Math.round((h-hours)*60); return hours+'ч '+mins+'м'; }
-  function fmtMoney(n){ const cur=db.settings.currency||'$'; const val=(Number(n)||0).toFixed(2).replace(/\.00$/,''); return cur==='$' ? '$'+val : val+' '+cur; }
-  function shiftHours(s){ const ms = new Date(s.end)-new Date(s.start); return Math.max(0, ms/3600000 - (Number(s.breakMin)||0)/60); }
-  function shiftMoney(s){ return shiftHours(s) * (Number(s.rate)||0); }
-  function activeElapsedHours(){ if(!db.active) return 0; return Math.max(0,(Date.now()-new Date(db.active.start).getTime())/3600000 - (Number(db.active.breakMin)||0)/60); }
-  function activeElapsedText(){ const seconds=Math.max(0,Math.floor((Date.now()-new Date(db.active.start).getTime())/1000 - (Number(db.active.breakMin)||0)*60)); const h=Math.floor(seconds/3600), m=Math.floor((seconds%3600)/60), s=seconds%60; return `${pad(h)}:${pad(m)}:${pad(s)}`; }
-
-  function inRange(s, a, b){ const t=new Date(s.start); return t>=a && t<b; }
-  function filteredShifts(filter=historyFilter){
-    const now=new Date(); let a=null,b=null;
-    if(filter==='today'){ a=startOfDay(now); b=new Date(a); b.setDate(b.getDate()+1); }
-    if(filter==='week'){ a=startOfWeek(now); b=new Date(a); b.setDate(b.getDate()+7); }
-    if(filter==='month'){ a=startOfMonth(now); b=endOfMonth(now); }
-    let arr = db.shifts.slice();
-    if(a) arr = arr.filter(s=>inRange(s,a,b));
-    const mp=els.monthPick.value;
-    if(mp && filter==='all'){
-      const [yy,mm]=mp.split('-').map(Number); const x=new Date(yy,mm-1,1); const y=new Date(yy,mm,1); arr=arr.filter(s=>inRange(s,x,y));
+  function toast(msg){
+    const el = $('toast'); el.textContent = msg; el.classList.add('show');
+    clearTimeout(toast._t); toast._t = setTimeout(()=>el.classList.remove('show'), 2100);
+  }
+  function download(name, text, type='text/plain'){
+    const blob = new Blob([text], {type});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(()=>{URL.revokeObjectURL(url); a.remove();}, 500);
+  }
+  function formatHours(ms){
+    const mins = Math.max(0, Math.round(ms/60000));
+    const h = Math.floor(mins/60), m = mins%60;
+    return `${h}ч ${fmt2(m)}м`;
+  }
+  function formatTimer(ms){
+    const total = Math.max(0, Math.floor(ms/1000));
+    const h = Math.floor(total/3600), m = Math.floor((total%3600)/60), s = total%60;
+    return `${fmt2(h)}:${fmt2(m)}:${fmt2(s)}`;
+  }
+  function money(ms, rate){ return (Math.max(0, ms/3600000) * Number(rate||0)); }
+  function moneyText(n){ return '$' + Number(n||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function dateKey(ts){ const d = new Date(ts); return `${d.getFullYear()}-${fmt2(d.getMonth()+1)}-${fmt2(d.getDate())}`; }
+  function startOfDay(d=new Date()){ const x=new Date(d); x.setHours(0,0,0,0); return x.getTime(); }
+  function startOfWeek(d=new Date()){
+    const x=new Date(d); const day=(x.getDay()+6)%7; x.setDate(x.getDate()-day); x.setHours(0,0,0,0); return x.getTime();
+  }
+  function startOfMonth(d=new Date()){ const x=new Date(d); x.setDate(1); x.setHours(0,0,0,0); return x.getTime(); }
+  function shiftNetMs(s){ return Math.max(0, Number(s.end||now()) - Number(s.start||now()) - Number(s.breakMinutes||0)*60000); }
+  function sameRange(start, rangeStart){ return Number(start) >= rangeStart; }
+  function rangeTotals(rangeStart){
+    const list = state.shifts.filter(s => sameRange(s.start, rangeStart));
+    const ms = list.reduce((sum,s)=>sum+shiftNetMs(s),0);
+    const cash = list.reduce((sum,s)=>sum+money(shiftNetMs(s), s.hourlyRate ?? state.settings.hourlyRate),0);
+    return {ms,cash,count:list.length};
+  }
+  function activeNetMs(){
+    if(!state.active) return 0;
+    return Math.max(0, now() - state.active.start - (state.active.breakMinutes||0)*60000);
+  }
+  function allForRange(rangeStart){
+    const done = rangeTotals(rangeStart);
+    if(state.active && state.active.start >= rangeStart){
+      done.ms += activeNetMs();
+      done.cash += money(activeNetMs(), state.active.hourlyRate ?? state.settings.hourlyRate);
+      done.count += 1;
     }
-    return arr.sort((a,b)=>new Date(b.start)-new Date(a.start));
+    return done;
   }
-  function totalHours(arr){ return arr.reduce((n,s)=>n+shiftHours(s),0); }
-  function totalMoney(arr){ return arr.reduce((n,s)=>n+shiftMoney(s),0); }
-  function calcPeriod(kind){ return filteredShifts(kind); }
+  function dateLabel(ts){
+    return new Intl.DateTimeFormat('ru-RU',{day:'numeric',month:'short',weekday:'short'}).format(new Date(ts));
+  }
+  function timeLabel(ts){
+    return new Intl.DateTimeFormat('ru-RU',{hour:'2-digit',minute:'2-digit'}).format(new Date(ts));
+  }
+  function setProgress(id, percent){ $(id).style.width = Math.max(0,Math.min(100,percent)) + '%'; }
 
-  function renderLive(){
-    if(db.active){
-      els.liveDot.classList.add('live'); els.liveStatus.textContent='Смена идёт'; els.liveClock.textContent=activeElapsedText();
-      const br=Number(db.active.breakMin)||0; els.liveSub.textContent='Начал: '+fmtDate(db.active.start)+' в '+fmtTime(db.active.start)+(br?(' • перерыв '+br+' мин'):'')+' • сохранено';
-      els.startBtn.disabled=true; els.stopBtn.disabled=false;
+  function render(){
+    const isActive = !!state.active;
+    $('statusText').textContent = isActive ? 'Смена активна' : 'Готово';
+    $('shiftLabel').textContent = isActive ? 'Текущая смена' : 'Смена не начата';
+    $('startBtn').disabled = isActive;
+    $('stopBtn').disabled = !isActive;
+    $('hourlyRateText').textContent = moneyText(state.settings.hourlyRate);
+
+    if(isActive){
+      const ms = activeNetMs();
+      $('timer').textContent = formatTimer(ms);
+      $('startTimeText').textContent = 'Начало: ' + timeLabel(state.active.start) + (state.active.breakMinutes ? ` • перерыв ${state.active.breakMinutes} мин` : '');
+      const pct = (ms / (8*3600000))*100;
+      $('shiftPercentText').textContent = Math.round(Math.min(100,pct)) + '%';
+      setProgress('shiftProgress', pct);
     }else{
-      els.liveDot.classList.remove('live'); els.liveStatus.textContent='Смена не начата'; els.liveClock.textContent='00:00:00'; els.liveSub.textContent='Нажми «Начать работу» — время сохранится сразу и не пропадёт после закрытия.';
-      els.startBtn.disabled=false; els.stopBtn.disabled=true;
+      $('timer').textContent = '00:00:00';
+      $('startTimeText').textContent = 'Нажмите «Начать работу»';
+      $('shiftPercentText').textContent = '0%';
+      setProgress('shiftProgress', 0);
     }
+
+    const today = allForRange(startOfDay());
+    const week = allForRange(startOfWeek());
+    const month = allForRange(startOfMonth());
+    $('todayHours').textContent = formatHours(today.ms); $('todayMoney').textContent = moneyText(today.cash);
+    $('weekHours').textContent = formatHours(week.ms); $('weekMoney').textContent = moneyText(week.cash);
+    $('monthHours').textContent = formatHours(month.ms); $('monthMoney').textContent = moneyText(month.cash);
+    const goalMs = Number(state.settings.weeklyGoal||40) * 3600000;
+    const wp = goalMs ? Math.min(100, week.ms/goalMs*100) : 0;
+    $('weekPercent').textContent = Math.round(wp) + '%';
+    $('weekRing').style.background = `conic-gradient(var(--cyan) 0deg, var(--blue) ${wp*3.6}deg, rgba(255,255,255,.09) ${wp*3.6}deg 360deg)`;
+    $('weekGoalText').textContent = formatHours(week.ms);
+    $('weekRemainText').textContent = 'Осталось: ' + formatHours(Math.max(0, goalMs-week.ms));
+
+    renderRecent();
+    renderHistory();
+    syncInputs();
   }
-  function renderSummary(){
-    const today = totalHours(calcPeriod('today')) + (db.active && inRange({start:db.active.start}, startOfDay(new Date()), new Date(startOfDay(new Date()).getTime()+86400000)) ? activeElapsedHours() : 0);
-    const week = totalHours(calcPeriod('week')) + (db.active && inRange({start:db.active.start}, startOfWeek(new Date()), new Date(startOfWeek(new Date()).getTime()+7*86400000)) ? activeElapsedHours() : 0);
-    const monthArr=calcPeriod('month');
-    const month = totalHours(monthArr) + (db.active && inRange({start:db.active.start}, startOfMonth(new Date()), endOfMonth(new Date())) ? activeElapsedHours() : 0);
-    els.sumToday.textContent=fmtHours(today); els.sumWeek.textContent=fmtHours(week); els.sumMonth.textContent=fmtHours(month);
-    els.sumMoney.textContent=fmtMoney(totalMoney(monthArr));
+  function renderRecent(){
+    const list = [...state.shifts].sort((a,b)=>b.start-a.start).slice(0,3);
+    if(!list.length){ $('recentList').innerHTML = '<div class="empty">Пока нет сохранённых смен</div>'; return; }
+    $('recentList').innerHTML = list.map(s=>{
+      const ms = shiftNetMs(s);
+      return `<div class="shift-row">
+        <div class="cal-ico"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="4" y="5" width="16" height="15" rx="3"/><path d="M8 3v4M16 3v4M4 10h16"/></svg></div>
+        <div><div class="row-title">${dateLabel(s.start)}</div><div class="row-sub">${timeLabel(s.start)} – ${timeLabel(s.end)}${s.breakMinutes?` • ${s.breakMinutes} мин перерыв`:''}</div></div>
+        <div><div class="row-hours">${formatHours(ms)}</div><div class="row-money">${moneyText(money(ms, s.hourlyRate))}</div></div>
+      </div>`;
+    }).join('');
   }
   function renderHistory(){
-    const arr=filteredShifts();
-    const h=totalHours(arr), m=totalMoney(arr);
-    els.historySummary.innerHTML='<b>Итого:</b> '+fmtHours(h)+' • '+arr.length+' смен • '+fmtMoney(m);
-    if(!arr.length){ els.shiftList.innerHTML='<div class="empty">Пока нет смен. Добавь вручную или нажми «Начать работу».</div>'; return; }
-    els.shiftList.innerHTML = arr.map(s=>{
-      const h=shiftHours(s), money=shiftMoney(s);
-      const br=Number(s.breakMin)||0;
-      return `<article class="shift">
-        <div><div class="shiftTitle">${fmtDate(s.start)} • ${fmtTime(s.start)}–${fmtTime(s.end)}</div>
-        <div class="shiftMeta">Перерыв: ${br} мин${s.note?' • '+escapeHtml(s.note):''}</div></div>
-        <div><div class="shiftHours">${fmtHours(h)}</div><div class="shiftMoney">${fmtMoney(money)}</div>
-        <div class="shiftBtns"><button class="btn small ghost" data-edit="${s.id}">✏️</button><button class="btn small ghost dangerText" data-del="${s.id}">🗑</button></div></div>
+    const list = [...state.shifts].sort((a,b)=>b.start-a.start);
+    if(!list.length){ $('historyList').innerHTML = '<div class="empty">История пустая. Добавьте смену или нажмите «Начать».</div>'; return; }
+    $('historyList').innerHTML = list.map(s=>{
+      const ms = shiftNetMs(s);
+      const note = s.note ? `<div class="history-meta">Заметка: ${escapeHtml(s.note)}</div>` : '';
+      return `<article class="history-item">
+        <div class="history-top">
+          <div><div class="history-date">${dateLabel(s.start)}</div><div class="history-meta">${timeLabel(s.start)} – ${timeLabel(s.end)} • перерыв ${s.breakMinutes||0} мин • ставка ${moneyText(s.hourlyRate)}</div>${note}</div>
+          <div><div class="history-total">${formatHours(ms)}</div><div class="row-money">${moneyText(money(ms, s.hourlyRate))}</div></div>
+        </div>
+        <div class="row-actions"><button class="tiny" data-edit="${s.id}" type="button">Изменить</button><button class="tiny danger" data-delete="${s.id}" type="button">Удалить</button></div>
       </article>`;
     }).join('');
   }
-  function escapeHtml(x){ return String(x).replace(/[&<>'"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
-  function renderReports(){
-    const arr=db.shifts.slice(); const h=totalHours(arr); const m=totalMoney(arr);
-    els.repShifts.textContent=arr.length; els.repHours.textContent=fmtHours(h); els.repAvg.textContent=fmtHours(arr.length?h/arr.length:0); els.repMoney.textContent=fmtMoney(m);
-    const weeks={};
-    arr.forEach(s=>{ const k=dateInputValue(startOfWeek(new Date(s.start))).slice(0,10); (weeks[k]||(weeks[k]=[])).push(s); });
-    const keys=Object.keys(weeks).sort().reverse();
-    els.weekBlocks.innerHTML = keys.length ? keys.map(k=>{ const a=weeks[k]; return `<div class="card"><div class="label">Неделя с ${new Date(k+'T00:00:00').toLocaleDateString('ru-RU')}</div><div class="value">${fmtHours(totalHours(a))}</div><div class="shiftMoney">${a.length} смен • ${fmtMoney(totalMoney(a))}</div></div>`; }).join('') : '<div class="empty">Когда добавишь смены, здесь будет отчёт по неделям.</div>';
+  function escapeHtml(str){ return String(str).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\'':'&#39;','"':'&quot;'}[c])); }
+  function syncInputs(){
+    $('rateInput').value = state.settings.hourlyRate;
+    $('goalInput').value = state.settings.weeklyGoal;
+    $('nameInput').value = state.settings.employeeName || '';
+    if(!$('manualDate').value) $('manualDate').value = dateKey(now());
+    if(!$('manualRate').value) $('manualRate').value = state.settings.hourlyRate;
   }
-  function renderSettings(){
-    els.currencyInput.value=db.settings.currency||'$'; els.defaultRateInput.value=db.settings.rate||''; els.overtimeInput.value=db.settings.overtimeAfter||40; els.overtimeMultInput.value=db.settings.overtimeMult||1.5; if(!els.rateInput.value) els.rateInput.value=db.settings.rate||'';
+  function showPanel(which){
+    ['manualPanel','ratePanel','settingsPanel'].forEach(id=>$(id).classList.remove('show'));
+    if(which==='manual') $('manualPanel').classList.add('show');
+    if(which==='rate') $('ratePanel').classList.add('show');
+    if(which==='settings') $('settingsPanel').classList.add('show');
+    if(which==='history') navigate('history');
+    setTimeout(()=>{
+      const target = which==='manual' ? $('manualPanel') : which==='rate' ? $('ratePanel') : which==='settings' ? $('settingsPanel') : $('historyView');
+      target?.scrollIntoView({behavior:'smooth', block:'start'});
+    }, 30);
   }
-  function render(){ renderLive(); renderSummary(); renderHistory(); renderReports(); renderSettings(); }
+  function navigate(view){
+    activeView = view === 'history' ? 'history' : 'home';
+    $('homeView').style.display = activeView === 'home' ? 'grid' : 'none';
+    $('historyView').classList.toggle('show', activeView === 'history');
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', (b.dataset.nav==='history'? 'history':'home')===activeView));
+    if(view === 'stats'){ showPanel('rate'); }
+    if(view === 'profile'){ showPanel('settings'); }
+  }
+  function startShift(){
+    if(state.active) return;
+    state.active = {start: now(), breakMinutes:0, hourlyRate:Number(state.settings.hourlyRate)||0};
+    save(); render(); toast('Смена начата и сохранена');
+  }
+  function stopShift(){
+    if(!state.active) return;
+    const s = {...state.active, id:uid(), end:now(), note:''};
+    if(shiftNetMs(s) < 60000 && !confirm('Смена меньше 1 минуты. Всё равно сохранить?')) return;
+    state.shifts.push(s);
+    state.active = null;
+    save(); render(); toast('Смена сохранена');
+  }
+  function addBreak(min){
+    if(!state.active){ toast('Сначала начните смену'); return; }
+    state.active.breakMinutes = Number(state.active.breakMinutes||0) + Number(min);
+    save(); render(); toast(`Перерыв +${min} мин добавлен`);
+  }
+  function saveManual(){
+    const date = $('manualDate').value;
+    const st = $('manualStart').value;
+    const en = $('manualEnd').value;
+    if(!date || !st || !en){ toast('Заполните дату, начало и конец'); return; }
+    const start = new Date(`${date}T${st}:00`).getTime();
+    let end = new Date(`${date}T${en}:00`).getTime();
+    if(end <= start) end += 24*3600000;
+    const item = {
+      id: editId || uid(), start, end,
+      breakMinutes: Math.max(0, Number($('manualBreak').value||0)),
+      hourlyRate: Math.max(0, Number($('manualRate').value||state.settings.hourlyRate||0)),
+      note: $('manualNote').value.trim()
+    };
+    if(editId){
+      state.shifts = state.shifts.map(s => s.id === editId ? item : s);
+      editId = null;
+      $('saveManualBtn').textContent = 'Сохранить смену';
+    }else state.shifts.push(item);
+    save(); clearManual(); render(); toast('Смена сохранена');
+  }
+  function clearManual(){
+    $('manualDate').value = dateKey(now()); $('manualStart').value=''; $('manualEnd').value=''; $('manualBreak').value='0'; $('manualRate').value=state.settings.hourlyRate; $('manualNote').value='';
+  }
+  function editShift(id){
+    const s = state.shifts.find(x=>x.id===id); if(!s) return;
+    editId = id;
+    $('manualDate').value = dateKey(s.start);
+    $('manualStart').value = `${fmt2(new Date(s.start).getHours())}:${fmt2(new Date(s.start).getMinutes())}`;
+    $('manualEnd').value = `${fmt2(new Date(s.end).getHours())}:${fmt2(new Date(s.end).getMinutes())}`;
+    $('manualBreak').value = s.breakMinutes || 0;
+    $('manualRate').value = s.hourlyRate || state.settings.hourlyRate;
+    $('manualNote').value = s.note || '';
+    $('saveManualBtn').textContent = 'Сохранить изменения';
+    navigate('home'); showPanel('manual');
+  }
+  function deleteShift(id){
+    if(!confirm('Удалить эту смену?')) return;
+    state.shifts = state.shifts.filter(s=>s.id!==id);
+    save(); render(); toast('Смена удалена');
+  }
+  function saveSettings(){
+    state.settings.hourlyRate = Math.max(0, Number($('rateInput').value || 0));
+    state.settings.weeklyGoal = Math.max(1, Number($('goalInput').value || 40));
+    state.settings.employeeName = $('nameInput').value.trim();
+    save(); render(); toast('Настройки сохранены');
+  }
+  function exportCSV(){
+    const rows = [['Date','Start','End','Break minutes','Hours','Hourly rate','Total','Note']];
+    [...state.shifts].sort((a,b)=>a.start-b.start).forEach(s=>{
+      const ms = shiftNetMs(s);
+      rows.push([dateKey(s.start), timeLabel(s.start), timeLabel(s.end), s.breakMinutes||0, (ms/3600000).toFixed(2), Number(s.hourlyRate||0).toFixed(2), money(ms,s.hourlyRate).toFixed(2), s.note||'']);
+    });
+    const csv = rows.map(r=>r.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');
+    download('life-medical-work-hours.csv', csv, 'text/csv;charset=utf-8');
+  }
+  function backup(){
+    download('life-medical-hours-backup.json', JSON.stringify(state,null,2), 'application/json');
+  }
+  function importBackup(file){
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try{
+        const data = JSON.parse(reader.result);
+        if(!Array.isArray(data.shifts)) throw new Error('Bad backup');
+        state = {...structuredClone(defaultState), ...data, settings:{...defaultState.settings, ...(data.settings||{})}};
+        save(); render(); toast('Backup восстановлен');
+      }catch(e){ toast('Не удалось открыть backup'); }
+    };
+    reader.readAsText(file);
+  }
+  function clearAll(){
+    if(!confirm('Очистить все смены и активную смену?')) return;
+    state.shifts = []; state.active = null; save(); render(); toast('Все смены очищены');
+  }
 
-  function showNotice(msg, good=false){ els.formNotice.textContent=msg; els.formNotice.className='notice '+(good?'safe':''); els.formNotice.classList.remove('hidden'); setTimeout(()=>els.formNotice.classList.add('hidden'),3500); }
-  function addOrUpdateShift(){
-    const start=parseLocal(els.startInput.value), end=parseLocal(els.endInput.value);
-    if(!start || !end){ showNotice('Укажи начало и конец смены.'); return; }
-    if(end<=start){ showNotice('Конец должен быть позже начала.'); return; }
-    const br=Math.max(0, Number(els.breakInput.value)||0);
-    const rate=Math.max(0, Number(els.rateInput.value)||0);
-    const note=els.noteInput.value.trim();
-    if(editingId){
-      const idx=db.shifts.findIndex(s=>s.id===editingId); if(idx>=0){ db.shifts[idx]=Object.assign(db.shifts[idx],{start:start.toISOString(),end:end.toISOString(),breakMin:br,rate,note}); }
-      editingId=null; els.saveShiftBtn.textContent='+ Сохранить смену'; els.cancelEditBtn.classList.add('hidden'); showNotice('Смена обновлена и сохранена.', true);
-    }else{
-      db.shifts.push({id:uid(),start:start.toISOString(),end:end.toISOString(),breakMin:br,rate,note}); showNotice('Смена сохранена.', true);
-    }
-    db.settings.rate = rate || db.settings.rate || 0;
-    save(); clearForm(false); render();
-  }
-  function clearForm(setDefault=true){ const now=new Date(); const end=new Date(now); const start=new Date(now); start.setHours(9,0,0,0); end.setHours(18,0,0,0); if(setDefault){ els.startInput.value=dateInputValue(start); els.endInput.value=dateInputValue(end); } els.breakInput.value=0; els.noteInput.value=''; els.rateInput.value=db.settings.rate||''; }
-  function startWork(){ if(db.active) return; db.active={id:uid(),start:new Date().toISOString(),breakMin:0,note:'',rate:Number(els.rateInput.value)||Number(db.settings.rate)||0}; save(); render(); }
-  function stopWork(){ if(!db.active) return; const end=new Date(); const s={id:db.active.id,start:db.active.start,end:end.toISOString(),breakMin:Number(db.active.breakMin)||0,rate:Number(db.active.rate)||Number(db.settings.rate)||0,note:db.active.note||''}; db.shifts.push(s); db.active=null; save(); render(); }
-  function editShift(id){ const s=db.shifts.find(x=>x.id===id); if(!s) return; editingId=id; els.startInput.value=dateInputValue(s.start); els.endInput.value=dateInputValue(s.end); els.breakInput.value=s.breakMin||0; els.rateInput.value=s.rate||''; els.noteInput.value=s.note||''; els.saveShiftBtn.textContent='💾 Обновить смену'; els.cancelEditBtn.classList.remove('hidden'); goPage('Home'); window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); }
-  function deleteShift(id){ if(!confirm('Удалить эту смену?')) return; db.shifts=db.shifts.filter(s=>s.id!==id); save(); render(); }
-  function exportJson(){ download('work-hours-backup-'+new Date().toISOString().slice(0,10)+'.json', JSON.stringify(db,null,2), 'application/json'); }
-  function exportCsv(){
-    const rows=[['Дата','Начало','Конец','Перерыв мин','Часы','Ставка','Сумма','Заметка']];
-    filteredShifts().slice().reverse().forEach(s=>rows.push([new Date(s.start).toLocaleDateString('ru-RU'),fmtTime(s.start),fmtTime(s.end),s.breakMin||0,shiftHours(s).toFixed(2),s.rate||0,shiftMoney(s).toFixed(2),s.note||'']));
-    const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
-    download('work-hours-'+new Date().toISOString().slice(0,10)+'.csv', csv, 'text/csv;charset=utf-8');
-  }
-  function download(name, text, type){ const blob=new Blob([text],{type}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); }
-  function importBackup(file){ const reader=new FileReader(); reader.onload=()=>{ try{ const data=JSON.parse(reader.result); if(!Array.isArray(data.shifts)) throw new Error('bad'); if(confirm('Заменить текущие данные backup-файлом?')){ db=Object.assign(db,data); save(); render(); alert('Backup загружен.'); } }catch(e){ alert('Не получилось открыть backup JSON.'); } }; reader.readAsText(file); }
-  function goPage(name){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); $('page'+name).classList.add('active'); document.querySelectorAll('.navBtn').forEach(b=>b.classList.toggle('active',b.dataset.page===name)); }
-  function testSave(){ const t='test-'+Date.now(); localStorage.setItem(KEY+'-test',t); const ok=localStorage.getItem(KEY+'-test')===t; setPill(ok?'Память работает':'Не сохраняется', ok); alert(ok?'Сохранение работает ✅':'Сохранение не работает. Проверь приватный режим Safari или память телефона.'); }
+  document.addEventListener('click', (e)=>{
+    const b = e.target.closest('button'); if(!b) return;
+    if(b.id==='startBtn') startShift();
+    else if(b.id==='stopBtn') stopShift();
+    else if(b.dataset.break) addBreak(b.dataset.break);
+    else if(b.dataset.open) showPanel(b.dataset.open);
+    else if(b.dataset.closePanel) $(b.dataset.closePanel).classList.remove('show');
+    else if(b.dataset.nav) navigate(b.dataset.nav);
+    else if(b.id==='saveManualBtn') saveManual();
+    else if(b.id==='saveSettingsBtn') saveSettings();
+    else if(b.id==='csvBtn') exportCSV();
+    else if(b.id==='backupBtn') backup();
+    else if(b.id==='importBackupBtn') $('backupFile').click();
+    else if(b.id==='clearAllBtn') clearAll();
+    else if(b.dataset.edit) editShift(b.dataset.edit);
+    else if(b.dataset.delete) deleteShift(b.dataset.delete);
+  });
+  $('backupFile').addEventListener('change', e=>importBackup(e.target.files[0]));
+  window.addEventListener('beforeunload', save);
+  document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') save(); });
+  setInterval(()=>{ if(state.active){ save(); render(); } }, 1000);
 
-  function bind(){
-    els.startBtn.addEventListener('click',startWork); els.stopBtn.addEventListener('click',stopWork); els.saveShiftBtn.addEventListener('click',addOrUpdateShift);
-    els.cancelEditBtn.addEventListener('click',()=>{ editingId=null; els.saveShiftBtn.textContent='+ Сохранить смену'; els.cancelEditBtn.classList.add('hidden'); clearForm(); });
-    document.querySelectorAll('[data-break]').forEach(b=>b.addEventListener('click',()=>{ if(!db.active){ alert('Сначала нажми «Начать работу».'); return; } db.active.breakMin=(Number(db.active.breakMin)||0)+Number(b.dataset.break); save(); render(); }));
-    els.clearBreakBtn.addEventListener('click',()=>{ if(db.active){ db.active.breakMin=0; save(); render(); }});
-    document.querySelectorAll('.navBtn').forEach(b=>b.addEventListener('click',()=>goPage(b.dataset.page)));
-    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{ historyFilter=t.dataset.filter; document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active')); t.classList.add('active'); renderHistory(); }));
-    els.monthPick.addEventListener('change',renderHistory);
-    $('exportCsvBtn').addEventListener('click',exportCsv); $('exportJsonBtn').addEventListener('click',exportJson); $('downloadBackupBtn').addEventListener('click',exportJson);
-    $('importFile').addEventListener('change',e=>{ if(e.target.files[0]) importBackup(e.target.files[0]); e.target.value=''; });
-    $('clearAllBtn').addEventListener('click',()=>{ if(confirm('Удалить все смены? Сначала лучше сделать Backup.')){ db.shifts=[]; db.active=null; save(); render(); }});
-    $('saveSettingsBtn').addEventListener('click',()=>{ db.settings.currency=els.currencyInput.value; db.settings.rate=Number(els.defaultRateInput.value)||0; db.settings.overtimeAfter=Number(els.overtimeInput.value)||40; db.settings.overtimeMult=Number(els.overtimeMultInput.value)||1.5; save(); render(); alert('Настройки сохранены.'); });
-    $('testSaveBtn').addEventListener('click',testSave);
-    els.shiftList.addEventListener('click',e=>{ const edit=e.target.closest('[data-edit]'); const del=e.target.closest('[data-del]'); if(edit) editShift(edit.dataset.edit); if(del) deleteShift(del.dataset.del); });
-    window.addEventListener('beforeunload',()=>save()); document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') save(); });
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', ()=> navigator.serviceWorker.register('./sw.js').catch(()=>{}));
   }
-
-  load(); requestPersist(); bind(); clearForm(); els.monthPick.value=new Date().toISOString().slice(0,7); render(); setInterval(()=>{ renderLive(); renderSummary(); },1000);
-  if('serviceWorker' in navigator && location.protocol.startsWith('http')){ navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+  render();
 })();
 </script>
 </body>
