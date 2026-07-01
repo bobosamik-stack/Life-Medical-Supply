@@ -1,627 +1,988 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>Ilkhom Bukhara</title>
-  <meta name="theme-color" content="#0b1020" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ilkhom Pro Music Studio XL</title>
   <style>
     :root{
-      --bg:#070a14;
-      --card:rgba(255,255,255,.08);
-      --card2:rgba(255,255,255,.12);
-      --text:#f6f8ff;
-      --muted:#a9b1c7;
-      --line:rgba(255,255,255,.14);
-      --good:#28f3a2;
-      --warn:#ffd166;
-      --bad:#ff5c7a;
-      --accent:#7c5cff;
-      --accent2:#00d4ff;
-      --shadow:0 18px 55px rgba(0,0,0,.42);
-      --r:26px;
+      --bg:#050711;
+      --card:#101827;
+      --card2:#151f34;
+      --line:rgba(255,255,255,.10);
+      --text:#eef5ff;
+      --muted:#9aa8bd;
+      --accent:#17e6b7;
+      --accent2:#7c5cff;
+      --hot:#ff4d6d;
+      --gold:#ffd166;
+      --blue:#31b7ff;
+      --shadow:0 24px 70px rgba(0,0,0,.42);
+      --radius:24px;
     }
     *{box-sizing:border-box}
-    html,body{height:100%}
+    html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--text)}
     body{
-      margin:0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-      color:var(--text);
       background:
-        radial-gradient(1000px 700px at 10% -10%, rgba(124,92,255,.55), transparent 55%),
-        radial-gradient(900px 650px at 100% 10%, rgba(0,212,255,.38), transparent 48%),
-        radial-gradient(900px 650px at 50% 120%, rgba(40,243,162,.22), transparent 50%),
-        var(--bg);
+        radial-gradient(circle at 12% 0%, rgba(124,92,255,.34), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(23,230,183,.20), transparent 28%),
+        radial-gradient(circle at 40% 100%, rgba(49,183,255,.12), transparent 25%),
+        linear-gradient(135deg,#050711,#081020 54%,#04151a);
       overflow-x:hidden;
     }
-    body:before{
-      content:"";
-      position:fixed; inset:0;
-      background-image:
-        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-      background-size:38px 38px;
-      mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), transparent 80%);
-      pointer-events:none;
+    button,input,select,textarea{font:inherit}
+    button{
+      border:0;border-radius:16px;padding:12px 15px;font-weight:950;color:var(--text);
+      background:#26324c;cursor:pointer;transition:.15s transform,.15s filter,.15s box-shadow;user-select:none
     }
-    .wrap{max-width:1180px;margin:0 auto;padding:22px 16px 40px;position:relative}
+    button:hover{transform:translateY(-1px);filter:brightness(1.08)}
+    button:active{transform:scale(.98)}
+    .primary{background:linear-gradient(135deg,var(--accent),#19a9ff);color:#041017}
+    .purple{background:linear-gradient(135deg,var(--accent2),#c35cff)}
+    .danger{background:linear-gradient(135deg,var(--hot),#ff9342)}
+    .gold{background:linear-gradient(135deg,var(--gold),#ff8f1f);color:#140b00}
+    .ghost{background:rgba(255,255,255,.075);border:1px solid var(--line)}
+    .wrap{width:min(1360px,94vw);margin:0 auto;padding:20px 0 44px}
     .hero{
-      display:grid;gap:16px;grid-template-columns:1.15fr .85fr;align-items:stretch;
-      margin-bottom:16px;
+      position:relative;overflow:hidden;border-radius:34px;padding:22px;
+      background:rgba(16,24,39,.82);border:1px solid var(--line);box-shadow:var(--shadow);
+      backdrop-filter:blur(18px)
     }
-    .brand,.statusCard,.panel,.history{
-      border:1px solid var(--line);
-      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.055));
-      backdrop-filter: blur(18px);
-      box-shadow:var(--shadow);
-      border-radius:var(--r);
+    .hero:before{
+      content:"";position:absolute;right:-110px;top:-110px;width:320px;height:320px;border-radius:50%;
+      background:radial-gradient(circle,rgba(23,230,183,.26),transparent 68%);filter:blur(4px)
     }
-    .brand{padding:22px;position:relative;overflow:hidden}
-    .brand:after{
-      content:"";
-      position:absolute;
-      width:260px;height:260px;right:-90px;top:-115px;border-radius:50%;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      filter:blur(2px);opacity:.42;
-    }
-    .logoRow{display:flex;gap:14px;align-items:center;position:relative;z-index:1}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:14px;position:relative;z-index:2;flex-wrap:wrap}
+    .brand{display:flex;gap:14px;align-items:center}
     .logo{
-      width:54px;height:54px;border-radius:18px;
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      display:grid;place-items:center;font-size:27px;font-weight:900;
-      box-shadow:0 14px 35px rgba(0,212,255,.23);
+      width:58px;height:58px;border-radius:20px;display:grid;place-items:center;font-size:24px;font-weight:1000;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));color:#061018;
+      box-shadow:0 15px 38px rgba(23,230,183,.24)
     }
-    h1{margin:0;font-size:clamp(28px,4vw,50px);line-height:1.02;letter-spacing:-.05em}
-    .subtitle{margin:13px 0 0;color:var(--muted);font-size:16px;max-width:720px;line-height:1.45;position:relative;z-index:1}
-    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1}
-    .chip{font-size:12px;color:#dfe6ff;border:1px solid var(--line);background:rgba(255,255,255,.075);padding:8px 10px;border-radius:999px}
-    .statusCard{padding:18px;display:flex;flex-direction:column;gap:12px}
-    .meter{
-      height:92px;border-radius:24px;border:1px solid var(--line);
-      background:rgba(0,0,0,.18);display:flex;align-items:end;gap:5px;padding:16px;overflow:hidden;
+    h1{margin:0;font-size:clamp(28px,4.4vw,54px);letter-spacing:-1.5px;line-height:1}
+    .sub{margin-top:7px;color:var(--muted);font-size:15px}
+    .badge{padding:10px 13px;border-radius:999px;background:rgba(23,230,183,.08);border:1px solid rgba(23,230,183,.32);font-weight:900;color:#c5fff1;font-size:13px;white-space:nowrap}
+    .transport{
+      margin-top:22px;display:grid;grid-template-columns:repeat(12,1fr);gap:12px;position:relative;z-index:2
     }
-    .bar{flex:1;min-width:5px;border-radius:999px;background:linear-gradient(to top,var(--accent),var(--accent2));height:16%;opacity:.75;transition:height .08s linear}
-    .state{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      color:var(--muted);font-size:14px;
+    .control{
+      background:rgba(255,255,255,.052);border:1px solid var(--line);border-radius:19px;padding:13px;min-height:74px
     }
-    .dot{width:10px;height:10px;border-radius:50%;background:var(--bad);box-shadow:0 0 0 6px rgba(255,92,122,.12)}
-    .dot.on{background:var(--good);box-shadow:0 0 0 7px rgba(40,243,162,.12)}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .panel{padding:18px}
-    .topline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-    .label{font-weight:800;letter-spacing:-.02em}
-    select,button,textarea,input{
-      font:inherit;
+    .control label{display:block;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:var(--muted);font-size:12px;margin-bottom:8px}
+    .control input,.control select{
+      width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.13);background:#07101e;color:var(--text);
+      padding:11px 12px;outline:none;font-weight:850
     }
-    select{
-      width:100%;background:rgba(0,0,0,.25);color:var(--text);
-      border:1px solid var(--line);border-radius:16px;padding:13px 14px;outline:none;
+    .span2{grid-column:span 2}.span3{grid-column:span 3}.span4{grid-column:span 4}
+    .btnrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:18px}
+    .panel{
+      background:rgba(16,24,39,.84);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);
+      backdrop-filter:blur(18px)
     }
-    option{background:#15192a;color:#fff}
-    textarea{
-      width:100%;min-height:190px;resize:vertical;
-      color:var(--text);background:rgba(0,0,0,.22);
-      border:1px solid var(--line);border-radius:22px;
-      padding:16px;outline:none;line-height:1.45;font-size:18px;
+    .panel h2{margin:0 0 14px;font-size:20px;letter-spacing:-.35px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .hint{font-size:12px;color:var(--muted);font-weight:700}
+    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:13px}
+    .tab{padding:9px 11px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--line);font-size:13px}
+    .tab.active{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#061018}
+    .sequencer{overflow:auto;padding-bottom:6px}
+    .row{
+      min-width:960px;display:grid;grid-template-columns:124px repeat(16,minmax(35px,1fr));gap:7px;align-items:center;margin:7px 0
     }
-    textarea::placeholder{color:rgba(255,255,255,.38)}
-    .interim{min-height:24px;color:var(--warn);font-size:14px;margin:8px 2px 0}
-    .controls{
-      display:grid;grid-template-columns:1.3fr .7fr .7fr .7fr;gap:10px;margin:16px 0;
+    .track{
+      background:rgba(255,255,255,.064);border:1px solid var(--line);border-radius:14px;padding:9px 8px;font-weight:950;
+      display:flex;align-items:center;justify-content:space-between;gap:7px
     }
-    .btn{
-      border:0;border-radius:18px;padding:14px 14px;cursor:pointer;
-      color:#fff;font-weight:900;
-      background:rgba(255,255,255,.12);
-      border:1px solid var(--line);
-      transition:.2s transform,.2s background,.2s opacity;
-      user-select:none;
+    .track small{display:block;color:var(--muted);font-size:10px;font-weight:800;margin-top:1px}
+    .mute{width:24px;height:24px;border-radius:8px;padding:0;font-size:10px;background:rgba(255,255,255,.10)}
+    .mute.on{background:rgba(255,77,109,.28);color:#fff}
+    .step{
+      position:relative;height:38px;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.055);
+      cursor:pointer;overflow:hidden
     }
-    .btn:active{transform:scale(.98)}
-    .primary{
-      background:linear-gradient(135deg,var(--accent),var(--accent2));
-      box-shadow:0 15px 38px rgba(0,212,255,.22);
-      border:0;
+    .step.on{background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 9px 24px rgba(23,230,183,.13)}
+    .step.playing{outline:2px solid var(--gold);filter:brightness(1.22)}
+    .step .vel{position:absolute;left:5px;right:5px;bottom:4px;height:4px;border-radius:99px;background:rgba(255,255,255,.58);opacity:.52}
+    .padGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}
+    .pad{
+      min-height:76px;border-radius:20px;background:linear-gradient(145deg,#22304b,#101827);
+      border:1px solid var(--line);box-shadow:inset 0 1px rgba(255,255,255,.06),0 14px 32px rgba(0,0,0,.20);
+      display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center
     }
-    .danger{background:linear-gradient(135deg,#ff3b6b,#ff8f3b);border:0}
-    .success{background:linear-gradient(135deg,#13c681,#28f3a2);border:0;color:#06130d}
-    .mini{font-size:13px;padding:11px 12px;border-radius:15px}
-    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .switch{
-      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;
-      padding:10px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.055)
+    .pad b{font-size:13px}
+    .pad span{font-size:11px;color:var(--muted);margin-top:4px;font-weight:800}
+    .pad.hit{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#061018}
+    .pad.hit span{color:#061018}
+    .library{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+    .soundBtn{
+      min-height:56px;padding:10px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid var(--line);
+      text-align:left
     }
-    .switch input{accent-color:#7c5cff}
-    .history{margin-top:16px;padding:18px}
-    .historyHeader{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
-    .items{display:grid;gap:10px}
-    .item{
-      border:1px solid var(--line);border-radius:20px;background:rgba(0,0,0,.18);
-      padding:13px 14px;
+    .soundBtn strong{display:block;font-size:13px}
+    .soundBtn small{display:block;color:var(--muted);margin-top:2px;font-weight:750}
+    .soundBtn.active{background:linear-gradient(135deg,rgba(23,230,183,.25),rgba(124,92,255,.28));border-color:rgba(23,230,183,.36)}
+    canvas{width:100%;height:132px;background:#060d18;border:1px solid var(--line);border-radius:18px}
+    .keyboard{display:flex;gap:5px;overflow:auto;padding-bottom:10px;min-height:118px}
+    .key{
+      min-width:54px;height:110px;border-radius:0 0 14px 14px;background:linear-gradient(#f8fcff,#b8c6db);
+      color:#08111d;display:flex;align-items:flex-end;justify-content:center;padding-bottom:12px;font-weight:950;
+      border:1px solid rgba(255,255,255,.55);position:relative
     }
-    .item small{color:var(--muted)}
-    .item p{margin:6px 0 0;line-height:1.35}
+    .key.black{min-width:40px;height:72px;margin:0 -23px;z-index:3;border-radius:0 0 10px 10px;background:linear-gradient(#222,#05070c);color:#fff}
+    .key.active{filter:brightness(1.25);box-shadow:0 0 0 3px var(--accent)}
+    .status{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px;color:var(--muted);font-size:13px}
     .pill{
-      display:inline-flex;align-items:center;gap:7px;
-      border:1px solid var(--line);background:rgba(0,0,0,.18);
-      color:var(--muted);border-radius:999px;padding:9px 11px;font-size:13px;
+      background:rgba(255,255,255,.064);border:1px solid var(--line);border-radius:999px;padding:8px 11px;font-weight:800
     }
-    .footerNote{color:var(--muted);font-size:13px;line-height:1.45;margin-top:14px}
+    .pill select,.pill input{background:transparent;color:inherit;border:0;font-weight:900;outline:none}
+    .mixer{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+    .fader{text-align:center;background:rgba(255,255,255,.055);border:1px solid var(--line);border-radius:18px;padding:11px}
+    .fader strong{font-size:12px}
+    .vertical{-webkit-appearance:slider-vertical;writing-mode:bt-lr;width:20px;height:130px;display:block;margin:10px auto;accent-color:var(--accent)}
+    input[type=range]{accent-color:var(--accent)}
+    .presetGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .preset{
+      text-align:left;min-height:72px;background:rgba(255,255,255,.06);border:1px solid var(--line);border-radius:18px;padding:12px
+    }
+    .preset strong{display:block}
+    .preset small{display:block;color:var(--muted);margin-top:4px;font-weight:750}
+    textarea{
+      width:100%;min-height:170px;background:#07101e;color:var(--text);border:1px solid rgba(255,255,255,.13);
+      border-radius:18px;padding:14px;resize:vertical;outline:none;line-height:1.46
+    }
+    .footer{text-align:center;color:var(--muted);font-size:13px;margin-top:18px}
     .toast{
-      position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);
-      background:rgba(15,20,36,.92);border:1px solid var(--line);
-      color:#fff;padding:12px 14px;border-radius:999px;box-shadow:var(--shadow);
-      opacity:0;pointer-events:none;transition:.25s;z-index:10;
-      max-width:min(92vw,760px);text-align:center;
+      position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;
+      background:#111b2c;border:1px solid var(--line);box-shadow:var(--shadow);padding:13px 18px;border-radius:999px;
+      transition:.23s;font-weight:900;z-index:99
     }
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-    .kbd{font-family:ui-monospace,Menlo,monospace;font-size:12px;border:1px solid var(--line);border-bottom-width:2px;padding:2px 6px;border-radius:7px;color:#eaf0ff;background:rgba(255,255,255,.08)}
-    @media(max-width:820px){
-      .hero,.grid{grid-template-columns:1fr}
-      .controls{grid-template-columns:1fr 1fr}
-      .controls .primary{grid-column:1/-1}
-      textarea{min-height:160px}
+    @media(max-width:1000px){
+      .grid{grid-template-columns:1fr}
+      .transport{grid-template-columns:repeat(6,1fr)}
+      .span2,.span3,.span4{grid-column:span 6}
+      .padGrid{grid-template-columns:repeat(2,1fr)}
+      .library{grid-template-columns:repeat(2,1fr)}
+      .mixer{grid-template-columns:repeat(3,1fr)}
+      .row{grid-template-columns:110px repeat(16,35px)}
+    }
+    @media(max-width:520px){
+      .library,.presetGrid{grid-template-columns:1fr}
+      .mixer{grid-template-columns:repeat(2,1fr)}
+      .hero{padding:17px;border-radius:24px}
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <section class="hero">
+<div class="wrap">
+  <section class="hero">
+    <div class="top">
       <div class="brand">
-        <div class="logoRow">
-          <div class="logo">🌐</div>
-          <div>
-            <h1>Ilkhom Bukhara</h1>
-            <div class="subtitle">Синхронный переводчик: говорите в микрофон, приложение распознаёт речь, переводит и сразу озвучивает перевод. Работает прямо в браузере.</div>
-          </div>
-        </div>
-        <div class="chips">
-          <span class="chip">🎙️ Голос → текст</span>
-          <span class="chip">⚡ Автоперевод</span>
-          <span class="chip">🔊 Озвучка</span>
-          <span class="chip">🔁 Разговор туда‑обратно</span>
-          <span class="chip">📋 История</span>
+        <div class="logo">XL</div>
+        <div>
+          <h1>Ilkhom Pro Music Studio XL</h1>
+          <div class="sub">Расширенная HTML-студия: 24+ звука, восточные перкуссии, 808, синты, FX, пресеты, запись голоса</div>
         </div>
       </div>
+      <div class="badge">MORE SOUNDS • PRO WEB AUDIO</div>
+    </div>
 
-      <div class="statusCard">
-        <div class="state">
-          <span class="row"><span id="dot" class="dot"></span><b id="stateText">Микрофон выключен</b></span>
-          <span class="pill">Совет: <span class="kbd">Start</span> и говорите</span>
+    <div class="transport">
+      <div class="control span2">
+        <label>BPM</label>
+        <input id="bpm" type="number" min="60" max="220" value="128">
+      </div>
+      <div class="control span2">
+        <label>Тональность</label>
+        <select id="keySelect">
+          <option>C minor</option><option>D minor</option><option>E minor</option><option>F minor</option>
+          <option>G minor</option><option>A minor</option><option>B minor</option><option>C major</option>
+          <option>D major</option><option>G major</option><option>A major</option>
+        </select>
+      </div>
+      <div class="control span2">
+        <label>Стиль</label>
+        <select id="styleSelect">
+          <option>Trance Vocal</option>
+          <option>90s Rap / Vanilla</option>
+          <option>Doira Techno</option>
+          <option>Enigma Mystic</option>
+          <option>Oriental Trap</option>
+          <option>Deep House</option>
+          <option>Brazilian Club</option>
+        </select>
+      </div>
+      <div class="control span3">
+        <label>Play</label>
+        <div class="btnrow">
+          <button class="primary" id="playBtn">▶ Play</button>
+          <button class="ghost" id="stopBtn">■ Stop</button>
+          <button class="danger" id="clearBtn">Clear</button>
         </div>
-        <div class="meter" id="meter" aria-label="voice meter"></div>
-        <div class="footerNote">
-          Для лучшей работы откройте файл в Chrome/Edge. На iPhone разрешите микрофон в настройках браузера.
+      </div>
+      <div class="control span3">
+        <label>Project</label>
+        <div class="btnrow">
+          <button class="purple" id="saveBtn">Save</button>
+          <button class="ghost" id="loadBtn">Load</button>
+          <button class="gold" id="randomBtn">Magic</button>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section class="panel">
+      <h2>Step Sequencer <span class="hint">12 дорожек × 16 шагов • Shift+клик = громкость</span></h2>
+      <div class="tabs">
+        <button class="tab active" data-view="core">Core</button>
+        <button class="tab" data-view="oriental">Oriental</button>
+        <button class="tab" data-view="synths">Synths</button>
+        <button class="tab" data-view="all">All</button>
+      </div>
+      <div class="sequencer" id="sequencer"></div>
+      <div class="status">
+        <span class="pill" id="posPill">Step: 1</span>
+        <span class="pill">Больше звуков: Kick, Snare, Clap, Hat, OpenHat, Crash, Tom, Rim, Doira, Tabla, Shaker, 808, Bass, Pluck, Piano, Pad, Strings, Brass, FX</span>
       </div>
     </section>
 
     <section class="panel">
-      <div class="grid">
-        <div>
-          <div class="topline">
-            <div class="label">Язык, на котором говорите</div>
-            <button class="btn mini" id="swapBtn">🔁 поменять</button>
-          </div>
-          <select id="fromLang"></select>
-        </div>
-        <div>
-          <div class="topline">
-            <div class="label">На какой язык переводить</div>
-            <button class="btn mini" id="speakBtn">🔊 озвучить</button>
-          </div>
-          <select id="toLang"></select>
-        </div>
-      </div>
+      <h2>Performance Pads <span class="hint">A S D F / Q W E R / 1 2 3 4</span></h2>
+      <div class="padGrid" id="pads"></div>
+      <div style="height:14px"></div>
+      <h2>Visualizer <span class="hint">живой спектр</span></h2>
+      <canvas id="scope" width="900" height="260"></canvas>
+    </section>
 
-      <div class="controls">
-        <button class="btn primary" id="startBtn">🎙️ Start Live Translation</button>
-        <button class="btn danger" id="stopBtn">⏹ Stop</button>
-        <button class="btn success" id="translateBtn">⚡ Перевести текст</button>
-        <button class="btn" id="clearBtn">🧹 Очистить</button>
-      </div>
+    <section class="panel">
+      <h2>Sound Library <span class="hint">нажми, чтобы услышать</span></h2>
+      <div class="library" id="library"></div>
+    </section>
 
-      <div class="row" style="margin-bottom:14px">
-        <label class="switch"><input type="checkbox" id="autoSpeak" checked> авто‑озвучка перевода</label>
-        <label class="switch"><input type="checkbox" id="continuous" checked> слушать постоянно</label>
-        <label class="switch"><input type="checkbox" id="saveHistory" checked> сохранять историю</label>
+    <section class="panel">
+      <h2>Mixer</h2>
+      <div class="mixer">
+        <div class="fader"><strong>Drums</strong><input class="vertical" id="volDrums" type="range" min="0" max="100" value="84"><small id="vDrums">84%</small></div>
+        <div class="fader"><strong>Perc</strong><input class="vertical" id="volPerc" type="range" min="0" max="100" value="82"><small id="vPerc">82%</small></div>
+        <div class="fader"><strong>Bass</strong><input class="vertical" id="volBass" type="range" min="0" max="100" value="76"><small id="vBass">76%</small></div>
+        <div class="fader"><strong>Synth</strong><input class="vertical" id="volSynth" type="range" min="0" max="100" value="66"><small id="vSynth">66%</small></div>
+        <div class="fader"><strong>FX</strong><input class="vertical" id="volFx" type="range" min="0" max="100" value="46"><small id="vFx">46%</small></div>
+        <div class="fader"><strong>Master</strong><input class="vertical" id="volMaster" type="range" min="0" max="100" value="78"><small id="vMaster">78%</small></div>
       </div>
-
-      <div class="grid">
-        <div>
-          <div class="topline">
-            <div class="label">Ваш текст</div>
-            <button class="btn mini" data-copy="sourceText">📋 copy</button>
-          </div>
-          <textarea id="sourceText" placeholder="Нажмите Start и говорите... или напишите текст вручную."></textarea>
-          <div id="interim" class="interim"></div>
-        </div>
-        <div>
-          <div class="topline">
-            <div class="label">Перевод</div>
-            <button class="btn mini" data-copy="targetText">📋 copy</button>
-          </div>
-          <textarea id="targetText" placeholder="Здесь появится перевод..." readonly></textarea>
-          <div class="interim" id="engineInfo"></div>
-        </div>
+      <div class="status">
+        <span class="pill">Reverb <input id="reverb" type="range" min="0" max="100" value="30" style="width:90px"></span>
+        <span class="pill">Delay <input id="delay" type="range" min="0" max="100" value="22" style="width:90px"></span>
+        <span class="pill">Wave <select id="wave"><option>sawtooth</option><option>square</option><option>triangle</option><option>sine</option></select></span>
       </div>
     </section>
 
-    <section class="history">
-      <div class="historyHeader">
-        <div>
-          <div class="label">История разговора</div>
-          <div class="footerNote" style="margin-top:4px">Последние фразы сохраняются в этом браузере.</div>
-        </div>
-        <button class="btn mini" id="clearHistoryBtn">Удалить историю</button>
+    <section class="panel">
+      <h2>Synth Keyboard <span class="hint">Z X C V B N M играют мелодию</span></h2>
+      <div class="keyboard" id="keyboard"></div>
+      <div class="status">
+        <span class="pill">Arp <button class="ghost" id="arpBtn" style="padding:6px 10px">OFF</button></span>
+        <span class="pill">Octave <select id="octave"><option value="0">0</option><option value="-12">-1</option><option value="12">+1</option></select></span>
       </div>
-      <div class="items" id="historyItems"></div>
     </section>
-  </main>
 
-  <div class="toast" id="toast"></div>
+    <section class="panel">
+      <h2>Presets</h2>
+      <div class="presetGrid">
+        <button class="preset" data-preset="trance"><strong>Trance Vocal</strong><small>128 BPM, плотный kick, lead, pad</small></button>
+        <button class="preset" data-preset="rap"><strong>90s Rap</strong><small>96 BPM, clap, bass, piano</small></button>
+        <button class="preset" data-preset="doira"><strong>Doira Techno</strong><small>восточная перкуссия + techno</small></button>
+        <button class="preset" data-preset="mystic"><strong>Enigma Mystic</strong><small>атмосфера, pad, strings</small></button>
+        <button class="preset" data-preset="trap"><strong>Oriental Trap</strong><small>808, hats, tabla, brass</small></button>
+        <button class="preset" data-preset="house"><strong>Deep House</strong><small>клубный грув, pluck, bass</small></button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>AI Song Prompt / Текст песни</h2>
+      <textarea id="lyrics" placeholder="Например: мужской вокал, 90s rap + trance, Бухара, doira percussion, deep bass..."></textarea>
+      <div class="btnrow" style="margin-top:12px">
+        <button class="primary" id="promptBtn">Сделать промпт</button>
+        <button class="ghost" id="copyBtn">Copy</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Voice Recorder <span class="hint">можно записать голос</span></h2>
+      <div class="btnrow">
+        <button class="danger" id="recBtn">● Record</button>
+        <button class="ghost" id="recStopBtn">Stop Rec</button>
+      </div>
+      <audio id="audioPlayer" controls style="width:100%;margin-top:12px;display:none"></audio>
+    </section>
+  </div>
+
+  <div class="footer">Ilkhom Pro Music Studio XL • Сохрани HTML и открывай на телефоне или компьютере</div>
+</div>
+<div class="toast" id="toast"></div>
 
 <script>
 (() => {
-  const languages = [
-    {name:"Русский", speech:"ru-RU", code:"ru"},
-    {name:"English / Английский", speech:"en-US", code:"en"},
-    {name:"Українська", speech:"uk-UA", code:"uk"},
-    {name:"Español / Испанский", speech:"es-ES", code:"es"},
-    {name:"Français / Французский", speech:"fr-FR", code:"fr"},
-    {name:"Deutsch / Немецкий", speech:"de-DE", code:"de"},
-    {name:"Italiano / Итальянский", speech:"it-IT", code:"it"},
-    {name:"Português / Португальский", speech:"pt-PT", code:"pt"},
-    {name:"Türkçe / Турецкий", speech:"tr-TR", code:"tr"},
-    {name:"中文 / Китайский", speech:"zh-CN", code:"zh"},
-    {name:"العربية / Арабский", speech:"ar-SA", code:"ar"},
-    {name:"हिन्दी / Хинди", speech:"hi-IN", code:"hi"},
-    {name:"Polski / Польский", speech:"pl-PL", code:"pl"},
-    {name:"Română / Румынский", speech:"ro-RO", code:"ro"},
-    {name:"Čeština / Чешский", speech:"cs-CZ", code:"cs"},
-    {name:"Тоҷикӣ / Таджикский", speech:"tg-TJ", code:"tg"},
-    {name:"Oʻzbekcha / Узбекский", speech:"uz-UZ", code:"uz"}
+  const trackDefs = [
+    {id:"kick", name:"Kick", group:"core", bus:"drums", key:"A"},
+    {id:"snare", name:"Snare", group:"core", bus:"drums", key:"S"},
+    {id:"clap", name:"Clap", group:"core", bus:"drums", key:"D"},
+    {id:"hat", name:"Closed Hat", group:"core", bus:"drums", key:"F"},
+    {id:"openhat", name:"Open Hat", group:"core", bus:"drums", key:"Q"},
+    {id:"crash", name:"Crash", group:"core", bus:"drums", key:"W"},
+    {id:"tom", name:"Tom", group:"oriental", bus:"perc", key:"E"},
+    {id:"rim", name:"Rim", group:"oriental", bus:"perc", key:"R"},
+    {id:"doira", name:"Doira", group:"oriental", bus:"perc", key:"1"},
+    {id:"tabla", name:"Tabla", group:"oriental", bus:"perc", key:"2"},
+    {id:"shaker", name:"Shaker", group:"oriental", bus:"perc", key:"3"},
+    {id:"tamb", name:"Tambourine", group:"oriental", bus:"perc", key:"4"},
+    {id:"808", name:"808", group:"synths", bus:"bass", key:""},
+    {id:"bass", name:"Bass", group:"synths", bus:"bass", key:""},
+    {id:"pluck", name:"Pluck", group:"synths", bus:"synth", key:""},
+    {id:"piano", name:"Piano", group:"synths", bus:"synth", key:""},
+    {id:"pad", name:"Pad", group:"synths", bus:"synth", key:""},
+    {id:"strings", name:"Strings", group:"synths", bus:"synth", key:""},
+    {id:"brass", name:"Brass", group:"synths", bus:"synth", key:""},
+    {id:"vocal", name:"Vocal Chop", group:"synths", bus:"fx", key:""},
+    {id:"riser", name:"Riser", group:"synths", bus:"fx", key:""},
+    {id:"downfx", name:"Down FX", group:"synths", bus:"fx", key:""}
   ];
 
-  const $ = id => document.getElementById(id);
-  const fromLang = $("fromLang"), toLang = $("toLang");
-  const sourceText = $("sourceText"), targetText = $("targetText");
-  const interim = $("interim"), engineInfo = $("engineInfo");
-  const dot = $("dot"), stateText = $("stateText");
-  const toast = $("toast"), historyItems = $("historyItems");
+  const libraryGroups = [
+    ["kick","Punchy Kick","жирный клубный удар"],
+    ["snare","Snare","сухой рэп-снейр"],
+    ["clap","Clap","90s / house clap"],
+    ["hat","Closed Hat","быстрые хэты"],
+    ["openhat","Open Hat","открытый хэт"],
+    ["crash","Crash","акцент"],
+    ["tom","Tom","барабанный том"],
+    ["rim","Rimshot","короткий щелчок"],
+    ["doira","Doira","восточная перкуссия"],
+    ["tabla","Tabla","индийско-восточный удар"],
+    ["shaker","Shaker","ритм и движение"],
+    ["tamb","Tambourine","звонкий грув"],
+    ["808","808 Sub","trap бас"],
+    ["bass","Analog Bass","синт-бас"],
+    ["pluck","Pluck","короткий синт"],
+    ["piano","Piano","мягкие аккорды"],
+    ["pad","Pad","широкая атмосфера"],
+    ["strings","Strings","киношные струны"],
+    ["brass","Brass Hit","мощный акцент"],
+    ["vocal","Vocal Chop","электронный вокал"],
+    ["riser","Riser","подъём"],
+    ["downfx","Down FX","падение"]
+  ];
 
-  let recognition = null;
-  let listening = false;
-  let audioCtx = null, analyser = null, mediaStream = null, raf = null;
-  let lastFinal = "";
-  let translating = false;
+  const noteList = [
+    ["C4",261.63],["C#4",277.18],["D4",293.66],["D#4",311.13],["E4",329.63],
+    ["F4",349.23],["F#4",369.99],["G4",392],["G#4",415.30],["A4",440],
+    ["A#4",466.16],["B4",493.88],["C5",523.25],["D5",587.33],["E5",659.25]
+  ];
 
-  function fillLanguages(){
-    languages.forEach((l,i)=>{
-      const o1 = new Option(l.name, i);
-      const o2 = new Option(l.name, i);
-      fromLang.add(o1); toLang.add(o2);
+  const keyMap = {a:"kick",s:"snare",d:"clap",f:"hat",q:"openhat",w:"crash",e:"tom",r:"rim","1":"doira","2":"tabla","3":"shaker","4":"tamb"};
+  const synthKeyMap = {z:0,x:2,c:4,v:5,b:7,n:9,m:11};
+
+  let ctx, master, analyser, bus = {}, delayNode, delayGain, convolver, reverbGain;
+  let isPlaying = false, step = 0, timer = null, currentView = "core", arpOn = false;
+  let mediaRecorder, recChunks = [];
+  let pattern = {}, velocities = {}, muted = {};
+  trackDefs.forEach(t => {
+    pattern[t.id] = Array(16).fill(false);
+    velocities[t.id] = Array(16).fill(.9);
+    muted[t.id] = false;
+  });
+
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+
+  function toast(msg){
+    const t = $("#toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(()=>t.classList.remove("show"), 1600);
+  }
+
+  function initAudio(){
+    if(ctx) return;
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain();
+    analyser = ctx.createAnalyser();
+    analyser.fftSize = 2048;
+
+    ["drums","perc","bass","synth","fx"].forEach(name => {
+      bus[name] = ctx.createGain();
+      bus[name].connect(master);
     });
-    fromLang.value = localStorage.getItem("vt_from") ?? "0";
-    toLang.value = localStorage.getItem("vt_to") ?? "1";
+
+    delayNode = ctx.createDelay(1.2);
+    delayNode.delayTime.value = .24;
+    delayGain = ctx.createGain();
+    delayGain.gain.value = .16;
+
+    convolver = ctx.createConvolver();
+    convolver.buffer = impulse(2.6, 2.3);
+    reverbGain = ctx.createGain();
+    reverbGain.gain.value = .24;
+
+    bus.synth.connect(delayNode);
+    bus.synth.connect(convolver);
+    bus.fx.connect(delayNode);
+    bus.fx.connect(convolver);
+    delayNode.connect(delayGain);
+    delayGain.connect(master);
+    convolver.connect(reverbGain);
+    reverbGain.connect(master);
+
+    master.connect(analyser);
+    analyser.connect(ctx.destination);
+    updateMixer();
+    drawScope();
   }
 
-  function showToast(msg){
-    toast.textContent = msg;
-    toast.classList.add("show");
-    setTimeout(()=>toast.classList.remove("show"), 2400);
-  }
-
-  function setState(on, msg){
-    dot.classList.toggle("on", on);
-    stateText.textContent = msg;
-  }
-
-  function selectedFrom(){ return languages[+fromLang.value]; }
-  function selectedTo(){ return languages[+toLang.value]; }
-
-  fromLang.onchange = () => {
-    localStorage.setItem("vt_from", fromLang.value);
-    if(recognition) recognition.lang = selectedFrom().speech;
-  };
-  toLang.onchange = () => localStorage.setItem("vt_to", toLang.value);
-
-  $("swapBtn").onclick = () => {
-    const a = fromLang.value;
-    fromLang.value = toLang.value;
-    toLang.value = a;
-    localStorage.setItem("vt_from", fromLang.value);
-    localStorage.setItem("vt_to", toLang.value);
-    const s = sourceText.value;
-    sourceText.value = targetText.value;
-    targetText.value = s;
-    if(recognition) recognition.lang = selectedFrom().speech;
-  };
-
-  async function translateText(text){
-    text = (text || "").trim();
-    if(!text || translating) return;
-    translating = true;
-    engineInfo.textContent = "Перевожу...";
-    try{
-      const from = selectedFrom().code;
-      const to = selectedTo().code;
-      const translated = await translateWithFallback(text, from, to);
-      targetText.value = translated;
-      engineInfo.textContent = "Готово ✅";
-      addHistory(text, translated);
-      if($("autoSpeak").checked) speak(translated);
-    }catch(e){
-      console.error(e);
-      engineInfo.textContent = "Перевод не прошёл. Проверьте интернет или попробуйте другой браузер.";
-      showToast("Не получилось перевести. Нужен интернет.");
-    }finally{
-      translating = false;
+  function impulse(duration, decay){
+    const len = Math.floor(ctx.sampleRate * duration);
+    const b = ctx.createBuffer(2, len, ctx.sampleRate);
+    for(let ch=0; ch<2; ch++){
+      const data = b.getChannelData(ch);
+      for(let i=0; i<len; i++) data[i] = (Math.random()*2-1) * Math.pow(1-i/len, decay);
     }
+    return b;
   }
 
-  async function translateWithFallback(text, from, to){
-    // 1) MyMemory public API. Good for simple browser demo, no key needed.
-    try{
-      const url = "https://api.mymemory.translated.net/get?q=" + encodeURIComponent(text) + "&langpair=" + encodeURIComponent(from + "|" + to);
-      const r = await fetch(url);
-      if(!r.ok) throw new Error("MyMemory HTTP " + r.status);
-      const data = await r.json();
-      const out = data?.responseData?.translatedText;
-      if(out && out.trim() && out.toLowerCase() !== "null") return decodeHtml(out.trim());
-    }catch(e){ console.warn("MyMemory failed", e); }
-
-    // 2) Unofficial Google endpoint. May be blocked by CORS on some browsers.
-    try{
-      const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + encodeURIComponent(from) + "&tl=" + encodeURIComponent(to) + "&dt=t&q=" + encodeURIComponent(text);
-      const r = await fetch(url);
-      if(!r.ok) throw new Error("Google HTTP " + r.status);
-      const data = await r.json();
-      const out = data?.[0]?.map(x => x[0]).join("");
-      if(out && out.trim()) return out.trim();
-    }catch(e){ console.warn("Google fallback failed", e); }
-
-    throw new Error("No translation engine available");
+  function makeGain(destination, time, peak=.7, attack=.006, release=.25){
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0.0001, time);
+    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, peak), time + attack);
+    g.gain.exponentialRampToValueAtTime(0.0001, time + release);
+    g.connect(destination);
+    return g;
   }
 
-  function decodeHtml(str){
-    const txt = document.createElement("textarea");
-    txt.innerHTML = str;
-    return txt.value;
+  function noise(time, dur, freq, gain, dest, type="bandpass", q=.9){
+    const len = Math.max(1, Math.floor(ctx.sampleRate * dur));
+    const buffer = ctx.createBuffer(1, len, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for(let i=0; i<len; i++) data[i] = Math.random()*2 - 1;
+    const src = ctx.createBufferSource();
+    const filter = ctx.createBiquadFilter();
+    const g = makeGain(dest, time, gain, .002, dur);
+    src.buffer = buffer;
+    filter.type = type;
+    filter.frequency.value = freq;
+    filter.Q.value = q;
+    src.connect(filter);
+    filter.connect(g);
+    src.start(time);
+    src.stop(time + dur + .05);
   }
 
-  function speak(text){
-    if(!("speechSynthesis" in window)){
-      showToast("Озвучка не поддерживается в этом браузере");
-      return;
-    }
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = selectedTo().speech;
-    u.rate = 1;
-    u.pitch = 1;
-    u.volume = 1;
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v => v.lang === selectedTo().speech) || voices.find(v => v.lang.startsWith(selectedTo().code));
-    if(preferred) u.voice = preferred;
-    window.speechSynthesis.speak(u);
+  function oscTone(time, freq, dur, type, gain, dest, opts={}){
+    const osc = ctx.createOscillator();
+    const filter = ctx.createBiquadFilter();
+    const g = makeGain(dest, time, gain, opts.attack ?? .01, dur);
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, time);
+    if(opts.slideTo) osc.frequency.exponentialRampToValueAtTime(opts.slideTo, time + Math.min(dur*.7, .45));
+    filter.type = opts.filterType || "lowpass";
+    filter.frequency.setValueAtTime(opts.cutoff || 2400, time);
+    filter.Q.value = opts.q || .8;
+    if(opts.cutoffEnd) filter.frequency.exponentialRampToValueAtTime(opts.cutoffEnd, time + dur*.7);
+    osc.connect(filter);
+    filter.connect(g);
+    osc.start(time);
+    osc.stop(time + dur + .03);
   }
 
-  function makeRecognition(){
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if(!SR) return null;
-    const rec = new SR();
-    rec.lang = selectedFrom().speech;
-    rec.continuous = true;
-    rec.interimResults = true;
-    rec.maxAlternatives = 1;
+  function chord(time, root, intervals, sound, gain=.22, dur=.8){
+    intervals.forEach((semi, idx) => {
+      const f = root * Math.pow(2, semi/12);
+      setTimeout(()=>{},0);
+      if(sound==="piano") pianoTone(time + idx*.01, f, dur, gain);
+      else if(sound==="pad") padTone(time, f, dur, gain*.72);
+      else if(sound==="strings") stringsTone(time, f, dur, gain*.78);
+      else pluckTone(time + idx*.008, f, gain);
+    });
+  }
 
-    rec.onstart = () => {
-      listening = true;
-      setState(true, "Слушаю... говорите");
-      startMeter();
+  function playKick(time, vel){
+    oscTone(time, 150, .43, "sine", .96*vel, bus.drums, {slideTo:42, cutoff:2400});
+    noise(time, .035, 900, .14*vel, bus.drums);
+  }
+  function playSnare(time, vel){
+    noise(time, .18, 2300, .48*vel, bus.drums);
+    oscTone(time, 190, .16, "triangle", .16*vel, bus.drums, {cutoff:1200});
+  }
+  function playClap(time, vel){
+    [0,.016,.033].forEach(d => noise(time+d, .075, 1750, .26*vel, bus.drums, "bandpass", 1.2));
+  }
+  function playHat(time, vel){
+    noise(time, .045, 8500, .22*vel, bus.drums, "highpass");
+  }
+  function playOpenHat(time, vel){
+    noise(time, .22, 7200, .26*vel, bus.drums, "highpass");
+  }
+  function playCrash(time, vel){
+    noise(time, .85, 5200, .38*vel, bus.drums, "highpass");
+  }
+  function playTom(time, vel){
+    oscTone(time, 165, .34, "sine", .55*vel, bus.perc, {slideTo:82, cutoff:1600});
+  }
+  function playRim(time, vel){
+    oscTone(time, 950, .06, "square", .22*vel, bus.perc, {cutoff:3000});
+    noise(time, .035, 2500, .14*vel, bus.perc);
+  }
+  function playDoira(time, vel){
+    oscTone(time, 240, .16, "triangle", .32*vel, bus.perc, {slideTo:145, cutoff:1900});
+    noise(time, .095, 3200, .23*vel, bus.perc, "bandpass", 1.6);
+  }
+  function playTabla(time, vel){
+    oscTone(time, 310, .2, "sine", .30*vel, bus.perc, {slideTo:210, cutoff:1400});
+    oscTone(time, 620, .12, "triangle", .13*vel, bus.perc, {cutoff:1800});
+  }
+  function playShaker(time, vel){
+    noise(time, .08, 9400, .18*vel, bus.perc, "highpass");
+    noise(time+.055, .05, 8800, .12*vel, bus.perc, "highpass");
+  }
+  function playTamb(time, vel){
+    noise(time, .13, 7600, .22*vel, bus.perc, "highpass");
+    oscTone(time, 1700, .08, "square", .08*vel, bus.perc, {cutoff:6000});
+  }
+  function play808(time, vel){
+    const base = bassNote(step) / 2;
+    oscTone(time, base, .72, "sine", .76*vel, bus.bass, {slideTo:base*.72, cutoff:900, attack:.012});
+  }
+  function playBass(time, vel){
+    oscTone(time, bassNote(step), .34, "sawtooth", .48*vel, bus.bass, {cutoff:900, cutoffEnd:145, q:1.1});
+    oscTone(time, bassNote(step)/2, .34, "sine", .20*vel, bus.bass, {cutoff:700});
+  }
+  function pluckTone(time, freq, vel=.8){
+    oscTone(time, freq, .36, $("#wave").value, .23*vel, bus.synth, {attack:.003, cutoff:3200, cutoffEnd:700, q:1.3});
+  }
+  function pianoTone(time, freq, dur=.75, vel=.7){
+    oscTone(time, freq, dur, "triangle", .20*vel, bus.synth, {attack:.004, cutoff:2600, cutoffEnd:900});
+    oscTone(time, freq*2, dur*.55, "sine", .06*vel, bus.synth, {attack:.004, cutoff:3000});
+  }
+  function padTone(time, freq, dur=1.1, vel=.6){
+    oscTone(time, freq, dur, "sawtooth", .12*vel, bus.synth, {attack:.18, cutoff:1500, q:.6});
+    oscTone(time, freq*1.005, dur, "triangle", .10*vel, bus.synth, {attack:.18, cutoff:1400, q:.6});
+  }
+  function stringsTone(time, freq, dur=.95, vel=.65){
+    oscTone(time, freq, dur, "sawtooth", .14*vel, bus.synth, {attack:.08, cutoff:1900, q:.8});
+  }
+  function playPluck(time, vel){ pluckTone(time, leadNote(step), vel); }
+  function playPiano(time, vel){ chord(time, chordRoot(step), [0,3,7,12], "piano", .22*vel, .75); }
+  function playPad(time, vel){ chord(time, chordRoot(step), [0,3,7,10], "pad", .20*vel, 1.4); }
+  function playStrings(time, vel){ chord(time, chordRoot(step), [0,7,12], "strings", .20*vel, 1.0); }
+  function playBrass(time, vel){
+    chord(time, chordRoot(step)*2, [0,4,7], "pluck", .36*vel, .45);
+    noise(time, .13, 1900, .14*vel, bus.synth, "bandpass");
+  }
+  function playVocal(time, vel){
+    const seq = [392,523.25,466.16,392];
+    seq.forEach((f,i)=>oscTone(time+i*.065, f, .12, "sine", .16*vel, bus.fx, {cutoff:1800, attack:.012}));
+  }
+  function playRiser(time, vel){
+    const osc = ctx.createOscillator();
+    const g = makeGain(bus.fx, time, .22*vel, .08, 1.1);
+    osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(220, time);
+    osc.frequency.exponentialRampToValueAtTime(1800, time + .95);
+    osc.connect(g);
+    osc.start(time);
+    osc.stop(time + 1.1);
+    noise(time, 1.0, 5000, .12*vel, bus.fx, "highpass");
+  }
+  function playDownFx(time, vel){
+    const osc = ctx.createOscillator();
+    const g = makeGain(bus.fx, time, .26*vel, .02, .9);
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(1400, time);
+    osc.frequency.exponentialRampToValueAtTime(110, time + .75);
+    osc.connect(g);
+    osc.start(time);
+    osc.stop(time + .9);
+  }
+
+  function bassNote(s){
+    const seq = [65.41,65.41,77.78,65.41,87.31,65.41,77.78,65.41,98,87.31,77.78,65.41,58.27,65.41,77.78,87.31];
+    return seq[s % 16];
+  }
+  function leadNote(s){
+    const seq = [392,466.16,523.25,392,349.23,392,523.25,466.16,392,587.33,523.25,466.16,392,349.23,329.63,392];
+    return seq[s % 16];
+  }
+  function chordRoot(s){
+    const seq = [261.63,261.63,311.13,311.13,349.23,349.23,392,392,261.63,261.63,233.08,233.08,207.65,207.65,246.94,246.94];
+    return seq[s % 16];
+  }
+
+  function trigger(id, time, vel=.9){
+    initAudio();
+    time = time || ctx.currentTime;
+    const map = {
+      kick:playKick, snare:playSnare, clap:playClap, hat:playHat, openhat:playOpenHat, crash:playCrash,
+      tom:playTom, rim:playRim, doira:playDoira, tabla:playTabla, shaker:playShaker, tamb:playTamb,
+      "808":play808, bass:playBass, pluck:playPluck, piano:playPiano, pad:playPad, strings:playStrings,
+      brass:playBrass, vocal:playVocal, riser:playRiser, downfx:playDownFx
     };
+    if(map[id]) map[id](time, vel);
+    flash(id);
+  }
 
-    rec.onresult = (event) => {
-      let interimTxt = "";
-      let finalTxt = "";
-      for(let i = event.resultIndex; i < event.results.length; i++){
-        const txt = event.results[i][0].transcript;
-        if(event.results[i].isFinal) finalTxt += txt;
-        else interimTxt += txt;
+  function visibleTracks(){
+    if(currentView === "all") return trackDefs;
+    return trackDefs.filter(t => t.group === currentView);
+  }
+
+  function renderSequencer(){
+    const el = $("#sequencer");
+    el.innerHTML = "";
+    visibleTracks().forEach(t => {
+      const row = document.createElement("div");
+      row.className = "row";
+      const label = document.createElement("div");
+      label.className = "track";
+      label.innerHTML = `<div>${t.name}<small>${t.group}${t.key ? " • " + t.key : ""}</small></div><button class="mute ${muted[t.id] ? "on" : ""}" title="Mute">M</button>`;
+      label.querySelector("button").onclick = () => {
+        muted[t.id] = !muted[t.id];
+        renderSequencer();
+      };
+      row.appendChild(label);
+      for(let i=0; i<16; i++){
+        const cell = document.createElement("div");
+        cell.className = "step" + (pattern[t.id][i] ? " on" : "");
+        cell.dataset.track = t.id;
+        cell.dataset.step = i;
+        const vel = document.createElement("div");
+        vel.className = "vel";
+        vel.style.width = (velocities[t.id][i] * 90) + "%";
+        cell.appendChild(vel);
+        cell.onclick = e => {
+          if(e.shiftKey){
+            velocities[t.id][i] = velocities[t.id][i] > .7 ? .45 : .95;
+            vel.style.width = (velocities[t.id][i] * 90) + "%";
+            toast("Velocity changed");
+          } else {
+            pattern[t.id][i] = !pattern[t.id][i];
+            cell.classList.toggle("on", pattern[t.id][i]);
+            if(pattern[t.id][i]) trigger(t.id, undefined, velocities[t.id][i]);
+          }
+        };
+        row.appendChild(cell);
       }
-      if(interimTxt) interim.textContent = "Слышу: " + interimTxt;
-
-      if(finalTxt.trim()){
-        const clean = finalTxt.trim();
-        if(clean !== lastFinal){
-          lastFinal = clean;
-          sourceText.value = (sourceText.value ? sourceText.value.trim() + "\n" : "") + clean;
-          interim.textContent = "";
-          translateText(clean);
-        }
-      }
-    };
-
-    rec.onerror = (e) => {
-      console.warn(e);
-      if(e.error === "not-allowed") showToast("Разрешите доступ к микрофону");
-      else if(e.error === "no-speech") showToast("Речь не услышана");
-      else showToast("Ошибка микрофона: " + e.error);
-      setState(false, "Микрофон выключен");
-    };
-
-    rec.onend = () => {
-      stopMeter();
-      if(listening && $("continuous").checked){
-        try{ rec.start(); }catch(e){}
-      }else{
-        listening = false;
-        setState(false, "Микрофон выключен");
-      }
-    };
-    return rec;
+      el.appendChild(row);
+    });
   }
 
-  async function startMeter(){
-    try{
-      if(mediaStream) return;
-      mediaStream = await navigator.mediaDevices.getUserMedia({audio:true});
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      analyser = audioCtx.createAnalyser();
-      const source = audioCtx.createMediaStreamSource(mediaStream);
-      source.connect(analyser);
-      analyser.fftSize = 128;
-      drawMeter();
-    }catch(e){
-      console.warn("meter failed", e);
+  function renderPads(){
+    const padIds = ["kick","snare","clap","hat","openhat","crash","doira","tabla","shaker","808","pluck","vocal"];
+    $("#pads").innerHTML = padIds.map(id => {
+      const t = trackDefs.find(x => x.id === id);
+      return `<button class="pad" data-pad="${id}"><b>${t.name}</b><span>${t.key || "tap"}</span></button>`;
+    }).join("");
+    $$("#pads .pad").forEach(p => p.onclick = () => trigger(p.dataset.pad));
+  }
+
+  function renderLibrary(){
+    $("#library").innerHTML = libraryGroups.map(([id,title,desc]) => {
+      return `<button class="soundBtn" data-sound="${id}"><strong>${title}</strong><small>${desc}</small></button>`;
+    }).join("");
+    $$(".soundBtn").forEach(b => b.onclick = () => {
+      $$(".soundBtn").forEach(x => x.classList.remove("active"));
+      b.classList.add("active");
+      trigger(b.dataset.sound);
+    });
+  }
+
+  function renderKeyboard(){
+    $("#keyboard").innerHTML = "";
+    noteList.forEach((n, idx) => {
+      const k = document.createElement("button");
+      k.className = "key" + (n[0].includes("#") ? " black" : "");
+      k.textContent = n[0];
+      k.dataset.freq = n[1];
+      k.onclick = () => playKeyboardNote(idx);
+      $("#keyboard").appendChild(k);
+    });
+  }
+
+  function playKeyboardNote(idx){
+    initAudio();
+    const oct = Number($("#octave").value || 0);
+    const freq = noteList[idx][1] * Math.pow(2, oct/12);
+    pluckTone(ctx.currentTime, freq, 1);
+    if(arpOn){
+      [0,4,7,12].forEach((semi,i) => pluckTone(ctx.currentTime + i*.11, freq*Math.pow(2, semi/12), .8));
     }
+    const key = $$("#keyboard .key")[idx];
+    if(key){ key.classList.add("active"); setTimeout(()=>key.classList.remove("active"),180); }
   }
 
-  function buildMeter(){
-    const meter = $("meter");
-    meter.innerHTML = "";
-    for(let i=0;i<34;i++){
-      const b = document.createElement("div");
-      b.className = "bar";
-      meter.appendChild(b);
-    }
-  }
-
-  function drawMeter(){
-    const bars = [...document.querySelectorAll(".bar")];
-    const arr = new Uint8Array(analyser.frequencyBinCount);
+  function start(){
+    initAudio();
+    if(ctx.state === "suspended") ctx.resume();
+    if(isPlaying) return;
+    isPlaying = true;
+    $("#playBtn").textContent = "⏸ Playing";
+    step = 0;
     const tick = () => {
-      analyser.getByteFrequencyData(arr);
-      bars.forEach((b,i)=>{
-        const v = arr[i % arr.length] / 255;
-        b.style.height = Math.max(8, Math.round(v*92)) + "%";
+      if(!isPlaying) return;
+      const now = ctx.currentTime;
+      $$(".step.playing").forEach(x => x.classList.remove("playing"));
+      $$(`.step[data-step="${step}"]`).forEach(x => x.classList.add("playing"));
+      $("#posPill").textContent = "Step: " + (step + 1);
+      trackDefs.forEach(t => {
+        if(pattern[t.id][step] && !muted[t.id]) trigger(t.id, now, velocities[t.id][step]);
       });
-      raf = requestAnimationFrame(tick);
+      const bpm = Math.max(60, Math.min(220, Number($("#bpm").value) || 128));
+      step = (step + 1) % 16;
+      timer = setTimeout(tick, (60 / bpm) / 4 * 1000);
     };
     tick();
   }
 
-  function stopMeter(){
-    if(raf) cancelAnimationFrame(raf);
-    raf = null;
-    document.querySelectorAll(".bar").forEach((b,i)=> b.style.height = (12 + (i%5)*7) + "%");
-    if(mediaStream){
-      mediaStream.getTracks().forEach(t=>t.stop());
-      mediaStream = null;
-    }
-    if(audioCtx){
-      audioCtx.close().catch(()=>{});
-      audioCtx = null; analyser = null;
-    }
-  }
-
-  function start(){
-    if(listening) return;
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if(!SR){
-      showToast("В этом браузере нет распознавания речи. Откройте в Chrome или Edge.");
-      setState(false, "Браузер не поддерживает микрофонный перевод");
-      return;
-    }
-    recognition = makeRecognition();
-    try{
-      recognition.start();
-    }catch(e){
-      console.error(e);
-      showToast("Не удалось стартовать микрофон");
-    }
-  }
-
   function stop(){
-    listening = false;
-    if(recognition){
-      try{ recognition.stop(); }catch(e){}
-    }
-    window.speechSynthesis?.cancel?.();
-    stopMeter();
-    setState(false, "Микрофон выключен");
+    isPlaying = false;
+    clearTimeout(timer);
+    $("#playBtn").textContent = "▶ Play";
+    $$(".step.playing").forEach(x => x.classList.remove("playing"));
   }
 
-  function addHistory(src,trg){
-    if(!$("saveHistory").checked) return;
-    const item = {src,trg,from:selectedFrom().name,to:selectedTo().name,ts:new Date().toLocaleString()};
-    const old = JSON.parse(localStorage.getItem("vt_history") || "[]");
-    old.unshift(item);
-    localStorage.setItem("vt_history", JSON.stringify(old.slice(0,25)));
-    renderHistory();
+  function flash(id){
+    const p = $(`[data-pad="${id}"]`);
+    if(p){ p.classList.add("hit"); setTimeout(()=>p.classList.remove("hit"),120); }
   }
 
-  function renderHistory(){
-    const data = JSON.parse(localStorage.getItem("vt_history") || "[]");
-    historyItems.innerHTML = "";
-    if(!data.length){
-      historyItems.innerHTML = '<div class="footerNote">История пока пустая.</div>';
-      return;
+  function updateMixer(){
+    if(!ctx) return;
+    bus.drums.gain.value = Number($("#volDrums").value)/100;
+    bus.perc.gain.value = Number($("#volPerc").value)/100;
+    bus.bass.gain.value = Number($("#volBass").value)/100;
+    bus.synth.gain.value = Number($("#volSynth").value)/100;
+    bus.fx.gain.value = Number($("#volFx").value)/100;
+    master.gain.value = Number($("#volMaster").value)/100;
+    reverbGain.gain.value = Number($("#reverb").value)/100 * .8;
+    delayGain.gain.value = Number($("#delay").value)/100 * .7;
+  }
+
+  function updateLabels(){
+    [["volDrums","vDrums"],["volPerc","vPerc"],["volBass","vBass"],["volSynth","vSynth"],["volFx","vFx"],["volMaster","vMaster"]]
+      .forEach(([i,l]) => { $("#"+l).textContent = $("#"+i).value + "%"; });
+  }
+
+  function clearPattern(){
+    stop();
+    trackDefs.forEach(t => pattern[t.id].fill(false));
+    renderSequencer();
+    toast("Очищено");
+  }
+
+  function setPreset(name){
+    trackDefs.forEach(t => pattern[t.id].fill(false));
+    function on(id, arr){ arr.forEach(i => pattern[id][i] = true); }
+    if(name === "trance"){
+      $("#bpm").value = 128; $("#styleSelect").value = "Trance Vocal";
+      on("kick",[0,4,8,12]); on("clap",[4,12]); on("hat",[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
+      on("openhat",[2,6,10,14]); on("bass",[0,3,6,8,11,14]); on("pluck",[0,2,4,7,8,10,12,15]);
+      on("pad",[0,8]); on("riser",[14]);
     }
-    data.slice(0,12).forEach(x=>{
-      const d = document.createElement("div");
-      d.className = "item";
-      d.innerHTML = `
-        <small>${escapeHtml(x.ts)} · ${escapeHtml(x.from)} → ${escapeHtml(x.to)}</small>
-        <p><b>Вы:</b> ${escapeHtml(x.src)}</p>
-        <p><b>Перевод:</b> ${escapeHtml(x.trg)}</p>
-      `;
-      historyItems.appendChild(d);
+    if(name === "rap"){
+      $("#bpm").value = 96; $("#styleSelect").value = "90s Rap / Vanilla";
+      on("kick",[0,4,8,11]); on("snare",[4,12]); on("clap",[4,12]); on("hat",[0,2,4,6,8,10,12,14]);
+      on("bass",[0,3,6,8,11,14]); on("piano",[0,8]); on("rim",[2,10]);
+    }
+    if(name === "doira"){
+      $("#bpm").value = 124; $("#styleSelect").value = "Doira Techno";
+      on("kick",[0,4,8,12]); on("clap",[4,12]); on("hat",[0,2,4,6,8,10,12,14]); on("openhat",[6,14]);
+      on("doira",[0,2,5,7,8,10,13,15]); on("tabla",[3,6,11,14]); on("shaker",[1,3,5,7,9,11,13,15]);
+      on("bass",[0,5,8,13]); on("pluck",[2,6,10,14]); on("pad",[0,8]);
+    }
+    if(name === "mystic"){
+      $("#bpm").value = 86; $("#styleSelect").value = "Enigma Mystic";
+      on("kick",[0,8]); on("snare",[4,12]); on("hat",[2,6,10,14]); on("doira",[0,7,8,15]);
+      on("pad",[0,4,8,12]); on("strings",[0,8]); on("vocal",[3,11]); on("downfx",[15]);
+    }
+    if(name === "trap"){
+      $("#bpm").value = 140; $("#styleSelect").value = "Oriental Trap";
+      on("kick",[0,3,8,10,12]); on("snare",[4,12]); on("hat",[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
+      on("808",[0,3,6,8,11,14]); on("tabla",[2,7,10,15]); on("brass",[0,8]); on("pluck",[5,13]);
+    }
+    if(name === "house"){
+      $("#bpm").value = 122; $("#styleSelect").value = "Deep House";
+      on("kick",[0,4,8,12]); on("clap",[4,12]); on("openhat",[2,6,10,14]); on("shaker",[1,3,5,7,9,11,13,15]);
+      on("bass",[0,4,7,8,12,15]); on("pluck",[0,3,6,8,10,13]); on("pad",[0,8]);
+    }
+    currentView = "all";
+    $$(".tab").forEach(t => t.classList.toggle("active", t.dataset.view === "all"));
+    renderSequencer();
+    toast("Preset loaded: " + name);
+  }
+
+  function magic(){
+    clearPattern();
+    const style = ["trance","rap","doira","mystic","trap","house"][Math.floor(Math.random()*6)];
+    setPreset(style);
+    trackDefs.forEach(t => {
+      if(Math.random() > .68){
+        for(let i=0;i<16;i++) if(Math.random() > .78) pattern[t.id][i] = true;
+      }
     });
+    renderSequencer();
+    toast("Magic beat создан");
   }
 
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+  function save(){
+    const data = {
+      pattern, velocities, muted, currentView,
+      bpm:$("#bpm").value, key:$("#keySelect").value, style:$("#styleSelect").value,
+      lyrics:$("#lyrics").value, wave:$("#wave").value, octave:$("#octave").value,
+      mixer:["volDrums","volPerc","volBass","volSynth","volFx","volMaster","reverb","delay"].reduce((a,id)=>(a[id]=$("#"+id).value,a),{})
+    };
+    localStorage.setItem("ilkhomProStudioXL", JSON.stringify(data));
+    toast("Проект сохранён");
   }
 
-  async function copy(id){
-    const el = $(id);
+  function load(){
+    const raw = localStorage.getItem("ilkhomProStudioXL");
+    if(!raw) return toast("Сохранения нет");
+    const data = JSON.parse(raw);
+    pattern = data.pattern || pattern;
+    velocities = data.velocities || velocities;
+    muted = data.muted || muted;
+    currentView = data.currentView || "all";
+    $("#bpm").value = data.bpm || 128;
+    $("#keySelect").value = data.key || "C minor";
+    $("#styleSelect").value = data.style || "Trance Vocal";
+    $("#lyrics").value = data.lyrics || "";
+    $("#wave").value = data.wave || "sawtooth";
+    $("#octave").value = data.octave || "0";
+    Object.entries(data.mixer || {}).forEach(([id,val]) => { if($("#"+id)) $("#"+id).value = val; });
+    $$(".tab").forEach(t => t.classList.toggle("active", t.dataset.view === currentView));
+    renderSequencer();
+    updateLabels();
+    updateMixer();
+    toast("Проект загружен");
+  }
+
+  function makePrompt(){
+    const style = $("#styleSelect").value;
+    const bpm = $("#bpm").value;
+    const key = $("#keySelect").value;
+    const userText = $("#lyrics").value.trim();
+    $("#lyrics").value =
+`Professional music prompt:
+Genre: ${style}
+Tempo: ${bpm} BPM
+Key: ${key}
+Sound: radio-ready, powerful low end, clean vocal, wide stereo, punchy drums
+Instruments: kick, snare, clap, hi-hats, 808/bass, doira, tabla, shaker, pluck, piano, pad, strings, brass, vocal chops, riser FX
+Mood: expensive, emotional, energetic, modern, club quality
+Arrangement: intro 8 bars, verse, pre-chorus, huge chorus, bridge, final chorus
+Mix: professional mastering, bright vocal, deep bass, clean reverb, delay throws
+
+Lyrics / idea:
+${userText || "Напиши песню про Бухару, силу семьи, движение вперёд, мужской уверенный вокал."}`;
+    toast("Промпт готов");
+  }
+
+  async function copyText(){
     try{
-      await navigator.clipboard.writeText(el.value);
-      showToast("Скопировано");
-    }catch(e){
-      el.select();
-      document.execCommand("copy");
-      showToast("Скопировано");
-    }
+      await navigator.clipboard.writeText($("#lyrics").value);
+      toast("Скопировано");
+    }catch(e){ toast("Не удалось скопировать"); }
   }
 
-  $("startBtn").onclick = start;
-  $("stopBtn").onclick = stop;
-  $("translateBtn").onclick = () => translateText(sourceText.value);
-  $("speakBtn").onclick = () => speak(targetText.value || sourceText.value);
-  $("clearBtn").onclick = () => {
-    sourceText.value = "";
-    targetText.value = "";
-    interim.textContent = "";
-    engineInfo.textContent = "";
-    lastFinal = "";
+  async function startRec(){
+    try{
+      const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+      mediaRecorder = new MediaRecorder(stream);
+      recChunks = [];
+      mediaRecorder.ondataavailable = e => recChunks.push(e.data);
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(recChunks,{type:"audio/webm"});
+        const url = URL.createObjectURL(blob);
+        const player = $("#audioPlayer");
+        player.src = url;
+        player.style.display = "block";
+        toast("Запись готова");
+      };
+      mediaRecorder.start();
+      toast("Запись началась");
+    }catch(e){ toast("Нет доступа к микрофону"); }
+  }
+
+  function stopRec(){
+    if(mediaRecorder && mediaRecorder.state !== "inactive") mediaRecorder.stop();
+  }
+
+  function drawScope(){
+    if(!analyser) return requestAnimationFrame(drawScope);
+    const canvas = $("#scope");
+    const c = canvas.getContext("2d");
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(data);
+    c.clearRect(0,0,canvas.width,canvas.height);
+    const grad = c.createLinearGradient(0,0,canvas.width,0);
+    grad.addColorStop(0,"#17e6b7");
+    grad.addColorStop(.55,"#7c5cff");
+    grad.addColorStop(1,"#ffd166");
+    c.fillStyle = grad;
+    const bars = 110;
+    const w = canvas.width / bars;
+    for(let i=0;i<bars;i++){
+      const v = data[i] / 255;
+      const h = v * canvas.height * .9;
+      c.fillRect(i*w, canvas.height - h, w - 2, h);
+    }
+    requestAnimationFrame(drawScope);
+  }
+
+  $("#playBtn").onclick = start;
+  $("#stopBtn").onclick = stop;
+  $("#clearBtn").onclick = clearPattern;
+  $("#randomBtn").onclick = magic;
+  $("#saveBtn").onclick = save;
+  $("#loadBtn").onclick = load;
+  $("#promptBtn").onclick = makePrompt;
+  $("#copyBtn").onclick = copyText;
+  $("#recBtn").onclick = startRec;
+  $("#recStopBtn").onclick = stopRec;
+  $("#arpBtn").onclick = () => {
+    arpOn = !arpOn;
+    $("#arpBtn").textContent = arpOn ? "ON" : "OFF";
+    $("#arpBtn").classList.toggle("primary", arpOn);
   };
-  $("clearHistoryBtn").onclick = () => {
-    localStorage.removeItem("vt_history");
-    renderHistory();
-    showToast("История удалена");
-  };
-  document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copy(b.dataset.copy));
+
+  $$(".tab").forEach(t => t.onclick = () => {
+    currentView = t.dataset.view;
+    $$(".tab").forEach(x => x.classList.remove("active"));
+    t.classList.add("active");
+    renderSequencer();
+  });
+
+  $$(".preset").forEach(p => p.onclick = () => setPreset(p.dataset.preset));
+
+  ["volDrums","volPerc","volBass","volSynth","volFx","volMaster","reverb","delay"].forEach(id => {
+    $("#"+id).addEventListener("input", () => { updateLabels(); updateMixer(); });
+  });
 
   document.addEventListener("keydown", e => {
-    if(e.key === " " && (e.ctrlKey || e.metaKey)){
+    if(e.repeat) return;
+    const key = e.key.toLowerCase();
+    if(keyMap[key]) trigger(keyMap[key]);
+    if(synthKeyMap[key] !== undefined) playKeyboardNote(synthKeyMap[key]);
+    if(e.code === "Space"){
       e.preventDefault();
-      listening ? stop() : start();
+      isPlaying ? stop() : start();
     }
   });
 
-  buildMeter();
-  fillLanguages();
-  renderHistory();
-  setState(false, "Микрофон выключен");
-
-  // Helps iOS load available voices after first user gesture.
-  if("speechSynthesis" in window){
-    window.speechSynthesis.onvoiceschanged = () => {};
-  }
+  renderSequencer();
+  renderPads();
+  renderLibrary();
+  renderKeyboard();
+  updateLabels();
+  setPreset("doira");
 })();
 </script>
 </body>
