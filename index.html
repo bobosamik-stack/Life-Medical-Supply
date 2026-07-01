@@ -1,394 +1,628 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Upper Chest Beast</title>
-<style>
-:root{
-  --bg:#050711;
-  --panel:#10182f;
-  --panel2:#162244;
-  --panel3:#1d2c58;
-  --text:#f7f9ff;
-  --muted:#aeb9d8;
-  --line:#2b3a66;
-  --green:#31e981;
-  --green2:#9cffc2;
-  --blue:#49a9ff;
-  --purple:#9d62ff;
-  --orange:#ffb74a;
-  --red:#ff5f73;
-}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:
-radial-gradient(circle at 25% -8%,#214495 0,#101a3b 38%,#050711 82%);color:var(--text)}
-button,input,select{font-family:inherit}
-.app{max-width:520px;margin:0 auto;min-height:100vh;padding:16px 14px 100px}
-.top{display:flex;align-items:center;justify-content:space-between;margin:8px 0 14px}
-.brand{display:flex;gap:12px;align-items:center}
-.logo{width:58px;height:58px;border-radius:20px;background:
-linear-gradient(135deg,var(--green),var(--blue) 55%,var(--purple));display:grid;place-items:center;font-size:29px;font-weight:1000;
-box-shadow:0 15px 44px rgba(49,233,129,.24), inset 0 0 20px rgba(255,255,255,.18)}
-h1{font-size:25px;line-height:1;margin:0;letter-spacing:-.5px}
-.sub{font-size:13px;color:var(--muted);margin-top:5px}
-.badge{padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);font-size:12px;font-weight:950;color:#eaf0ff}
-.card{background:rgba(16,24,47,.94);border:1px solid rgba(255,255,255,.09);border-radius:26px;margin:13px 0;padding:15px;box-shadow:0 18px 48px rgba(0,0,0,.34)}
-.hero{overflow:hidden;padding:0}
-.heroHead{display:flex;align-items:center;justify-content:space-between;padding:14px 14px 0}
-.title{font-weight:1000}
-.mini{font-size:12px;color:var(--muted);line-height:1.4}
-.muscle{color:var(--green);font-weight:1000;font-size:12px;letter-spacing:.7px;text-transform:uppercase}
-canvas{width:100%;height:auto;display:block;touch-action:none}
-.tabs{display:flex;gap:9px;overflow:auto;padding:2px 0 4px}
-.tab{border:1px solid var(--line);background:#172344;color:var(--muted);border-radius:16px;padding:11px 12px;font-size:13px;font-weight:950;white-space:nowrap}
-.tab.active{border-color:transparent;color:#06121f;background:linear-gradient(145deg,var(--green),var(--blue));box-shadow:0 10px 26px rgba(49,233,129,.18)}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.stat{background:#172344;border:1px solid var(--line);border-radius:19px;padding:13px;text-align:center}
-.num{font-size:24px;font-weight:1000;letter-spacing:-.6px}.lab{font-size:12px;color:var(--muted);margin-top:4px}
-.btn{border:0;border-radius:18px;padding:14px 10px;font-weight:1000;font-size:15px;color:#07121f;background:linear-gradient(145deg,var(--green),var(--green2));box-shadow:0 12px 26px rgba(49,233,129,.18)}
-.btn.secondary{background:#26365f;color:var(--text);box-shadow:none}
-.btn.blue{background:linear-gradient(145deg,var(--blue),#9bd2ff);color:#06121f}
-.btn.orange{background:linear-gradient(145deg,var(--orange),#ffe098);color:#241500}
-.timerBox{text-align:center}
-.timer{font-size:64px;font-weight:1000;letter-spacing:-3px;line-height:1;margin:8px 0}
-.progress{height:12px;background:#26365f;border-radius:99px;overflow:hidden}
-.bar{height:100%;width:0;background:linear-gradient(90deg,var(--green),var(--blue),var(--purple));transition:width .2s}
-.row{display:flex;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
-.row:last-child{border-bottom:0}
-.icon{width:49px;height:49px;border-radius:17px;background:#20305d;display:grid;place-items:center;font-size:23px;flex:0 0 auto}
-.rTitle{font-weight:950;font-size:15.5px}.rMeta{font-size:13px;color:var(--muted);margin-top:4px;line-height:1.35}
-.check{margin-left:auto;min-width:35px;height:35px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);font-weight:900}
-.row.done .check{background:var(--green);color:#07121f;border:0}
-.secret{padding:13px;border:1px solid var(--line);background:#172344;border-radius:19px;margin:10px 0}
-.secret b{color:var(--green)}
-input{width:100%;border:1px solid var(--line);background:#0b1227;color:var(--text);padding:13px;border-radius:16px;font-size:15px;font-weight:850}
-.result{margin-top:10px;background:#172344;border:1px solid var(--line);border-radius:17px;padding:12px;color:var(--muted);font-size:13px;line-height:1.45}
-.dayTag{display:inline-block;margin:6px 6px 0 0;background:rgba(49,233,129,.12);color:var(--green);border:1px solid rgba(49,233,129,.24);border-radius:999px;padding:7px 9px;font-size:12px;font-weight:900}
-.bottom{position:fixed;left:0;right:0;bottom:0;background:rgba(5,7,17,.9);backdrop-filter:blur(18px);border-top:1px solid rgba(255,255,255,.09);padding:10px 14px 18px}
-.bottomInner{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center;color:var(--muted);font-size:12px}
-.bottomInner div{padding:6px;border-radius:14px}.bottomInner .active{color:var(--green);font-weight:1000;background:rgba(49,233,129,.09)}
-.warn{font-size:12.5px;color:#ffd6a8;line-height:1.45}
-@media(max-width:370px){h1{font-size:22px}.timer{font-size:56px}.rTitle{font-size:14px}}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>Ilkhom Bukhara</title>
+  <meta name="theme-color" content="#0b1020" />
+  <style>
+    :root{
+      --bg:#070a14;
+      --card:rgba(255,255,255,.08);
+      --card2:rgba(255,255,255,.12);
+      --text:#f6f8ff;
+      --muted:#a9b1c7;
+      --line:rgba(255,255,255,.14);
+      --good:#28f3a2;
+      --warn:#ffd166;
+      --bad:#ff5c7a;
+      --accent:#7c5cff;
+      --accent2:#00d4ff;
+      --shadow:0 18px 55px rgba(0,0,0,.42);
+      --r:26px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 700px at 10% -10%, rgba(124,92,255,.55), transparent 55%),
+        radial-gradient(900px 650px at 100% 10%, rgba(0,212,255,.38), transparent 48%),
+        radial-gradient(900px 650px at 50% 120%, rgba(40,243,162,.22), transparent 50%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";
+      position:fixed; inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size:38px 38px;
+      mask-image:linear-gradient(to bottom, rgba(0,0,0,.9), transparent 80%);
+      pointer-events:none;
+    }
+    .wrap{max-width:1180px;margin:0 auto;padding:22px 16px 40px;position:relative}
+    .hero{
+      display:grid;gap:16px;grid-template-columns:1.15fr .85fr;align-items:stretch;
+      margin-bottom:16px;
+    }
+    .brand,.statusCard,.panel,.history{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.055));
+      backdrop-filter: blur(18px);
+      box-shadow:var(--shadow);
+      border-radius:var(--r);
+    }
+    .brand{padding:22px;position:relative;overflow:hidden}
+    .brand:after{
+      content:"";
+      position:absolute;
+      width:260px;height:260px;right:-90px;top:-115px;border-radius:50%;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      filter:blur(2px);opacity:.42;
+    }
+    .logoRow{display:flex;gap:14px;align-items:center;position:relative;z-index:1}
+    .logo{
+      width:54px;height:54px;border-radius:18px;
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      display:grid;place-items:center;font-size:27px;font-weight:900;
+      box-shadow:0 14px 35px rgba(0,212,255,.23);
+    }
+    h1{margin:0;font-size:clamp(28px,4vw,50px);line-height:1.02;letter-spacing:-.05em}
+    .subtitle{margin:13px 0 0;color:var(--muted);font-size:16px;max-width:720px;line-height:1.45;position:relative;z-index:1}
+    .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px;position:relative;z-index:1}
+    .chip{font-size:12px;color:#dfe6ff;border:1px solid var(--line);background:rgba(255,255,255,.075);padding:8px 10px;border-radius:999px}
+    .statusCard{padding:18px;display:flex;flex-direction:column;gap:12px}
+    .meter{
+      height:92px;border-radius:24px;border:1px solid var(--line);
+      background:rgba(0,0,0,.18);display:flex;align-items:end;gap:5px;padding:16px;overflow:hidden;
+    }
+    .bar{flex:1;min-width:5px;border-radius:999px;background:linear-gradient(to top,var(--accent),var(--accent2));height:16%;opacity:.75;transition:height .08s linear}
+    .state{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      color:var(--muted);font-size:14px;
+    }
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--bad);box-shadow:0 0 0 6px rgba(255,92,122,.12)}
+    .dot.on{background:var(--good);box-shadow:0 0 0 7px rgba(40,243,162,.12)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .panel{padding:18px}
+    .topline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+    .label{font-weight:800;letter-spacing:-.02em}
+    select,button,textarea,input{
+      font:inherit;
+    }
+    select{
+      width:100%;background:rgba(0,0,0,.25);color:var(--text);
+      border:1px solid var(--line);border-radius:16px;padding:13px 14px;outline:none;
+    }
+    option{background:#15192a;color:#fff}
+    textarea{
+      width:100%;min-height:190px;resize:vertical;
+      color:var(--text);background:rgba(0,0,0,.22);
+      border:1px solid var(--line);border-radius:22px;
+      padding:16px;outline:none;line-height:1.45;font-size:18px;
+    }
+    textarea::placeholder{color:rgba(255,255,255,.38)}
+    .interim{min-height:24px;color:var(--warn);font-size:14px;margin:8px 2px 0}
+    .controls{
+      display:grid;grid-template-columns:1.3fr .7fr .7fr .7fr;gap:10px;margin:16px 0;
+    }
+    .btn{
+      border:0;border-radius:18px;padding:14px 14px;cursor:pointer;
+      color:#fff;font-weight:900;
+      background:rgba(255,255,255,.12);
+      border:1px solid var(--line);
+      transition:.2s transform,.2s background,.2s opacity;
+      user-select:none;
+    }
+    .btn:active{transform:scale(.98)}
+    .primary{
+      background:linear-gradient(135deg,var(--accent),var(--accent2));
+      box-shadow:0 15px 38px rgba(0,212,255,.22);
+      border:0;
+    }
+    .danger{background:linear-gradient(135deg,#ff3b6b,#ff8f3b);border:0}
+    .success{background:linear-gradient(135deg,#13c681,#28f3a2);border:0;color:#06130d}
+    .mini{font-size:13px;padding:11px 12px;border-radius:15px}
+    .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .switch{
+      display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;
+      padding:10px 12px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.055)
+    }
+    .switch input{accent-color:#7c5cff}
+    .history{margin-top:16px;padding:18px}
+    .historyHeader{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}
+    .items{display:grid;gap:10px}
+    .item{
+      border:1px solid var(--line);border-radius:20px;background:rgba(0,0,0,.18);
+      padding:13px 14px;
+    }
+    .item small{color:var(--muted)}
+    .item p{margin:6px 0 0;line-height:1.35}
+    .pill{
+      display:inline-flex;align-items:center;gap:7px;
+      border:1px solid var(--line);background:rgba(0,0,0,.18);
+      color:var(--muted);border-radius:999px;padding:9px 11px;font-size:13px;
+    }
+    .footerNote{color:var(--muted);font-size:13px;line-height:1.45;margin-top:14px}
+    .toast{
+      position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);
+      background:rgba(15,20,36,.92);border:1px solid var(--line);
+      color:#fff;padding:12px 14px;border-radius:999px;box-shadow:var(--shadow);
+      opacity:0;pointer-events:none;transition:.25s;z-index:10;
+      max-width:min(92vw,760px);text-align:center;
+    }
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .kbd{font-family:ui-monospace,Menlo,monospace;font-size:12px;border:1px solid var(--line);border-bottom-width:2px;padding:2px 6px;border-radius:7px;color:#eaf0ff;background:rgba(255,255,255,.08)}
+    @media(max-width:820px){
+      .hero,.grid{grid-template-columns:1fr}
+      .controls{grid-template-columns:1fr 1fr}
+      .controls .primary{grid-column:1/-1}
+      textarea{min-height:160px}
+    }
+  </style>
 </head>
 <body>
-<div class="app">
-  <div class="top">
-    <div class="brand">
-      <div class="logo">🔥</div>
-      <div>
-        <h1>Upper Chest Beast</h1>
-        <div class="sub">супер-анимация + план прокачки</div>
+  <main class="wrap">
+    <section class="hero">
+      <div class="brand">
+        <div class="logoRow">
+          <div class="logo">🌐</div>
+          <div>
+            <h1>Ilkhom Bukhara</h1>
+            <div class="subtitle">Синхронный переводчик: говорите в микрофон, приложение распознаёт речь, переводит и сразу озвучивает перевод. Работает прямо в браузере.</div>
+          </div>
+        </div>
+        <div class="chips">
+          <span class="chip">🎙️ Голос → текст</span>
+          <span class="chip">⚡ Автоперевод</span>
+          <span class="chip">🔊 Озвучка</span>
+          <span class="chip">🔁 Разговор туда‑обратно</span>
+          <span class="chip">📋 История</span>
+        </div>
       </div>
-    </div>
-    <div class="badge">PRO</div>
-  </div>
 
-  <div class="card hero">
-    <div class="heroHead">
-      <div>
-        <div class="title" id="exName">Жим гантелей 30°</div>
-        <div class="muscle">верх грудных активен</div>
+      <div class="statusCard">
+        <div class="state">
+          <span class="row"><span id="dot" class="dot"></span><b id="stateText">Микрофон выключен</b></span>
+          <span class="pill">Совет: <span class="kbd">Start</span> и говорите</span>
+        </div>
+        <div class="meter" id="meter" aria-label="voice meter"></div>
+        <div class="footerNote">
+          Для лучшей работы откройте файл в Chrome/Edge. На iPhone разрешите микрофон в настройках браузера.
+        </div>
       </div>
-      <div class="badge" id="repBadge">8–12</div>
-    </div>
-    <canvas id="stage" width="960" height="650"></canvas>
-    <div class="mini" id="tip" style="padding:0 15px 15px">
-      Угол 20–35°, грудь вверх, лопатки сведены. Вес контролируйте вниз 2–3 секунды.
-    </div>
-  </div>
+    </section>
 
-  <div class="card">
-    <div class="tabs" id="tabs">
-      <button class="tab active" data-mode="incline">Жим гантелей</button>
-      <button class="tab" data-mode="barbell">Жим штанги</button>
-      <button class="tab" data-mode="lowCable">Кроссовер снизу</button>
-      <button class="tab" data-mode="feetPush">Отжимания ноги выше</button>
-      <button class="tab" data-mode="fly">Разводка</button>
-    </div>
-  </div>
+    <section class="panel">
+      <div class="grid">
+        <div>
+          <div class="topline">
+            <div class="label">Язык, на котором говорите</div>
+            <button class="btn mini" id="swapBtn">🔁 поменять</button>
+          </div>
+          <select id="fromLang"></select>
+        </div>
+        <div>
+          <div class="topline">
+            <div class="label">На какой язык переводить</div>
+            <button class="btn mini" id="speakBtn">🔊 озвучить</button>
+          </div>
+          <select id="toLang"></select>
+        </div>
+      </div>
 
-  <div class="card timerBox">
-    <div class="mini" id="phase">Работа</div>
-    <div class="timer" id="timer">45</div>
-    <div class="progress"><div class="bar" id="bar"></div></div>
-    <div class="grid2" style="margin-top:14px">
-      <button class="btn" id="start">Старт</button>
-      <button class="btn secondary" id="reset">Сброс</button>
-    </div>
-    <div class="grid2" style="margin-top:10px">
-      <button class="btn blue" id="work">45 сек работа</button>
-      <button class="btn orange" id="rest">30 сек отдых</button>
-    </div>
-  </div>
+      <div class="controls">
+        <button class="btn primary" id="startBtn">🎙️ Start Live Translation</button>
+        <button class="btn danger" id="stopBtn">⏹ Stop</button>
+        <button class="btn success" id="translateBtn">⚡ Перевести текст</button>
+        <button class="btn" id="clearBtn">🧹 Очистить</button>
+      </div>
 
-  <div class="grid3">
-    <div class="stat"><div class="num">2×</div><div class="lab">в неделю</div></div>
-    <div class="stat"><div class="num">20–35°</div><div class="lab">угол скамьи</div></div>
-    <div class="stat"><div class="num">8–12</div><div class="lab">рост мышц</div></div>
-  </div>
+      <div class="row" style="margin-bottom:14px">
+        <label class="switch"><input type="checkbox" id="autoSpeak" checked> авто‑озвучка перевода</label>
+        <label class="switch"><input type="checkbox" id="continuous" checked> слушать постоянно</label>
+        <label class="switch"><input type="checkbox" id="saveHistory" checked> сохранять историю</label>
+      </div>
 
-  <div class="card">
-    <div class="title">План “мощный верх груди”</div>
-    <div class="mini" style="margin-top:5px">Делай 2 раза в неделю: например Понедельник и Четверг.</div>
-    <div class="row done"><div class="icon">↗️</div><div><div class="rTitle">Жим гантелей на наклонной</div><div class="rMeta">4 подхода × 8–12. Главный рост верхней груди.</div></div><div class="check">✓</div></div>
-    <div class="row"><div class="icon">🏋️</div><div><div class="rTitle">Жим штанги на наклонной</div><div class="rMeta">3–4 × 6–10. Тяжелая база, отдых 90–120 сек.</div></div><div class="check">1</div></div>
-    <div class="row"><div class="icon">🧲</div><div><div class="rTitle">Кроссовер снизу вверх</div><div class="rMeta">3 × 12–15. Вверху сожми грудь 1 секунду.</div></div><div class="check">2</div></div>
-    <div class="row"><div class="icon">🦋</div><div><div class="rTitle">Разводка гантелей 20–30°</div><div class="rMeta">3 × 12–15. Медленно, без боли в плече.</div></div><div class="check">3</div></div>
-    <div class="row"><div class="icon">🔥</div><div><div class="rTitle">Отжимания ноги выше</div><div class="rMeta">2–3 × максимум в конце, до сильного жжения.</div></div><div class="check">4</div></div>
-  </div>
+      <div class="grid">
+        <div>
+          <div class="topline">
+            <div class="label">Ваш текст</div>
+            <button class="btn mini" data-copy="sourceText">📋 copy</button>
+          </div>
+          <textarea id="sourceText" placeholder="Нажмите Start и говорите... или напишите текст вручную."></textarea>
+          <div id="interim" class="interim"></div>
+        </div>
+        <div>
+          <div class="topline">
+            <div class="label">Перевод</div>
+            <button class="btn mini" data-copy="targetText">📋 copy</button>
+          </div>
+          <textarea id="targetText" placeholder="Здесь появится перевод..." readonly></textarea>
+          <div class="interim" id="engineInfo"></div>
+        </div>
+      </div>
+    </section>
 
-  <div class="card">
-    <div class="title">Секреты роста верхней груди</div>
-    <div class="secret"><b>1. Угол не высокий.</b><br><span class="mini">Лучше 20–35°. Если 45–60°, больше работают плечи, а не верх груди.</span></div>
-    <div class="secret"><b>2. Грудь вверх, лопатки назад.</b><br><span class="mini">Представь, что хочешь поднять грудь к гантелям. Спина чуть прогнута, плечи не лезут вперед.</span></div>
-    <div class="secret"><b>3. Негатив 2–3 секунды.</b><br><span class="mini">Опускай вес медленно. Верх груди растет от контроля, а не от бросания веса.</span></div>
-    <div class="secret"><b>4. Прогресс каждую неделю.</b><br><span class="mini">Сделал 12 повторений во всех подходах — добавь 2.5–5 lb в следующий раз.</span></div>
-    <div class="secret"><b>5. Не убивай плечи.</b><br><span class="mini">Локти держи примерно 45–60° от корпуса. Если боль — меньше угол или вес.</span></div>
-  </div>
+    <section class="history">
+      <div class="historyHeader">
+        <div>
+          <div class="label">История разговора</div>
+          <div class="footerNote" style="margin-top:4px">Последние фразы сохраняются в этом браузере.</div>
+        </div>
+        <button class="btn mini" id="clearHistoryBtn">Удалить историю</button>
+      </div>
+      <div class="items" id="historyItems"></div>
+    </section>
+  </main>
 
-  <div class="card">
-    <div class="title">Калькулятор прогресса</div>
-    <div class="mini" style="margin:6px 0 10px">Введи вес гантели и повторения. Приложение подскажет, когда добавлять вес.</div>
-    <div class="grid2">
-      <input id="weight" inputmode="decimal" placeholder="Вес гантели, lb">
-      <input id="reps" inputmode="numeric" placeholder="Повторения">
-    </div>
-    <button class="btn" id="calc" style="width:100%;margin-top:10px">Рассчитать</button>
-    <div class="result" id="result">Пример: если делаешь 40 lb × 12 повторений во всех подходах — в следующий раз попробуй 42.5–45 lb.</div>
-  </div>
-
-  <div class="card">
-    <div class="title">Расписание</div>
-    <span class="dayTag">День A: тяжело</span>
-    <span class="dayTag">День B: памп</span>
-    <div class="mini" style="margin-top:10px">
-      День A: жим гантелей + жим штанги. День B: кроссовер + разводка + отжимания. Между тренировками груди оставляй 48–72 часа.
-    </div>
-    <div class="warn" style="margin-top:10px">
-      Если есть травма плеча, груди, спины или боль при движении — снизь вес и лучше посоветуйся с врачом/тренером.
-    </div>
-  </div>
-</div>
-
-<div class="bottom">
-  <div class="bottomInner">
-    <div class="active">🔥<br>Грудь</div>
-    <div>▶️<br>Анимация</div>
-    <div>⏱️<br>Таймер</div>
-    <div>📈<br>Прогресс</div>
-  </div>
-</div>
+  <div class="toast" id="toast"></div>
 
 <script>
-const canvas = document.getElementById('stage');
-const ctx = canvas.getContext('2d');
-let mode='incline';
+(() => {
+  const languages = [
+    {name:"Русский", speech:"ru-RU", code:"ru"},
+    {name:"English / Английский", speech:"en-US", code:"en"},
+    {name:"Українська", speech:"uk-UA", code:"uk"},
+    {name:"Español / Испанский", speech:"es-ES", code:"es"},
+    {name:"Français / Французский", speech:"fr-FR", code:"fr"},
+    {name:"Deutsch / Немецкий", speech:"de-DE", code:"de"},
+    {name:"Italiano / Итальянский", speech:"it-IT", code:"it"},
+    {name:"Português / Португальский", speech:"pt-PT", code:"pt"},
+    {name:"Türkçe / Турецкий", speech:"tr-TR", code:"tr"},
+    {name:"中文 / Китайский", speech:"zh-CN", code:"zh"},
+    {name:"العربية / Арабский", speech:"ar-SA", code:"ar"},
+    {name:"हिन्दी / Хинди", speech:"hi-IN", code:"hi"},
+    {name:"Polski / Польский", speech:"pl-PL", code:"pl"},
+    {name:"Română / Румынский", speech:"ro-RO", code:"ro"},
+    {name:"Čeština / Чешский", speech:"cs-CZ", code:"cs"},
+    {name:"Тоҷикӣ / Таджикский", speech:"tg-TJ", code:"tg"},
+    {name:"Oʻzbekcha / Узбекский", speech:"uz-UZ", code:"uz"}
+  ];
 
-const data={
-  incline:{name:'Жим гантелей 30°',badge:'8–12',tip:'Угол 20–35°, грудь вверх, лопатки сведены. Вес контролируйте вниз 2–3 секунды.'},
-  barbell:{name:'Жим штанги на наклонной',badge:'6–10',tip:'Штанга опускается к верхней груди. Не бей грифом, держи запястья ровно.'},
-  lowCable:{name:'Кроссовер снизу вверх',badge:'12–15',tip:'Ручки идут снизу вверх к линии глаз. Вверху задержка 1 секунда.'},
-  feetPush:{name:'Отжимания ноги выше',badge:'MAX',tip:'Ноги выше корпуса — нагрузка идет в верх грудных. Корпус держи ровно.'},
-  fly:{name:'Разводка на наклонной',badge:'12–15',tip:'Легче вес, больше растяжение. Локти чуть согнуты, не проваливай плечи.'}
-};
+  const $ = id => document.getElementById(id);
+  const fromLang = $("fromLang"), toLang = $("toLang");
+  const sourceText = $("sourceText"), targetText = $("targetText");
+  const interim = $("interim"), engineInfo = $("engineInfo");
+  const dot = $("dot"), stateText = $("stateText");
+  const toast = $("toast"), historyItems = $("historyItems");
 
-document.getElementById('tabs').onclick=e=>{
-  if(!e.target.dataset.mode) return;
-  mode=e.target.dataset.mode;
-  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
-  document.getElementById('exName').textContent=data[mode].name;
-  document.getElementById('repBadge').textContent=data[mode].badge;
-  document.getElementById('tip').textContent=data[mode].tip;
-};
+  let recognition = null;
+  let listening = false;
+  let audioCtx = null, analyser = null, mediaStream = null, raf = null;
+  let lastFinal = "";
+  let translating = false;
 
-function ease(p){return .5-.5*Math.cos(Math.PI*p)}
-function wave(now,ms){return ease((Math.sin(now/ms*Math.PI*2-Math.PI/2)+1)/2)}
-function lerp(a,b,p){return a+(b-a)*p}
-function rr(x,y,w,h,r,fill,stroke){
-  ctx.beginPath();
-  ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);
-  ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
-  if(fill){ctx.fillStyle=fill;ctx.fill()}
-  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=3;ctx.stroke()}
-}
-function line(x1,y1,x2,y2,w,c,alpha=1){
-  ctx.save();ctx.globalAlpha=alpha;ctx.strokeStyle=c;ctx.lineWidth=w;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();
-}
-function circ(x,y,r,c,stroke){
-  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=c;ctx.fill();
-  if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=3;ctx.stroke()}
-}
-function text(txt,x,y,size,c='white',align='center',bold=true){
-  ctx.fillStyle=c;ctx.font=(bold?'900 ':'500 ')+size+'px -apple-system, BlinkMacSystemFont, Segoe UI, Arial';ctx.textAlign=align;ctx.fillText(txt,x,y)
-}
-function bg(now){
-  let g=ctx.createLinearGradient(0,0,0,650);
-  g.addColorStop(0,'#111e45');g.addColorStop(.56,'#0b122b');g.addColorStop(1,'#050711');
-  ctx.fillStyle=g;ctx.fillRect(0,0,960,650);
-  for(let i=0;i<10;i++){
-    ctx.strokeStyle=`rgba(73,169,255,${.045+i*.004})`;
-    ctx.lineWidth=2;
-    ctx.beginPath();
-    let y=62+i*50+Math.sin(now/900+i)*10;
-    ctx.moveTo(0,y);
-    for(let x=0;x<=960;x+=32){ctx.lineTo(x,y+Math.sin(x/72+now/950+i)*8)}
-    ctx.stroke();
+  function fillLanguages(){
+    languages.forEach((l,i)=>{
+      const o1 = new Option(l.name, i);
+      const o2 = new Option(l.name, i);
+      fromLang.add(o1); toLang.add(o2);
+    });
+    fromLang.value = localStorage.getItem("vt_from") ?? "0";
+    toLang.value = localStorage.getItem("vt_to") ?? "1";
   }
-  // floor
-  ctx.fillStyle='rgba(255,255,255,.035)';ctx.fillRect(50,548,860,36);
-  ctx.strokeStyle='rgba(255,255,255,.08)';ctx.strokeRect(50,548,860,36);
-}
-function muscleGlow(cx,cy,rot,intensity){
-  ctx.save();ctx.translate(cx,cy);ctx.rotate(rot);
-  let grad=ctx.createRadialGradient(0,0,18,0,0,150);
-  grad.addColorStop(0,`rgba(49,233,129,${0.55*intensity})`);
-  grad.addColorStop(.45,`rgba(49,233,129,${0.24*intensity})`);
-  grad.addColorStop(1,'rgba(49,233,129,0)');
-  ctx.fillStyle=grad;ctx.beginPath();ctx.ellipse(0,0,160,95,0,0,Math.PI*2);ctx.fill();
-  ctx.fillStyle=`rgba(49,233,129,${0.28*intensity})`;
-  ctx.beginPath();ctx.ellipse(-45,0,45,35,0,0,Math.PI*2);ctx.fill();
-  ctx.beginPath();ctx.ellipse(45,0,45,35,0,0,Math.PI*2);ctx.fill();
-  ctx.restore();
-}
-function bench(){
-  ctx.save();ctx.translate(490,438);ctx.rotate(-.29);
-  rr(-220,-17,440,34,17,'#536ca8','#7f92c7');
-  line(-150,16,-210,112,12,'#263963');line(145,16,205,112,12,'#263963');
-  ctx.restore();
-}
-function body(cx=480,cy=350,rot=-.29,intensity=1){
-  ctx.save();ctx.translate(cx,cy);ctx.rotate(rot);
-  muscleGlow(0,-4,0,intensity);
-  rr(-88,-75,176,190,60,'#1a2c5e','#375184');
-  ctx.fillStyle='#253f84';
-  ctx.beginPath();ctx.ellipse(-46,-18,42,32,0,0,Math.PI*2);ctx.fill();
-  ctx.beginPath();ctx.ellipse(46,-18,42,32,0,0,Math.PI*2);ctx.fill();
-  line(0,-56,0,68,4,'rgba(255,255,255,.17)');
-  rr(-27,-117,54,52,18,'#c89b74');
-  circ(0,-150,42,'#e5c29b','#f7d8b3');
-  // eyes
-  circ(-14,-154,3,'#1b1b1b');circ(14,-154,3,'#1b1b1b');
-  ctx.restore();
-}
-function arm(s,e,h){
-  line(s.x,s.y,e.x,e.y,28,'#d8ad84');line(e.x,e.y,h.x,h.y,25,'#d8ad84');
-  circ(s.x,s.y,15,'#d8ad84');circ(e.x,e.y,14,'#d8ad84');circ(h.x,h.y,12,'#e3bd95');
-}
-function db(x,y,a){
-  ctx.save();ctx.translate(x,y);ctx.rotate(a);
-  line(-38,0,38,0,12,'#e9f0ff');
-  rr(-62,-20,20,40,7,'#8fa4da');rr(42,-20,20,40,7,'#8fa4da');
-  rr(-18,-8,36,16,6,'#ffffff');
-  ctx.restore();
-}
-function path(points){
-  ctx.save();ctx.globalAlpha=.42;ctx.strokeStyle='#31e981';ctx.lineWidth=5;ctx.setLineDash([10,12]);ctx.lineCap='round';
-  ctx.beginPath();ctx.moveTo(points[0].x,points[0].y);points.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke();
-  ctx.setLineDash([]);points.forEach(p=>circ(p.x,p.y,5,'#31e981'));ctx.restore();
-}
-function incline(now){
-  bg(now);bench();
-  let p=wave(now,1450);
-  body(480,355,-.29,.75+p*.75);
-  const lS={x:404,y:300}, rS={x:556,y:300};
-  const lE={x:lerp(350,405,p),y:lerp(318,234,p)};
-  const rE={x:lerp(610,555,p),y:lerp(318,234,p)};
-  const lH={x:lerp(315,432,p),y:lerp(248,145,p)};
-  const rH={x:lerp(645,528,p),y:lerp(248,145,p)};
-  arm(lS,lE,lH);arm(rS,rE,rH);db(lH.x,lH.y,-.13);db(rH.x,rH.y,.13);
-  path([{x:315,y:248},{x:365,y:188},{x:432,y:145}]);path([{x:645,y:248},{x:595,y:188},{x:528,y:145}]);
-  text('верх груди',480,74,26,'rgba(49,233,129,.95)');
-}
-function barbell(now){
-  bg(now);bench();
-  let p=wave(now,1550);
-  body(480,355,-.29,.75+p*.85);
-  const y=lerp(250,135,p), lH={x:lerp(370,415,p),y}, rH={x:lerp(590,545,p),y};
-  arm({x:404,y:300},{x:350,y:246},lH);arm({x:556,y:300},{x:610,y:246},rH);
-  line(245,y,715,y,14,'#eef4ff');rr(198,y-37,36,74,8,'#8397cb');rr(725,y-37,36,74,8,'#8397cb');
-  rr(236,y-27,24,54,7,'#9fb0df');rr(700,y-27,24,54,7,'#9fb0df');
-  line(480,268,480,y+10,4,'rgba(49,233,129,.5)');
-  text('траектория к верхней груди',480,72,24,'rgba(49,233,129,.92)');
-}
-function cable(now){
-  bg(now);
-  line(88,112,88,545,9,'#294073');line(872,112,872,545,9,'#294073');
-  circ(88,166,25,'#344f8d');circ(872,166,25,'#344f8d');
-  let p=wave(now,1700);
-  body(480,370,0,.85+p*.85);
-  const sL={x:406,y:330},sR={x:554,y:330};
-  const hL={x:lerp(118,432,p),y:lerp(462,220,p)};
-  const hR={x:lerp(842,528,p),y:lerp(462,220,p)};
-  const eL={x:lerp(235,360,p),y:lerp(390,282,p)};
-  const eR={x:lerp(725,600,p),y:lerp(390,282,p)};
-  line(88,166,hL.x,hL.y,3,'rgba(235,242,255,.65)');line(872,166,hR.x,hR.y,3,'rgba(235,242,255,.65)');
-  arm(sL,eL,hL);arm(sR,eR,hR);
-  rr(hL.x-22,hL.y-9,44,18,9,'#edf4ff');rr(hR.x-22,hR.y-9,44,18,9,'#edf4ff');
-  line(350,245,480,210,6,'rgba(49,233,129,.52)');line(610,245,480,210,6,'rgba(49,233,129,.52)');
-  text('снизу вверх — добивает верх',480,72,24,'rgba(49,233,129,.92)');
-}
-function pushup(now){
-  bg(now);
-  line(95,505,870,505,12,'#35466f');rr(665,432,185,70,20,'#52679d','#7184b6');
-  let p=wave(now,1300), y=lerp(405,335,p);
-  ctx.save();ctx.translate(475,y);ctx.rotate(-.08);
-  muscleGlow(-20,-8,0,.85+p*.75);
-  rr(-175,-48,335,78,34,'#1a2c5e','#375184');
-  circ(195,-42,37,'#e5c29b','#f7d8b3');
-  line(-130,20,-214,120,23,'#d8ad84');line(95,22,170,121,23,'#d8ad84');
-  line(-150,24,-220,10,19,'#d8ad84');line(70,27,170,12,19,'#d8ad84');
-  ctx.restore();
-  line(260,490,260,575,22,'#d8ad84');line(640,490,640,575,22,'#d8ad84');
-  circ(260,582,18,'#e5c29b');circ(640,582,18,'#e5c29b');
-  text('ноги выше = верх груди',480,72,25,'rgba(49,233,129,.92)');
-}
-function fly(now){
-  bg(now);bench();
-  let p=wave(now,1600);
-  body(480,355,-.29,.85+p*.75);
-  const lS={x:404,y:300}, rS={x:556,y:300};
-  const lH={x:lerp(300,435,p), y:lerp(260,150,p)};
-  const rH={x:lerp(660,525,p), y:lerp(260,150,p)};
-  const lE={x:lerp(325,385,p), y:lerp(265,215,p)};
-  const rE={x:lerp(635,575,p), y:lerp(265,215,p)};
-  arm(lS,lE,lH);arm(rS,rE,rH);db(lH.x,lH.y,-.28);db(rH.x,rH.y,.28);
-  path([{x:300,y:260},{x:360,y:190},{x:435,y:150}]);path([{x:660,y:260},{x:600,y:190},{x:525,y:150}]);
-  text('растяжение + контроль',480,72,25,'rgba(49,233,129,.92)');
-}
-function loop(now){
-  if(mode==='incline') incline(now);
-  if(mode==='barbell') barbell(now);
-  if(mode==='lowCable') cable(now);
-  if(mode==='feetPush') pushup(now);
-  if(mode==='fly') fly(now);
-  requestAnimationFrame(loop);
-}
-requestAnimationFrame(loop);
 
-// Timer
-let total=45,time=45,timer=null,phase='Работа';
-const timerEl=document.getElementById('timer'),bar=document.getElementById('bar'),phaseEl=document.getElementById('phase');
-function render(){timerEl.textContent=time;bar.style.width=((total-time)/total*100)+'%';phaseEl.textContent=phase}
-function startTimer(){if(timer)return;timer=setInterval(()=>{time--;render();if(time<=0){clearInterval(timer);timer=null;if(navigator.vibrate)navigator.vibrate([200,100,200]);phase=phase==='Работа'?'Отдых':'Работа';total=phase==='Работа'?45:30;time=total;render()}},1000)}
-function resetTimer(){clearInterval(timer);timer=null;time=total;render()}
-document.getElementById('start').onclick=startTimer;document.getElementById('reset').onclick=resetTimer;
-document.getElementById('work').onclick=()=>{phase='Работа';total=45;time=45;resetTimer();render()}
-document.getElementById('rest').onclick=()=>{phase='Отдых';total=30;time=30;resetTimer();render()}
-render();
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add("show");
+    setTimeout(()=>toast.classList.remove("show"), 2400);
+  }
 
-// Calculator
-document.getElementById('calc').onclick=()=>{
-  const w=parseFloat(document.getElementById('weight').value.replace(',','.'));
-  const r=parseInt(document.getElementById('reps').value,10);
-  const out=document.getElementById('result');
-  if(!w||!r){out.textContent='Введите вес и повторения. Например: 40 и 10.';return}
-  if(r>=12){out.textContent=`Отлично. Если ты сделал ${w} lb по 12 повторений во всех подходах, в следующий раз пробуй ${Math.round((w+2.5)*10)/10}–${Math.round((w+5)*10)/10} lb.`}
-  else if(r>=8){out.textContent=`Хорошо. Оставайся на ${w} lb, пока не дойдешь до 12 повторений в каждом подходе. Главное — чистая техника.`}
-  else{out.textContent=`Вес ${w} lb пока тяжеловат для роста. Снизь на 10–15% и сделай чистые 8–12 повторений.`}
-}
+  function setState(on, msg){
+    dot.classList.toggle("on", on);
+    stateText.textContent = msg;
+  }
+
+  function selectedFrom(){ return languages[+fromLang.value]; }
+  function selectedTo(){ return languages[+toLang.value]; }
+
+  fromLang.onchange = () => {
+    localStorage.setItem("vt_from", fromLang.value);
+    if(recognition) recognition.lang = selectedFrom().speech;
+  };
+  toLang.onchange = () => localStorage.setItem("vt_to", toLang.value);
+
+  $("swapBtn").onclick = () => {
+    const a = fromLang.value;
+    fromLang.value = toLang.value;
+    toLang.value = a;
+    localStorage.setItem("vt_from", fromLang.value);
+    localStorage.setItem("vt_to", toLang.value);
+    const s = sourceText.value;
+    sourceText.value = targetText.value;
+    targetText.value = s;
+    if(recognition) recognition.lang = selectedFrom().speech;
+  };
+
+  async function translateText(text){
+    text = (text || "").trim();
+    if(!text || translating) return;
+    translating = true;
+    engineInfo.textContent = "Перевожу...";
+    try{
+      const from = selectedFrom().code;
+      const to = selectedTo().code;
+      const translated = await translateWithFallback(text, from, to);
+      targetText.value = translated;
+      engineInfo.textContent = "Готово ✅";
+      addHistory(text, translated);
+      if($("autoSpeak").checked) speak(translated);
+    }catch(e){
+      console.error(e);
+      engineInfo.textContent = "Перевод не прошёл. Проверьте интернет или попробуйте другой браузер.";
+      showToast("Не получилось перевести. Нужен интернет.");
+    }finally{
+      translating = false;
+    }
+  }
+
+  async function translateWithFallback(text, from, to){
+    // 1) MyMemory public API. Good for simple browser demo, no key needed.
+    try{
+      const url = "https://api.mymemory.translated.net/get?q=" + encodeURIComponent(text) + "&langpair=" + encodeURIComponent(from + "|" + to);
+      const r = await fetch(url);
+      if(!r.ok) throw new Error("MyMemory HTTP " + r.status);
+      const data = await r.json();
+      const out = data?.responseData?.translatedText;
+      if(out && out.trim() && out.toLowerCase() !== "null") return decodeHtml(out.trim());
+    }catch(e){ console.warn("MyMemory failed", e); }
+
+    // 2) Unofficial Google endpoint. May be blocked by CORS on some browsers.
+    try{
+      const url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=" + encodeURIComponent(from) + "&tl=" + encodeURIComponent(to) + "&dt=t&q=" + encodeURIComponent(text);
+      const r = await fetch(url);
+      if(!r.ok) throw new Error("Google HTTP " + r.status);
+      const data = await r.json();
+      const out = data?.[0]?.map(x => x[0]).join("");
+      if(out && out.trim()) return out.trim();
+    }catch(e){ console.warn("Google fallback failed", e); }
+
+    throw new Error("No translation engine available");
+  }
+
+  function decodeHtml(str){
+    const txt = document.createElement("textarea");
+    txt.innerHTML = str;
+    return txt.value;
+  }
+
+  function speak(text){
+    if(!("speechSynthesis" in window)){
+      showToast("Озвучка не поддерживается в этом браузере");
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = selectedTo().speech;
+    u.rate = 1;
+    u.pitch = 1;
+    u.volume = 1;
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(v => v.lang === selectedTo().speech) || voices.find(v => v.lang.startsWith(selectedTo().code));
+    if(preferred) u.voice = preferred;
+    window.speechSynthesis.speak(u);
+  }
+
+  function makeRecognition(){
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SR) return null;
+    const rec = new SR();
+    rec.lang = selectedFrom().speech;
+    rec.continuous = true;
+    rec.interimResults = true;
+    rec.maxAlternatives = 1;
+
+    rec.onstart = () => {
+      listening = true;
+      setState(true, "Слушаю... говорите");
+      startMeter();
+    };
+
+    rec.onresult = (event) => {
+      let interimTxt = "";
+      let finalTxt = "";
+      for(let i = event.resultIndex; i < event.results.length; i++){
+        const txt = event.results[i][0].transcript;
+        if(event.results[i].isFinal) finalTxt += txt;
+        else interimTxt += txt;
+      }
+      if(interimTxt) interim.textContent = "Слышу: " + interimTxt;
+
+      if(finalTxt.trim()){
+        const clean = finalTxt.trim();
+        if(clean !== lastFinal){
+          lastFinal = clean;
+          sourceText.value = (sourceText.value ? sourceText.value.trim() + "\n" : "") + clean;
+          interim.textContent = "";
+          translateText(clean);
+        }
+      }
+    };
+
+    rec.onerror = (e) => {
+      console.warn(e);
+      if(e.error === "not-allowed") showToast("Разрешите доступ к микрофону");
+      else if(e.error === "no-speech") showToast("Речь не услышана");
+      else showToast("Ошибка микрофона: " + e.error);
+      setState(false, "Микрофон выключен");
+    };
+
+    rec.onend = () => {
+      stopMeter();
+      if(listening && $("continuous").checked){
+        try{ rec.start(); }catch(e){}
+      }else{
+        listening = false;
+        setState(false, "Микрофон выключен");
+      }
+    };
+    return rec;
+  }
+
+  async function startMeter(){
+    try{
+      if(mediaStream) return;
+      mediaStream = await navigator.mediaDevices.getUserMedia({audio:true});
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      const source = audioCtx.createMediaStreamSource(mediaStream);
+      source.connect(analyser);
+      analyser.fftSize = 128;
+      drawMeter();
+    }catch(e){
+      console.warn("meter failed", e);
+    }
+  }
+
+  function buildMeter(){
+    const meter = $("meter");
+    meter.innerHTML = "";
+    for(let i=0;i<34;i++){
+      const b = document.createElement("div");
+      b.className = "bar";
+      meter.appendChild(b);
+    }
+  }
+
+  function drawMeter(){
+    const bars = [...document.querySelectorAll(".bar")];
+    const arr = new Uint8Array(analyser.frequencyBinCount);
+    const tick = () => {
+      analyser.getByteFrequencyData(arr);
+      bars.forEach((b,i)=>{
+        const v = arr[i % arr.length] / 255;
+        b.style.height = Math.max(8, Math.round(v*92)) + "%";
+      });
+      raf = requestAnimationFrame(tick);
+    };
+    tick();
+  }
+
+  function stopMeter(){
+    if(raf) cancelAnimationFrame(raf);
+    raf = null;
+    document.querySelectorAll(".bar").forEach((b,i)=> b.style.height = (12 + (i%5)*7) + "%");
+    if(mediaStream){
+      mediaStream.getTracks().forEach(t=>t.stop());
+      mediaStream = null;
+    }
+    if(audioCtx){
+      audioCtx.close().catch(()=>{});
+      audioCtx = null; analyser = null;
+    }
+  }
+
+  function start(){
+    if(listening) return;
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SR){
+      showToast("В этом браузере нет распознавания речи. Откройте в Chrome или Edge.");
+      setState(false, "Браузер не поддерживает микрофонный перевод");
+      return;
+    }
+    recognition = makeRecognition();
+    try{
+      recognition.start();
+    }catch(e){
+      console.error(e);
+      showToast("Не удалось стартовать микрофон");
+    }
+  }
+
+  function stop(){
+    listening = false;
+    if(recognition){
+      try{ recognition.stop(); }catch(e){}
+    }
+    window.speechSynthesis?.cancel?.();
+    stopMeter();
+    setState(false, "Микрофон выключен");
+  }
+
+  function addHistory(src,trg){
+    if(!$("saveHistory").checked) return;
+    const item = {src,trg,from:selectedFrom().name,to:selectedTo().name,ts:new Date().toLocaleString()};
+    const old = JSON.parse(localStorage.getItem("vt_history") || "[]");
+    old.unshift(item);
+    localStorage.setItem("vt_history", JSON.stringify(old.slice(0,25)));
+    renderHistory();
+  }
+
+  function renderHistory(){
+    const data = JSON.parse(localStorage.getItem("vt_history") || "[]");
+    historyItems.innerHTML = "";
+    if(!data.length){
+      historyItems.innerHTML = '<div class="footerNote">История пока пустая.</div>';
+      return;
+    }
+    data.slice(0,12).forEach(x=>{
+      const d = document.createElement("div");
+      d.className = "item";
+      d.innerHTML = `
+        <small>${escapeHtml(x.ts)} · ${escapeHtml(x.from)} → ${escapeHtml(x.to)}</small>
+        <p><b>Вы:</b> ${escapeHtml(x.src)}</p>
+        <p><b>Перевод:</b> ${escapeHtml(x.trg)}</p>
+      `;
+      historyItems.appendChild(d);
+    });
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+  }
+
+  async function copy(id){
+    const el = $(id);
+    try{
+      await navigator.clipboard.writeText(el.value);
+      showToast("Скопировано");
+    }catch(e){
+      el.select();
+      document.execCommand("copy");
+      showToast("Скопировано");
+    }
+  }
+
+  $("startBtn").onclick = start;
+  $("stopBtn").onclick = stop;
+  $("translateBtn").onclick = () => translateText(sourceText.value);
+  $("speakBtn").onclick = () => speak(targetText.value || sourceText.value);
+  $("clearBtn").onclick = () => {
+    sourceText.value = "";
+    targetText.value = "";
+    interim.textContent = "";
+    engineInfo.textContent = "";
+    lastFinal = "";
+  };
+  $("clearHistoryBtn").onclick = () => {
+    localStorage.removeItem("vt_history");
+    renderHistory();
+    showToast("История удалена");
+  };
+  document.querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copy(b.dataset.copy));
+
+  document.addEventListener("keydown", e => {
+    if(e.key === " " && (e.ctrlKey || e.metaKey)){
+      e.preventDefault();
+      listening ? stop() : start();
+    }
+  });
+
+  buildMeter();
+  fillLanguages();
+  renderHistory();
+  setState(false, "Микрофон выключен");
+
+  // Helps iOS load available voices after first user gesture.
+  if("speechSynthesis" in window){
+    window.speechSynthesis.onvoiceschanged = () => {};
+  }
+})();
 </script>
 </body>
 </html>
